@@ -1,6 +1,6 @@
 {
   "name": "geotechnica",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "Utility function collection for common problems in geotechnics",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "keywords": [
     "Geotechnics"
   ],
-  "author": "Dr. Nandor Tamaskovics",
+  "author": "Dr. Nandor Tamaskovics <numericalfreedom@googlemail.com> (http://numericalfreedom.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/numericalfreedom/geotechnica-nodejs/issues"
