@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/numericalfreedom/geotechnica-nodejs/issues"
   },
-  "homepage": "https://github.com/numericalfreedom/geotechnica-nodejs#readme"
+  "homepage": "https://github.com/numericalfreedom/geotechnica-nodejs#readme",
+  "dependencies": {
+    "npm": "^5.7.1"
+  }
 }
