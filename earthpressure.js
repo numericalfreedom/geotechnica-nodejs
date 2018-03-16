@@ -1,4 +1,10 @@
 
+function kr( phir )
+ {
+  k = ( 1.0 - Math.sin( phir ) ) ;
+  return( k ) ;
+ }
+
 function ka( phir )
  {
   k = ( (1.0 - Math.sin( phir )) / (1.0 + Math.sin( phir )) ) ;
@@ -11,5 +17,5 @@ function kp( phir )
   return( k ) ;
  }
 
-module.exports = { ka , kp } ;
+module.exports = { kr , ka , kp } ;
 
