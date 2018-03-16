@@ -1,6 +1,6 @@
 {
   "name": "geotechnica",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Utility function collection for common problems in geotechnics",
   "main": "index.js",
   "scripts": {
