@@ -1,6 +1,10 @@
-exports.ka = function( phir )
+
+const ep = require('./earthpressure.js');
+
+module.exports = [ ka ] ;
+
+function ka( phir )
  {
-  k = ( (1.0 - Math.sin( phir )) / (1.0 + Math.sin( phir )) ) ;
-  return( k ) ;
+  return( ep.ka( phir ) ) ;
  }
 
