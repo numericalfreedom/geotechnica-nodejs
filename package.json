@@ -1,8 +1,8 @@
 {
   "name": "geotechnica",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Utility function collection for common problems in geotechnics",
-  "main": "index.js",
+  "main": "src/geotechnica.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,6 +20,6 @@
   },
   "homepage": "https://github.com/numericalfreedom/geotechnica-nodejs#readme",
   "dependencies": {
-    "npm": "^5.7.1"
+    "npm": "^5.8.0"
   }
 }
