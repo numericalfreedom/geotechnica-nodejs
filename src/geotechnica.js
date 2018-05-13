@@ -1,7 +1,7 @@
 
 const ep = require('./earthpressure.js');
 
-module.exports = [ ka ] ;
+module.exports = { ka } ;
 
 function ka( phir )
  {
