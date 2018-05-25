@@ -1,9 +1,9 @@
 
 
-module.exports = { iqz } ;
+module.exports = { iqz : fiqz } ;
 
 
-function iqz( a , b , x , y , z , nu )
+function fiqz( a , b , x , y , z , nu )
  {
 
   const c_0 = 1e-6;
