@@ -1,0 +1,415 @@
+/** \mainpage CPT Evaluation
+ * 
+ * Tool for evaluation of CPT data.
+ * 
+ */
+
+
+/*
+ * Cone penetration test evaluation
+ *
+ */
+
+function cpt( xprm , ycpt , vrb )
+ {
+
+  if( ! vrb ) var vrb = 0;
+
+  const f_qc   = 1.00e6;
+  const f_fs   = 1.00e-2;
+
+  const bt_qc  = 1.00;
+  const ds_fs  = 1.00;
+
+  const c_gw   = 0;
+  const c_gn   = 1;
+  const c_gr   = 2;
+  const c_pr   = 3;
+  const c_cq   = 4;
+  const c_cs   = 5;
+  const c_ce   = 6;
+  const c_zw   = 7;
+  const c_za   = 8;
+ 
+  const c_zq   = 0;
+  const c_qc   = 1;
+  const c_rf   = 2;
+  const c_u    = 3;
+  
+  const r_z    = 0;
+  const r_qc   = 1;
+  const r_fs   = 2;
+  const r_u    = 3;
+  
+  const r_sv   = 4;
+  const r_sve  = 5;
+  const r_e    = 6;
+  const r_phfs = 7;
+  const r_phqc = 8;
+
+  const r_cpt  = 9;
+
+  var   gw     = xprm[c_gw];
+  var   gn     = xprm[c_gn];
+  var   gr     = xprm[c_gr];
+  var   pr     = xprm[c_pr];
+  var   cq     = xprm[c_cq];
+  var   cs     = xprm[c_cs];
+  var   ce     = xprm[c_ce];
+  var   zw     = xprm[c_zw];
+  var   za     = xprm[c_za];
+  
+  var   cl     = ycpt.length;
+
+  var   i      = 0;
+  var   j      = 0;
+  var   k      = 0;
+  
+  var   z      = 0;
+  var   sv     = 0;
+  var   sve    = 0;
+  var   svea   = 0;
+  var   u      = 0;
+  var   fs     = 0;
+  var   qc     = 0;
+  var   dz     = ( ycpt[1][c_zq] - ycpt[0][c_zq] );
+  var   n_za   = ( za / dz );
+  var   n_cpt  = Math.ceil( cl / n_za );
+
+  var   rr  = undefined;
+
+  var   r   = new Array( n_cpt ); 
+  var   rfs = new Array( n_cpt );
+  var   rqc = new Array( n_cpt );
+  
+  for( i = 0; i < n_cpt; ++i )  r[i]   = new Array( r_cpt );
+  for( i = 0; i < n_cpt; ++i )  rfs[i] = new Array( r_fs  );
+  for( i = 0; i < n_cpt; ++i )  rqc[i] = new Array( r_fs  );
+
+  for( i = k = 0 , z = 0 , sv = sve = u = 0; i < n_cpt; ++i )
+   {
+   
+    for( j = 0 , svea = r[i][r_qc] = r[i][r_fs] =r[i][r_phfs] = r[i][r_phqc] = 0; ((j < n_za) && (k < cl)); ++j , ++k , z += dz )
+     {
+
+      if( z <= zw )  sv += ( gn * dz ) , svea += sve = sv , u = 0;  else  sv += ( gr * dz ) , u += ( gw * dz ) , svea += sve = ( sv - u );
+
+      qc            = ( ycpt[k][c_qc] * f_qc );
+    
+      fs            = ( ycpt[k][c_rf] * ycpt[k][c_qc] * f_qc * f_fs );
+
+      r[i][r_qc]   += qc;
+    
+      r[i][r_fs]   += fs;
+    
+      r[i][r_phqc] += pheqqc( qc , sve , bt_qc );
+    
+      r[i][r_phfs] += pheqfs( fs , sve , ds_fs );
+
+     };
+ 
+    if( k == cl )  z -= dz;
+       
+    r[i][r_z]     = z;
+    
+    r[i][r_fs]   /= j;
+     
+    r[i][r_qc]   /= j;
+
+    rfs[i][f_qc]  = r[i][r_phfs] /= j;
+    
+    rqc[i][f_qc]  = r[i][r_phqc] /= j;
+    
+    r[i][r_sv]    = sv;
+    
+    r[i][r_sve]   = sve;
+
+    r[i][r_u]     = u;
+
+    svea         /= j;
+
+    r[i][r_e]     = ( (Math.log( (r[i][r_qc] / (cq * pr)) * Math.pow( (svea / pr) , (- cs) ) )) / ce );
+
+   };
+
+  switch( vrb )
+   {
+   
+    case 0:
+     rr = r;
+     break;
+     
+    case 1:
+     rr = rfs;
+     break;
+     
+    case 2:
+     rr = rqc;
+     break;
+   
+   };
+
+  return( rr ); 
+ 
+ }; // end function cpt()
+
+
+
+/*
+ * Equivalent friction angle from cone penetration test
+ *
+ */
+
+function pheqfs( fs , sv , ds )
+ {
+
+  if( ! ds )  var ds = 1;
+
+  var fssv = undefined;
+
+  var ph   =    0;
+  var phn  =    0;
+  var phx  =   45;
+  var phd  = undefined;
+  
+  var i    =   0;
+  var e    = 1.0e-5;
+  var n    = 100;
+  
+  var R    = new Regulafalsi();
+  
+  R.n      =  0;
+  R.x      = 45;
+
+  if( sv && ((fssv = ( fs / sv )) > 0) )
+
+   for( i = ph = 0 , phd = 1; ((i < n) && (Math.abs( phd ) > e)); ++i , ph = R.s( ph , phd ) )
+   
+    phd = ( ns( ph , ds ) - fssv );
+
+  return( ph );
+  
+ }; // end function pheqfs()
+
+
+
+/*
+ * Passive earth pressure coefficient
+ *
+ * Kp = ( (1 + sin( phi )) / (1 - sin( phi )) )
+ *
+ */
+
+function kp( ph )
+ {
+ 
+  var phr   = Radians( ph );
+ 
+  return( (1 + Math.sin( phr )) / (1 - Math.sin( phr )) );
+ 
+ }; // end function kp()
+
+
+
+/*
+ * Cone factor for granular material following Janbu
+ *
+ * Ns = ( kp * sv * tan( ds * ph )  )
+ *
+ */
+ 
+function ns( ph , ds )
+ {
+   
+  var phr   = Radians( ph );
+
+  var kpv   = kp( ph );
+
+  return( kpv * Math.tan( ds * phr ) );
+ 
+ }; // end function ns()
+
+
+
+/*
+ * Equivalent friction angle from cone penetration test
+ *
+ */
+
+function pheqqc( qc , sv , bt )
+ {
+
+  if( ! bt )  var bt = 0;
+
+  var qcsv = undefined;
+
+  var ph   =    0;
+  var phn  =    0;
+  var phx  =   45;
+  var phd  = undefined;
+  
+  var i    =   0;
+  var e    = 1.0e-5;
+  var n    = 100;
+  
+  var R    = new Regulafalsi();
+  
+  R.n      =  0;
+  R.x      = 45;
+
+  if( sv && ((qcsv = ( qc / sv )) > 0) )
+
+   for( i = ph = 0 , phd = 1; ((i < n) && (Math.abs( phd ) > e)); ++i , ph = R.s( ph , phd ) )
+   
+    phd = ( nq( ph , bt ) - qcsv );
+
+  return( ph );
+  
+ }; // end function pheqqc()
+
+ 
+ 
+/*
+ * Cone factor for granular material following Janbu
+ *
+ * Nq = ( exp( (pi - 2 * beta) * tan( phi ) ) * ((1 + sin( phi )) / (1 - sin( phi ))) )
+ *
+ */
+ 
+function nq( ph , bt )
+ {
+ 
+  var phr  = Radians( ph );
+  var btr  = Radians( bt );
+
+  var kpv  = kp( ph );
+
+  return( Math.exp( (Math.PI - (2 * btr)) * Math.tan( phr ) ) * kpv );
+ 
+ }; // end function nq()
+
+
+
+
+function Regulafalsi()
+ {
+  
+  this.n  = 0;
+  this.x  = 0;
+  this.ll = undefined;
+  this.rr = undefined;
+  this.dl = undefined;
+  this.dr = undefined;
+  
+  this.s  = s;
+   
+ }; // end function Regulafalsi()
+
+
+
+function s( f , d )
+ {
+ 
+  if( (this.ll == undefined) && (this.dl == undefined) && (this.rr == undefined) && (this.dr == undefined) )
+  
+   this.ll = this.rr = f , this.dl = this.dr = d;
+
+  if( (d * this.dl) > 0 )
+  
+    this.ll = f , this.dl = d;
+  
+  else
+  
+    this.rr = f , this.dr = d;
+   
+  if( (this.ll != this.rr) && (this.dl != this.dr) )
+   {
+   
+    f = ( this.ll - (this.dl * ((this.rr - this.ll) / (this.dr - this.dl))) );
+    
+    if( f < this.n )  f = this.n;
+    
+    if( f > this.x )  f = this.x;
+    
+   } // end if() +
+   
+  else
+
+   f = ( this.n + ((this.x - this.n) * Math.random()) );
+
+  return( f );
+  
+ }; // end function s()
+ 
+ 
+/** Initial state
+*
+* Initial state computation
+*
+*/
+
+function ku( zt , xi )
+ {
+ 
+  const c_1 = 1.0;
+ 
+  return( (c_1 + (zt * xi)) / (c_1 + xi) );
+  
+ }; // End function ku()
+
+
+
+/** Radians conversion
+*
+* Convert angle into radians
+*/
+
+function Radians( x )
+ {
+  
+  return( (x / 180.0) * Math.PI );
+  
+ }
+
+
+
+/** Degrees conversion
+*
+* Convert angle into degrees
+*/
+
+function Degrees( x )
+ {
+  
+  return( (x / Math.PI) * 180.0 );
+  
+ }
+
+
+/** Stress invariant p
+*
+*
+*
+*/ 
+
+function sp( sx , sn )
+ {
+ 
+  return( (sn + sx + sx) / 3.0 );
+ 
+ }
+ 
+ 
+/** Stress invariant q
+*
+*
+*
+*/ 
+ 
+function sq( sx , sn )
+ {
+ 
+  return( sx - sn );
+ 
+ }
+
