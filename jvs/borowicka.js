@@ -6,9 +6,9 @@ r = BFRT( x );
 var i = 0;
 var j = 0;
 
-for( i = 0; i < r.length; ++i , print() )
+for( i = 0; i < r.length; ++i , console.log() )
  for( j = 0; j < r[0].length; ++j )
-  print( r[i][j] );
+  console.log( r[i][j] );
 
 
 function BFRT( x )

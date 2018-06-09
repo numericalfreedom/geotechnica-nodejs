@@ -1,4 +1,18 @@
 /**
+ * @file cerruti.js
+ *
+ * Cerruti solution of single horizontal force on half-space
+ *
+ *
+ *
+ * @author Dr.Nandor Tamaskovics
+ *         http://numericalfreedom.com
+ *         numericalfreedom@googlemail.com
+ *
+ */
+
+
+/**
  * @module cerruti
  *
  */
@@ -7,6 +21,9 @@ module.exports = { 'ifx': ifx }
 
 
 /**
+ *
+ * Cerruti solution of a single horizontal force on half-space
+ *
  * @function ifx
  *
  *

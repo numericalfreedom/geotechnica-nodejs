@@ -2,7 +2,7 @@
 var fs = require('fs') ;
 
 
-let stream = fs.createReadStream( 'plane.msh' , {
+let stream = fs.createReadStream( 'slope.msh' , {
     flags: 'r',
     encoding: 'utf-8',
     fd: null,
@@ -20,9 +20,9 @@ stream.on( 'data' , ( data ) =>
   // pause stream if a newline char is found
   // console.log( 'data=' , data ) ;
 
-  stream.pause() ;
+// stream.pause() ;
 
-  console.log( 'data=' , data ) ;
+// console.log( 'data=' , data ) ;
 
   if( data == '\n' )
    {
@@ -35,7 +35,7 @@ stream.on( 'data' , ( data ) =>
     line += data ;
    }
 
-  stream.resume() ;
+  stream.read( 1 ) ;
 
  }
 
@@ -48,6 +48,6 @@ stream.on( 'end' , () => { console.log( 'end' ) ;  } );
 stream.on( 'close' , () => { console.log( 'close' ) ;  } );
 
 
-stream.resume();
+stream.read();
 
 
