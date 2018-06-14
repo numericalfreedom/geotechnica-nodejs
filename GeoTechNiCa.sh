@@ -7,5 +7,5 @@
 
 const repl = require('repl') ;
 
-repl.start({ prompt: 'FleX> '}) ;
+repl.start({ prompt: 'GeoTechNiCa> '}) ;
 
