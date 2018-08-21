@@ -1,4 +1,14 @@
 
+/**
+ * @file flexsimulationtest.js
+ *
+ * Flex simulation test
+ *
+ * @author Nandor Tamaskovics
+ * @copyright Numercalfreedom 2018
+ *
+ *
+ */
 
 const f    = require( './lib/FleX_M2D.js' );
 
