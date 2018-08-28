@@ -6,15 +6,15 @@ module.exports = { IsotropicLinearElastic: IsotropicLinearElastic } ;
 const t = require( './Tensor.js' ) ;
 
 
-function IsotropicLinearElastic( bulk , poisson , shear , young )
+function IsotropicLinearElastic( k , nu , g , e )
  {
 
-  this.bulk    = bulk ;
-  this.poisson = poisson ;
-  this.shear   = shear ;
-  this.young   = young ;
+  this.k  = k ;
+  this.nu = nu ;
+  this.g  = g ;
+  this.e  = e ;
 
-  this.integrate = IntegrateIsotropicLinearElastic ;
+  this.step = IsotropicLinearElasticStep ;
 
  } // end function IsotropicLinearElastic() ;
 
