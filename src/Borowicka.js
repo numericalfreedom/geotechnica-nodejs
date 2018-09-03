@@ -51,6 +51,7 @@ function Borowicka( x )
   var u   = 0;
   var ap  = 0;
   var ph  = 0;
+  var fx  = 0;
 
   var m   = 0;
 
@@ -95,8 +96,9 @@ function Borowicka( x )
     u  = x[ c_u  ][ k ];
     ap = x[ c_ap ][ k ]; 
     ph = x[ c_ph ][ k ];
+    fx = x[ c_fx ][ k ];
 
-    n   = ( (p * Math.cos( ap )) + (q * Math.sin( ap )) - u );
+    n   = ( fx * ((p * Math.cos( ap )) + (q * Math.sin( ap )) - u) );
   
     r[ c_n   ][ rk ] = n;
 
@@ -183,4 +185,5 @@ function Borowicka( x )
   return r;
 
  }; // end function Borowicka()
+
 
