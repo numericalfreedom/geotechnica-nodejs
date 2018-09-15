@@ -13,15 +13,21 @@ class Data
     this.b   = b ;
     this.c   = c ;
     this.r   = undefined ;
-   }
+   } ;
 
   run()
    {
-    sleep.msleep( Math.floor( 1000 * Math.random() ) ) ;
     this.r = ( this.a * this.b * this.c ) ;
    } ;
 
+  static run( a , b , c )
+   {
+    sleep.msleep( Math.floor( 1000 * Math.random() ) + 1 ) ;
+    return( a * b * c ) ;
+   } ;
+
  }
+
 
 function run( a , b , c )
  {
@@ -109,7 +115,7 @@ else if (cluster.isWorker)
   
 //  process.on( 'message' , (msg) => { msg.run() , console.log( "Message from master:" , msg.id , msg.a , msg.b , msg.c ) } ) ;
 
-    process.on( 'message' , (msg) => { dw.id = cluster.worker.id; dw.a = msg.a; dw.b = msg.b; dw.c = msg.c; dw.run(); process.send( dw ); console.log( "Message from master:" , msg ) } ) ;
+    process.on( 'message' , (msg) => { dw.id = cluster.worker.id; dw.a = msg.a; dw.b = msg.b; dw.c = msg.c; dw.r = Data.run( dw.a , dw.b , dw.c ); process.send( dw ); console.log( "Message from master:" , msg ) } ) ;
 
 //  process.on( 'message' , (msg) => { dw.id = cluster.worker.id; dw.r = run( msg.data.a , msg.data.b , msg.data.c ); dw.a = msg.data.a; dw.b = msg.data.b; dw.c = msg.data.c; process.send( dw ); console.log( "Message from master:" , msg ) } ) ;
   
