@@ -22,7 +22,7 @@ class Data
 
   static run( a , b , c )
    {
-    sleep.msleep( Math.floor( 1000 * Math.random() ) + 1 ) ;
+    sleep.msleep( Math.floor( 2000 * Math.random() ) + 1 ) ;
     return( a * b * c ) ;
    } ;
 
@@ -38,38 +38,60 @@ function run( a , b , c )
 if (cluster.isMaster)
  {
 
-  const workerpool = new Array( 16 ) ;
+  const workerpool = new Array( 4 ) ;
 
-  let i = undefined ;
-  let j = undefined ;
-
-  let dm = new Data( undefined , undefined , undefined , undefined ) ;
+  let i  = undefined ;
+  let ii = undefined ;
+  let j  = undefined ;
+  let k  = undefined ;
 
   for( i = 0; i < workerpool.length; ++i )
    {
 
-    workerpool[i] = cluster.fork() ;
+    workerpool[i]    = new Array( 2 ) ;
 
-    workerpool[i].on( 'message' , (msg) => { console.log( "Message from worker:" , msg.id , msg.a , msg.b , msg.c , msg.r ) } ) ;
+    workerpool[i][0] = cluster.fork() ;
+    workerpool[i][1] = true ;
+
+   } ;
+
+  for( i = 0; i < workerpool.length; ++i )
+   {
+
+    workerpool[i][0].on( 'message' , (msg) => { console.log( "Message from worker:" , msg.id , msg.a , msg.b , msg.c , msg.r ); workerpool[msg.id-1][1] = true; } ) ;
 
    }
 
-  for( j = 0; j < 16; ++j )
+  let dm = new Data( undefined , undefined , undefined , undefined ) ;
 
-    for( i = 0; i < workerpool.length; ++i )
-     {
+  for( ii = j = 0; j < 16; ++j )
+   {
 
-      dm.a = ( i + j ) ;
-      dm.b = ( i + j + 1 ) ;
-      dm.c = ( i + j + 2 ) ;
+    dm.a = ( j + 1 ) ;
+    dm.b = ( j + 2 ) ;
+    dm.c = ( j + 3 ) ;
 
-      workerpool[i].send( dm ) ;
+    for( i = 0; ((i < workerpool.length) && workerpool[ii][1]); ii = ++i % workerpool.length )
 
-     } ;
+      if( workerpool[ii][1] )
+       {
+
+        workerpool[ii][0].send( dm ) ;
+
+	workerpool[ii][1] = true ;
+
+//	console.log( 'ii=' , ii ) ;
+
+       } ;
+
+     console.log( 'j=' , j ) ;
+
+   } ;
+
 
   for( i = 0; i < workerpool.length; ++i )
   
-    workerpool[i].disconnect() ;
+    workerpool[i][0].disconnect() ;
 
 
 // const worker1 = cluster.fork() ;
