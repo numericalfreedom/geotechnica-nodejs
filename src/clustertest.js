@@ -3,15 +3,39 @@ const cluster = require( 'cluster' ) ;
 const sleep   = require( '/usr/share/node/head/lib/node_modules/sleep' );
 
 
-var v = new Array( 16 ) ;
+let i  = undefined ;
+let ic = 16 ;
+let iw = undefined ;
+let iv = 0 ;
+
+let v  = new Array( ic ) ;
+
+
+function outputVector()
+ {
+
+  if( iv < ic )
+   {
+
+    setTimeout( outputVector , 100 );
+
+    return;
+
+   }
+
+  console.log( v ) ;
+	 
+ } ;
 
 
 function vector( msg )
  {
 
+  console.log( "Message from worker:" , msg.id , msg.a , msg.b , msg.c , msg.r ) ;
+
   v[msg.id] = msg.r ;
 
-  console.log( v ) ;
+  ++iv ;
 
  } ;
 
@@ -35,7 +59,7 @@ class Data
 
   static run( a , b , c )
    {
-    sleep.msleep( Math.floor( 10 * Math.random() ) + 1 ) ;
+    sleep.msleep( Math.floor( 1000 * Math.random() ) + 1 ) ;
     return( a + b + c ) ;
    } ;
 
@@ -52,12 +76,9 @@ class Data
 if( cluster.isMaster )
  {
 
-  let i  = undefined ;
-  let ic = 16 ;
-  let iw = undefined ;
-
-
+	 
   const workerpool = new Array( 4 ) ;
+
 
   let dm = new Data( undefined , undefined , undefined , undefined ) ;
 
@@ -75,6 +96,8 @@ if( cluster.isMaster )
 
   for( i = 0; i < workerpool.length; ++i )
    {
+
+    // workerpool[i][0].on( 'message' , vector ) ;
 
     workerpool[i][0].on( 'message' , vector ) ;
 
@@ -95,13 +118,14 @@ if( cluster.isMaster )
    } ; // end if()
 
 
-  console.log( v ) ;
+  outputVector() ;
 
 
   for( i = 0; i < workerpool.length; ++i )
   
     workerpool[i][0].disconnect() ;
 
+ 
  }
 
 
