@@ -3,31 +3,6 @@ const cluster = require( 'cluster' ) ;
 const sleep   = require( '/usr/share/node/head/lib/node_modules/sleep' );
 
 
-let i  = undefined ;
-let ic = 16 ;
-let iw = undefined ;
-let iv = 0 ;
-
-let v  = new Array( ic ) ;
-
-
-function outputVector()
- {
-
-  if( iv < ic )
-   {
-
-    setTimeout( outputVector , 100 );
-
-    return;
-
-   }
-
-  console.log( v ) ;
-	 
- } ;
-
-
 function vector( msg )
  {
 
@@ -76,24 +51,21 @@ class Data
 if( cluster.isMaster )
  {
 
-
-  let dm = new Data( undefined , undefined , undefined , undefined ) ;
-
-
-  const workerpool = new Array( 4 ) ;
-
-
-  for( i = 0; i < workerpool.length; ++i )
-   {
-
-    workerpool[i] = cluster.fork() ;
-
-    workerpool[i].on( 'message' , vector ) ;
-
-   } ;
+  let i  = undefined ;
+  let ic = 16 ;
+  let iw = undefined ;
+  let ip =  4 ;
 
 
-  for( i = iw = 0; i < ic; iw = ++i % workerpool.length )
+  let promisepool = new Array( ic ) ;
+
+  let dm          = new Data( undefined , undefined , undefined , undefined ) ;
+
+
+  for( i = 0; i < ip; ++i )  cluster.fork() ;
+
+
+  function sendData( i , iw )
    {
 
     dm.id = i ;
@@ -102,18 +74,54 @@ if( cluster.isMaster )
     dm.b  = ( i + 2 ) ;
     dm.c  = ( i + 3 ) ;
 
-    workerpool[iw].send( dm ) ;
+    cluster.workers[iw].send( dm ) ;
 
-   } ; // end if()
-
-
-  // outputVector() ;
-
- 
-  setTimeout( () => { console.log( v ); } , 3000 ) ;
+   } ;
 
 
-  for( i = 0; i < workerpool.length; ++i )  workerpool[i].disconnect() ;
+  function receiveData( i , iw )
+   {
+
+    var p = new Promise( (resolve,reject) => {
+
+      cluster.workers[iw].on( 'message' , (msg) => {
+
+	if( msg.id == i )
+	 {
+
+          console.log( "Message from worker:" , msg.id , msg.a , msg.b , msg.c , msg.r ) ;
+
+	  resolve( msg.r ) ;
+
+         } ;
+      
+       } ) ;
+
+     } ) ;
+
+//  cluster.workers[iw].removeListener( 'message' ) ;
+
+    return( p ) ;
+
+   } ;
+
+
+  for( i = 0 , iw = 1; i < ic; ++i , iw %= ip , ++iw )
+   {
+
+    console.log( 'i=' , i , 'iw=' , iw ) ;
+
+    sendData( i , iw ) ;
+
+    promisepool[i] = receiveData( i , iw ) ;
+
+   } ;
+
+
+  Promise.all( promisepool ).then( (v) => { console.log( v ) } ) ;
+
+
+  for( i=1; (i <= ip); ++i )  cluster.workers[i].disconnect() ;
 
 
  }
