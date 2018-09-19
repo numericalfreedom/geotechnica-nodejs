@@ -1,5 +1,6 @@
 
 const cluster = require( 'cluster' ) ;
+const events  = require( 'events' ) ;
 const sleep   = require( '/usr/share/node/head/lib/node_modules/sleep' );
 
 
@@ -58,13 +59,40 @@ if( cluster.isMaster )
 
   let j  = undefined ;
 
+  let receiveEvent = new events() ;
 	 
   let promisepool = new Array( ip ) ;
 
   let dm          = new Data( undefined , undefined , undefined , undefined ) ;
 
+	 
+  receiveEvent.on( 'message' , (id,iw,r) => {
 
-  for( i = 0; i < ip; ++i )  cluster.fork() ;
+    promisepool[iw] =  new Promise( (resolve,reject) => {
+
+      console.log( "Message from worker processed:" , id , i , r ) ;
+
+      resolve( r ) ;
+
+     } ) ;
+  
+    console.log( promisepool ) ;
+
+   } ) ;
+
+
+  for( i = 0; i <  ip; ++i )  cluster.fork() ;
+
+
+  for( i = 1; i <= ip; ++i )
+
+    cluster.workers[i].on( 'message' , (msg) => {
+
+      console.log( "Message from worker:" , msg.id , msg.a , msg.b , msg.c , msg.r ) ;
+
+      receiveEvent.emit( 'message' , msg.id , i , msg.r ) ;
+
+     } ) ;
 
 
   function sendData( i , iw )
@@ -83,48 +111,22 @@ if( cluster.isMaster )
    } ;
 
 
-  function receiveData( i , iw )
-   {
-
-    var p = new Promise( (resolve,reject) => {
-
-      cluster.workers[iw].on( 'message' , (msg) => {
-
-        console.log( "Message from worker:" , msg.id , msg.a , msg.b , msg.c , msg.r ) ;
-
-        if( msg.id == i )  resolve( msg.r ) ;
-      
-       } ) ;
-
-     } ) ;
-
-    return( p ) ;
-
-   } ;
-
-
   for( i = 0; i < ic; i += ip )
    {
 
     for( j = 0 , iw = 1; j < ip; ++j , ++iw )
-     {
 
       sendData( i+j , iw ) ;
-
-      promisepool[j] = receiveData( i+j , iw ) ;
-    
-     } ;
      
     Promise.all( promisepool ).then( (v) => { console.log( v ) } ) ;
 
    } ;
 
 
-// Promise.all( promisepool ).then( (v) => { console.log( v ) } ) ;
+  Promise.all( promisepool ).then( (v) => { console.log( v ) } ) ;
 
 
   for( i=1; (i <= ip); ++i )  cluster.workers[i].disconnect() ;
-
 
  }
 
