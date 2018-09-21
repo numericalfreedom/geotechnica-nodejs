@@ -1,142 +1,91 @@
 
-const cluster = require( 'cluster' ) ;
-const sleep   = require( '/usr/share/node/head/lib/node_modules/sleep' );
-
-
-let i  = undefined ;
-let ic = 16 ;
-let iw = undefined ;
-let iv = 0 ;
-
-let v  = new Array( ic ) ;
-
-
-function outputVector()
- {
-
-  if( iv < ic )
-   {
-
-    setTimeout( outputVector , 100 );
-
-    return;
-
-   }
-
-  console.log( v ) ;
-	 
- } ;
-
-
-function vector( msg )
- {
-
-  console.log( "Message from worker:" , msg.id , msg.a , msg.b , msg.c , msg.r ) ;
-
-  v[msg.id] = msg.r ;
-
-  ++iv ;
-
- } ;
-
-
-class Data
- {
-
-  constructor( id , a , b , c )
-   {
-    this.id  = id ;
-    this.a   = a ;
-    this.b   = b ;
-    this.c   = c ;
-    this.r   = undefined ;
-   } ;
-
-  run()
-   {
-    this.r = ( this.a * this.b * this.c ) ;
-   } ;
-
-  static run( a , b , c )
-   {
-    sleep.msleep( Math.floor( 1000 * Math.random() ) + 1 ) ;
-    return( a + b + c ) ;
-   } ;
-
-  static response( msg )
-   {
-
-    console.log( "Message from worker:" , msg.id , msg.a , msg.b , msg.c , msg.r ) ;
-
-   } ;
-
- } ;
+const events  = require( 'events' ) ;
+const cluster = require( 'cluster' )
 
 
 if( cluster.isMaster )
  {
 
-	 
-  const workerpool = new Array( 4 ) ;
+  let   i   = undefined ;
+  const ip  =   4 ;
+
+  let   j   = undefined ;
+  let   jr  = undefined ;
+  let   jre = undefined ;
+  const jc  =  16 ;
 
 
-  let dm = new Data( undefined , undefined , undefined , undefined ) ;
+  let   k  = undefined ;
+  const kc =    4 ;
 
 
-  for( i = 0; i < workerpool.length; ++i )
+  const workerpool  = new Array( ip ) ;
+  
+  const resultpool  = new Array( jc ) ;
+
+
+  const e = new events() ;
+
+
+  e.on( 'result' , () => { jre = jr; if( jre == (jc-1) )  console.log( resultpool ); } ) ;
+
+
+  for( i = 0; i < ip; ++i )  workerpool[i]  = cluster.fork() ;
+
+
+  for( i = 0; i < ip; ++i )
+
+    workerpool[i].on( 'message' , (msg) => {
+
+      console.log( 'Message:' , msg ) ;
+
+//    console.log( 'Result: ' , msg.kc , msg.jc , msg.r ) ;
+
+      resultpool[jr = msg.jc] = msg.r ;
+
+     } ) ;
+
+
+  for( k = 0; k < kc; ++k )
    {
+	   
+    for( i = j = jre = jr = 0; j < jc; ++j , i = (++i % ip) )
+     {
+ 
+      workerpool[i].send( { 'kc': k , 'ip': i , 'jc': j } ) ;
 
-    workerpool[i]    = new Array( 2 ) ;
+      console.log( 'Send:' , { 'kc': k , 'ip': i , 'jc': j } ) ;
 
-    workerpool[i][0] = cluster.fork() ;
-    workerpool[i][1] = false ;
+     } ;
 
+    setTimeout( () => { console.log( resultpool ); } , 500 ) ;
+	   
    } ;
 
 
-  for( i = 0; i < workerpool.length; ++i )
-   {
+  for( i = 0; i < ip; ++i )  workerpool[i].disconnect() ;
 
-    // workerpool[i][0].on( 'message' , vector ) ;
-
-    workerpool[i][0].on( 'message' , vector ) ;
-
-   }
-
-
-  for( i = iw = 0; i < ic; iw = ++i % workerpool.length )
-   {
-
-    dm.id = i ;
-
-    dm.a  = ( i + 1 ) ;
-    dm.b  = ( i + 2 ) ;
-    dm.c  = ( i + 3 ) ;
-
-    workerpool[iw][0].send( dm ) ;
-
-   } ; // end if()
-
-
-  outputVector() ;
-
-
-  for( i = 0; i < workerpool.length; ++i )
-  
-    workerpool[i][0].disconnect() ;
-
- 
  }
 
-
-else if ( cluster.isWorker )
+else if( cluster.isWorker )
  {
 
-  let dw = new Data( cluster.worker.id , 3 , 2 , 1 ) ;
+  process.on( 'message'    , (msg) => { 
 
-  process.on( 'message' , (msg) => { dw.id = msg.id; dw.a = msg.a; dw.b = msg.b; dw.c = msg.c; dw.r = Data.run( dw.a , dw.b , dw.c ); process.send( dw ); console.log( "Message from master:" , msg ) } ) ;
+    var ix     = ( 1e5 + Math.random() * 1e3 ) ;
+    var result = undefined;
 
-  process.on( 'disconnect' , () => { console.log( 'worker #' , cluster.worker.id , ' disconnected.' ) ; } ) ;
+    for( var i = 0; i < ix; ++i )  result = ( Math.sin( i ) + Math.cos( i ) ) ;
 
- } ;
+//  if( Math.random() > 1.00 )  result = undefined ;
+
+//  console.log( 'Message from worker:' , result );
+
+    process.send( { 'kc': msg.kc , 'ip': msg.ip , 'jc': msg.jc , 'r': result } );
+
+   } );
+
+  process.on( 'disconnect' , () => { console.log( 'worker #' , cluster.worker.id , ' disconnected.' ); } );
+
+ }
 
