@@ -1,78 +1,93 @@
 
-const events  = require( 'events' ) ;
-const cluster = require( 'cluster' )
+const EventEmitter = require( 'events' ) ;
+const Cluster      = require( 'cluster' ) ;
+const Systemsleep  = require( '/usr/share/node/head/lib/node_modules/system-sleep' ) 
 
 
-if( cluster.isMaster )
+if( Cluster.isMaster )
  {
 
   let   i   = undefined ;
-  const ip  =   4 ;
+  const ip  =     4 ;
 
   let   j   = undefined ;
-  let   jr  = undefined ;
-  let   jre = undefined ;
-  const jc  =  16 ;
+  const jc  =  1024 ;
 
 
   let   k  = undefined ;
-  const kc =    4 ;
+  const kc =      4 ;
 
 
   const workerpool  = new Array( ip ) ;
   
+  const emitterpool = new Array( ip ) ;
+
   const resultpool  = new Array( jc ) ;
 
 
-  const e = new events() ;
+  for( i = 0; i < ip; ++i )
+   {
+	 
+     emitterpool[i] = new EventEmitter() ;
 
+     emitterpool[i].on( ('send' + i.toString()) , ( j ) => {
 
-  e.on( 'result' , () => { jre = jr; if( jre == (jc-1) )  console.log( resultpool ); } ) ;
+       workerpool[i].send( { 'i': i ,  'j': j } ) ;
+     
+      } ) ;
 
+     emitterpool[i].on( 'error' , (err) => { console.log( err ); } ) ;
 
-  for( i = 0; i < ip; ++i )  workerpool[i]  = cluster.fork() ;
+   } ;
 
 
   for( i = 0; i < ip; ++i )
+   {
+
+    workerpool[i]  = Cluster.fork() ;
 
     workerpool[i].on( 'message' , (msg) => {
 
-      console.log( 'Message:' , msg ) ;
+//    console.log( 'Message:' , msg ) ;
 
-//    console.log( 'Result: ' , msg.kc , msg.jc , msg.r ) ;
+      resultpool[msg.j] = msg.r ;
 
-      resultpool[jr = msg.jc] = msg.r ;
+      i = ( ++i % ip ) ;
+
+      if( ++j < jc )
+	    
+        emitterpool[i].emit( ('send' + i.toString()) , j ) ;
+
+      else
+
+	console.log( resultpool ) ;
 
      } ) ;
+
+   } ;
 
 
   for( k = 0; k < kc; ++k )
    {
-	   
-    for( i = j = jre = jr = 0; j < jc; ++j , i = (++i % ip) )
-     {
- 
-      workerpool[i].send( { 'kc': k , 'ip': i , 'jc': j } ) ;
 
-      console.log( 'Send:' , { 'kc': k , 'ip': i , 'jc': j } ) ;
+    i = j = 0 ;
 
-     } ;
+    emitterpool[i].emit( ('send' + i.toString()) , j ) ;
 
-    setTimeout( () => { console.log( resultpool ); } , 500 ) ;
-	   
    } ;
 
 
   for( i = 0; i < ip; ++i )  workerpool[i].disconnect() ;
 
+
  }
 
-else if( cluster.isWorker )
+else if( Cluster.isWorker )
  {
 
   process.on( 'message'    , (msg) => { 
 
-    var ix     = ( 1e5 + Math.random() * 1e3 ) ;
+    var ix     = ( Math.random() * 1e3 ) ;
     var result = undefined;
 
     for( var i = 0; i < ix; ++i )  result = ( Math.sin( i ) + Math.cos( i ) ) ;
@@ -81,11 +96,11 @@ else if( cluster.isWorker )
 
 //  console.log( 'Message from worker:' , result );
 
-    process.send( { 'kc': msg.kc , 'ip': msg.ip , 'jc': msg.jc , 'r': result } );
+    process.send( { 'i': msg.i , 'j': msg.j , 'r': result } );
 
    } );
 
-  process.on( 'disconnect' , () => { console.log( 'worker #' , cluster.worker.id , ' disconnected.' ); } );
+  process.on( 'disconnect' , () => { console.log( 'worker #' , Cluster.worker.id , ' disconnected.' ); } );
 
  }
 
