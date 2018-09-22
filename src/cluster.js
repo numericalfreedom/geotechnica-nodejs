@@ -50,6 +50,8 @@ if( Cluster.isMaster )
 
           resolve( result = msg.r );
 
+          console.log( v ) ;
+
          }
   
         else reject( 'error' ) ;
@@ -71,19 +73,23 @@ if( Cluster.isMaster )
 
 //     v[j] = compute(j).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
 
-//  compute(1).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
-//  compute(2).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
-//  compute(3).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
-//  compute(4).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
+	 
+compute(1).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
+ compute(2).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
+compute(3).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
+compute(4).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
 
 // for( i = 0; i < 10; ++i , sleep( 1 ) )
 
 //   Async.map( [i] , compute , (err,r) => { console.log( r , v ); } ) ;
 
 
-  for( i = 0; i < 12; ++i , sleep( 1000 ) )
+// for( i = 0; i < 10; ++i )
 
-    compute( i ) , console.log( v ) ;
+//   compute( i ) ;
+
+
+  console.log( v ) ;
 
 
   worker.disconnect() ;
@@ -97,6 +103,8 @@ else if( Cluster.isWorker )
   process.on( 'message' , (msg) => {
 
     msg.r = Math.random( msg.i ) ;
+
+    console.log( msg.i , msg.r ) ;
 
     process.send( msg ) ;    
   
