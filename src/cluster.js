@@ -15,10 +15,10 @@ function sleep(millis)
 if( Cluster.isMaster )
  {
  
- 
-  var i = undefined ;
-  var j = undefined ;
-  var k = undefined ;
+  var i   = undefined ;
+  var j   = undefined ;
+  var k   = undefined ;
+  var msg = undefined ;
 
   d = [ 0 , 1 , 2 , 3 ] ;
   v = new Array( 10 ) ;
@@ -27,8 +27,10 @@ if( Cluster.isMaster )
 
   worker.on( 'message' , (msg) => {
 
-    emitter.emit( 'result' , msg ) ;
-    
+//  console.log( 'msg=' , msg ) ;
+
+    emitter.emit( ('result' + msg.i.toString()) , msg ) ;
+
    } ) ;
 
 
@@ -37,20 +39,24 @@ if( Cluster.isMaster )
 
     worker.send( { 'i': i } ) ;
 
+//  console.log( 'i=' , i ) ;
+
     let result  = undefined ;
 
     let promise = new Promise( (resolve,reject) => {
 	      
-      emitter.once( 'result' , (msg) => {
+      emitter.once( ('result'+i.toString()) , (msg) => {
 
         if( msg != undefined )
          {
+
+//        console.log( 'i=' , msg.i , msg ) ;
 
           v[msg.i] = msg.r ;
 
           resolve( result = msg.r );
 
-          console.log( v ) ;
+//        console.log( v ) ;
 
          }
   
@@ -60,7 +66,13 @@ if( Cluster.isMaster )
 
      } ) ;
 
+    console.log( 'promise=' , promise ) ;
+
     await promise ;
+
+    console.log( 'promise=' , promise ) ;
+
+    console.log( i , v[i] )
 
     return( result ) ;
  
@@ -74,22 +86,36 @@ if( Cluster.isMaster )
 //     v[j] = compute(j).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
 
 	 
-compute(1).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
- compute(2).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
-compute(3).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
-compute(4).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
+//  compute(4).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
+//  compute(5).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
+//  compute(6).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
 
-// for( i = 0; i < 10; ++i , sleep( 1 ) )
+//  compute(7).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
+//  compute(8).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
+//  compute(9).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
 
-//   Async.map( [i] , compute , (err,r) => { console.log( r , v ); } ) ;
+//  compute(6).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
+//  compute(7).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
+//  compute(8).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
+//  compute(9).then( (r) => { console.log( r ); } ).catch( (err) => { console.log( err ) } ) ;
 
 
-// for( i = 0; i < 10; ++i )
+//  for( i = 0; i < 10; ++i , sleep( 1 ) )
 
-//   compute( i ) ;
+//    Async.map( [i] , compute , (err,r) => { console.log( r , v ); } ) ;
 
 
-  console.log( v ) ;
+  for( j = 0; j < 1; ++j )
+
+    for( i = 0; i < 1024; ++i )
+     {
+
+      compute( i ) ;
+
+     } ;
+
+
+//  console.log( v ) ;
 
 
   worker.disconnect() ;
@@ -102,13 +128,19 @@ else if( Cluster.isWorker )
 
   process.on( 'message' , (msg) => {
 
-    msg.r = Math.random( msg.i ) ;
+    var ix     = ( 1e6 + Math.random() * 1e6 ) ;
 
-    console.log( msg.i , msg.r ) ;
+    var result = undefined;
 
-    process.send( msg ) ;    
+    for( var i = 0; i < ix; ++i )  result = ( Math.sin( i ) + Math.cos( i ) ) ;
+
+    msg.r = result ;
+
+//  console.log( msg.i , msg.r ) ;
+
+    process.send( msg ) ;
   
-   } );
+   } ) ;
 
  } ;
 
