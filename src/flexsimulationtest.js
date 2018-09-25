@@ -10,7 +10,7 @@
  *
  */
 
-const f    = require( './lib/FleX_M2D.js' );
+const f    = require( '../lib/FleX_M2D.js' );
 
 const fm2d = new f.FleX_M2D ;
 
@@ -21,12 +21,12 @@ fm2d.local = 0.75 ;
 fm2d.force = 0.50 ;
 
 
-const e = require( './lib/Elastic.js' ) ;
+const e = require( '../lib/Elastic.js' ) ;
 
 e1 = new e.Elastic( 1.0 , 1.0 ) ;
 
 
-const mc   = require( './lib/MohrCoulomb.js' ) ;
+const mc   = require( '../lib/MohrCoulomb.js' ) ;
 
 mc1 = new mc.MohrCoulomb( 1.0 , 1.0 , 1.0 , 1.0 ) ;
 
