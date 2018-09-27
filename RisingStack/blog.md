@@ -1,3 +1,56 @@
+Node.js applications with high and very high computation power demand
+=====================================================================
+
+A quite unusual application.
+
+
+Node.js and asynchronous programming
+------------------------------------
+
+Big difference for programmer from the sequential world.
+
+
+Node.js and numerical computations
+----------------------------------
+
+Where could Node.js be applied?
+
+
+Unleash the computation power in the computer with Node.js cluster module
+-------------------------------------------------------------------------
+
+
+Extremely flexible multithreading with the Node.js worker pool
+--------------------------------------------------------------
+
+Create the worker pool.
+
+``` javascript
+    const Cluster = require( 'cluster' ) ;
+    var i = undefined ;
+    const workerpool = new Array( 8 ) ;
+    for( i = 0; i < 8; ++i )  workerpool[i] = new Cluster.fork() ;
+```
+
+Node.js event pool
+------------------
+
+Create the event pool.
+
+
+Node.js Async/Await/Promise service
+-----------------------------------
+
+Async/Await
+
+
+Don\'t break the Node.js EventLoop
+---------------------------------
+
+This is the biggest concern.
+
+
+
 How to Debug a Node.js app in a Docker Container
 ================================================
 
