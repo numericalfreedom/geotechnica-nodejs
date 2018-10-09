@@ -76,7 +76,7 @@ if( Cluster.isMaster )
 
    } ;
 
-  Systemsleep(3000 ) ;
+  Systemsleep( 1000 ) ;
 
   for( i = 0; i < ip; ++i )  workerpool[i].disconnect() ;
 

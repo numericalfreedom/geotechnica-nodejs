@@ -5,42 +5,29 @@ function disconnect (worker) {
   console.log(`Worker #${worker.id} has disconnected.`)
 }
 
+var i = undefined
+var j = undefined
+const nw = 4
+
+const worker = new Array(nw)
+
 if (Cluster.isMaster) {
-  const worker1 = Cluster.fork()
-  const worker2 = Cluster.fork()
-  const worker3 = Cluster.fork()
-  const worker4 = Cluster.fork()
-
-  worker2.status = 'ready.'
-
-  console.log(worker2)
-
-  if (worker2.status === 'ready.') {
-    worker2.send('Worker ready.')
+  for (i = 0; i < nw; ++i) {
+    worker[i] = Cluster.fork()
+    worker[i].status = false
   }
 
-  worker2.status = 'running.'
+  for (j = 0; j < 100; ++j) {
+    worker[j%3].status = true
 
-  if (worker2.status === 'running.') {
-    worker2.send('Worker running.')
+    for (i = 0; i < nw; ++i) {
+      if (worker[i].status) { worker[i].send('Message ' + i) }
+    }
+
+    worker[j%3].status = false
   }
 
-  console.log(worker2)
-
-  worker2.status = 'ready.'
-
-  if (worker2.status === 'ready.') {
-    worker2.send('Worker ready.')
-  }
-
-  console.log(worker2)
-
-  var a = (Math.sin(2.0) + Math.exp(3) + Math.log(3))
-
-  worker1.disconnect()
-  worker2.disconnect()
-  worker3.disconnect()
-  worker4.disconnect()
+  for (i = 0; i < nw; ++i) worker[i].disconnect()
 
   Cluster.on('disconnect', disconnect)
 } else if (Cluster.isWorker) {
