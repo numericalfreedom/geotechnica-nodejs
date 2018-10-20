@@ -62,10 +62,8 @@ function writeresult (err,result) {
 
 
 async function compute (obj,callback) {
-  console.log ('Callback=', callback)
   let result = await workercompute (obj)
-  return (true)
-//  return (true)
+  callback()
 }
 
 
