@@ -95,7 +95,7 @@ else if( cluster.isWorker )
 
   process.on( 'message'    , (msg) => { 
 
-    var ix     = ( Math.random() * 1e5 ) ;
+    var ix     = ( 1e7 + (Math.random() * 1e7) ) ;
     var result = undefined;
 
     for( var i = 0; i < ix; ++i )  result = ( Math.sin( i ) + Math.cos( i ) ) ;

@@ -6,6 +6,11 @@ const Async        = require( '/usr/share/node/head/lib/node_modules/async' ) ;
 const emitter      = new EventEmitter() ;
 
 
+function disconnect (worker) {
+  console.log(`Worker #${worker.id} has disconnected.`)
+}
+
+
 function sleep(millis)
  {
   return new Promise( resolve => setTimeout(resolve, millis) );
@@ -107,7 +112,7 @@ if( Cluster.isMaster )
 
   for( j = 0; j < 1; ++j )
 
-    for( i = 0; i < 1024; ++i )
+    for( i = 0; i < 20; ++i )
      {
 
       compute( i ) ;
@@ -118,8 +123,9 @@ if( Cluster.isMaster )
 //  console.log( v ) ;
 
 
-  worker.disconnect() ;
+  worker.disconnect () ;
 
+  Cluster.on ('disconnect', disconnect)
 
  }
 
@@ -128,7 +134,7 @@ else if( Cluster.isWorker )
 
   process.on( 'message' , (msg) => {
 
-    var ix     = ( 1e6 + Math.random() * 1e6 ) ;
+    var ix     = ( 1e6 + Math.random() * 1e7 ) ;
 
     var result = undefined;
 
