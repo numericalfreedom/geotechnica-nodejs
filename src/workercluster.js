@@ -74,7 +74,11 @@ if (Cluster.isMaster) {
   console.log( finalpromise )
 
 
+  setTimeout( () => {} , 5000 )
+
+
   Cluster.on ('disconnect', disconnect)
+
 
   for (i = 0; i < nw; ++i) {
     worker[i].disconnect()
