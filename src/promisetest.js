@@ -1,3 +1,5 @@
+
+
 const event = require( 'events' ) ;
 
 
@@ -45,7 +47,4 @@ console.log( promisepool )
 
 
 // emitter.emit( 'resolve' ) ;
-
-
-
 
