@@ -78,6 +78,9 @@ if (Cluster.isMaster) {
 
   Async.everyLimit (points, 4, compute, (err,msg) => { console.log(msg) })
 
+  setTimeout( () => {} , 5000 )
+
+
   for (i = 0; i < nw; ++i) {
     worker[i].disconnect()
   }
