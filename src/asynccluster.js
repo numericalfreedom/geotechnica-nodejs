@@ -35,13 +35,13 @@ for (i = 0; i < np; ++i) {
 // console.log (points)
 
 
-function workercompute (obj) {
+function workercompute (obj,i) {
 
   worker[k = (++k % nw)].send(obj)
 
-  console.log('Send:', k, obj)
+  console.log('Send:', k, obj, i)
 
-  let promise = new Promise((resolve, reject) => {
+  let promise = new Promise ((resolve, reject) => {
     console.log ( 'Emitter.once' , k.toString())
     emitter.once (('result' + k.toString()), (msg) => {
 //    if (msg !== null) {
@@ -54,9 +54,12 @@ function workercompute (obj) {
     })
   })
 
+//  await promise
+
 //  console.log (promise)
 
   return (promise)
+
 }
 
 
@@ -81,9 +84,9 @@ if (Cluster.isMaster) {
     })
   }
 
-  Async.everyLimit (points, 4, compute, (err,msg) => { console.log('Promises resolved.') })
+  Async.eachOfLimit (points, nw, workercompute, (err,msg) => { console.log (points); console.log('Promises resolved.') })
 
-  //  setTimeout( () => {} , 5000 )
+// setTimeout( () => {} , 5000 )
 
 
   for (i = 0; i < nw; ++i) {
@@ -97,7 +100,7 @@ if (Cluster.isMaster) {
 
   process.on ('message', (msg) => {
 
-    var ix = (1e7 + (Math.random() * 1e7))
+    var ix = (1e2 + (Math.random() * 1e2))
 
     var result = undefined
 
