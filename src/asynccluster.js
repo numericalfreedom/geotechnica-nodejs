@@ -20,7 +20,7 @@ var j = undefined
 var k = 0
 
 const nw = 4
-const np = 4
+const np = 8 
 
 const worker = new Array(nw)
 const emitter = new Event()
@@ -32,6 +32,9 @@ for (i = 0; i < np; ++i) {
 }
 
 
+// console.log (points)
+
+
 function workercompute (obj) {
 
   worker[k = (++k % nw)].send(obj)
@@ -39,18 +42,19 @@ function workercompute (obj) {
   console.log('Send:', k, obj)
 
   let promise = new Promise((resolve, reject) => {
-    emitter.once(('result' + k.toString()), (msg) => {
+    console.log ( 'Emitter.once' , k.toString())
+    emitter.once (('result' + k.toString()), (msg) => {
 //    if (msg !== null) {
 //      worker[k].status = false
-//      console.log('receive:', msg.id, msg.obj)
-        resolve(msg.obj)
+      console.log('Message received:', msg.id, msg.obj, msg.rst)
+      resolve(msg.rst)
 //    } else {
 //      reject('error')
 //    }
     })
   })
 
-  console.log (promise)
+//  console.log (promise)
 
   return (promise)
 }
@@ -72,13 +76,14 @@ if (Cluster.isMaster) {
     worker[i] = Cluster.fork()
     worker[i].status = false
     worker[i].on ('message', (msg) => {
-      emitter.emit (('result' + i.toString()), msg)
+      console.log ( 'Emit:' , 'result' + msg.id.toString(), msg)
+      emitter.emit (('result' + msg.id.toString()), msg)
     })
   }
 
-  Async.everyLimit (points, 4, compute, (err,msg) => { console.log(msg) })
+  Async.everyLimit (points, 4, compute, (err,msg) => { console.log('Promises resolved.') })
 
-  setTimeout( () => {} , 5000 )
+  //  setTimeout( () => {} , 5000 )
 
 
   for (i = 0; i < nw; ++i) {
@@ -86,15 +91,24 @@ if (Cluster.isMaster) {
   }
 
   Cluster.on('disconnect', disconnect)
-} else if (Cluster.isWorker) {
-//  var ix = (1e1 + Math.random() * 1e1)
-//  var result = undefined
 
-//  for (var i = 0; i < ix; ++i) {
-//    result = (Math.sin(i) + Math.cos(i))
-//  }
+
+} else if (Cluster.isWorker) {
 
   process.on ('message', (msg) => {
-    process.send ({ 'id': Cluster.worker.id, 'obj': msg })
+
+    var ix = (1e7 + (Math.random() * 1e7))
+
+    var result = undefined
+
+    for (var i = 0; i < ix; ++i) {
+
+      result = (Math.sin(i) + Math.cos(i))
+
+    }
+
+   process.send ({ 'id': Cluster.worker.id, 'obj': msg, 'rst': result })
+	  
   })
+
 }
