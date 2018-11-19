@@ -35,7 +35,7 @@ for (i = 0; i < np; ++i) {
 // console.log (points)
 
 
-function workercompute (obj,i) {
+function workercompute (obj,i,callback) {
 
   worker[k = (++k % nw)].send(obj)
 
@@ -46,8 +46,9 @@ function workercompute (obj,i) {
     emitter.once (('result' + k.toString()), (msg) => {
 //    if (msg !== null) {
 //      worker[k].status = false
-      console.log('Message received:', msg.id, msg.obj, msg.rst)
-      resolve(msg.rst)
+        console.log ('Message received:', msg.id, msg.obj, msg.rst)
+        resolve (msg.rst)
+//      callback ()
 //    } else {
 //      reject('error')
 //    }
@@ -68,9 +69,9 @@ function writeresult (err,result) {
 }
 
 
-async function compute (obj,callback) {
-  let result = await workercompute (obj)
-  callback()
+async function compute (obj,i,callback) {
+  let result = await workercompute (obj,i)
+  callback (result)
 }
 
 
@@ -84,7 +85,9 @@ if (Cluster.isMaster) {
     })
   }
 
-  Async.eachOfLimit (points, 4, workercompute, (err,msg) => { console.log (points); console.log('Promises resolved.') })
+//  Async.eachOfLimit (points, 2, compute, (err,msg) => { console.log (points); console.log('Promises resolved.') })
+
+  Async.eachOf (points, compute, (err,msg) => { console.log (points); console.log('Promises resolved.') })
 
 // setTimeout( () => {} , 5000 )
 
