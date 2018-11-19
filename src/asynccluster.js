@@ -84,7 +84,7 @@ if (Cluster.isMaster) {
     })
   }
 
-  Async.eachOfLimit (points, nw, workercompute, (err,msg) => { console.log (points); console.log('Promises resolved.') })
+  Async.eachOfLimit (points, 4, workercompute, (err,msg) => { console.log (points); console.log('Promises resolved.') })
 
 // setTimeout( () => {} , 5000 )
 
@@ -100,7 +100,7 @@ if (Cluster.isMaster) {
 
   process.on ('message', (msg) => {
 
-    var ix = (1e2 + (Math.random() * 1e2))
+    var ix = (1e7 + (Math.random() * 1e7))
 
     var result = undefined
 
