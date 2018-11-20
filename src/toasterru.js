@@ -50,6 +50,10 @@ function finalcallback (err) {
 }
 
 
-Async.eachOfLimit(proxies, 5, asyncdisplayitems, finalcallback)
 
+Async.eachOf(proxies, asyncdisplayitems, finalcallback)
+
+// Async.eachOfSeries(proxies, asyncdisplayitems, finalcallback)
+
+// Async.eachOfLimit(proxies, 5, asyncdisplayitems, finalcallback)
 
