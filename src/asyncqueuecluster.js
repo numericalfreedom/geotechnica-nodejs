@@ -27,10 +27,21 @@ class Point {
 
     return (result)
   }
+
+  static solve () {
+    let promise = new Promise((resolve, reject) => {
+      emitter.on('exit', (msg) => {
+	console.log( 'Emitter message:' , msg )
+        resolve()
+      })
+    })
+
+    return (promise)
+  }
 }
 
-const nw = 4
-const np = 24
+const nw =  4
+const np = 10 
 
 const worker = new Array(nw)
 const emitter = new Event()
@@ -95,13 +106,7 @@ if (Cluster.isMaster) {
   q.drain = function () {
     console.log('All items have been processed.')
 
-    for (i = 0; i < nw; ++i) {
-      worker[i].disconnect()
-    }
-
-    for (i = 0; i < np; ++i) {
-      console.log(points[i])
-    }
+    emitter.emit('exit' , 'exit')
   }
 
   for (i = 0; i < np; ++i) {
@@ -111,6 +116,16 @@ if (Cluster.isMaster) {
       if (err) { console.log('Error:', err) } else { console.log('Done.') }
     })
   }
+
+  Promise.all([ Point.solve() ]).then(() => {
+    for (i = 0; i < nw; ++i) {
+      worker[i].disconnect()
+    }
+
+    for (i = 0; i < np; ++i) {
+      console.log(points[i])
+    }
+  })
 
   Cluster.on('disconnect', disconnect)
 } else if (Cluster.isWorker) {
