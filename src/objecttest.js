@@ -4,6 +4,34 @@ const Async  = require( 'async' ) ;
 const Events = require( 'events' ) ;
 
 
+class Node
+ {
+ 
+  constructor( x , y , z )
+   {
+
+    this.x = x ;
+    this.y = y ;
+    this.z = z ;
+
+   } ;
+
+  movenode()
+   {
+
+    ++this.x ;
+    ++this.y ;
+    ++this.z ;
+
+    ++this.x ;
+    ++this.y ;
+    ++this.z ;
+
+   } ;
+
+ } ;
+
+
 class A
  {
 
@@ -14,6 +42,12 @@ class A
     this.a = a ;
     this.b = b ;
     this.c = c ;
+
+    this.node = new Array( 10 ) ;
+
+    for( let i = 0; i < 10; ++i )
+
+      this.node[i] = new Node( i , i+1 , i+2 ) ;
 
    } ;
 
@@ -45,12 +79,12 @@ class A
 	  function()
            {
 
-//          A.a = i ;
-//          A.b = i+1 ;
-//          A.c = i+2 ;
 
-            console.log( 'aadd:' , A.aadd() ) ;
+            for( let i = 0; i < 10; ++i )
 
+              A.node[i].movenode() ;
+
+		   
    	    resolve( true ) ;
 
             callback() ;
