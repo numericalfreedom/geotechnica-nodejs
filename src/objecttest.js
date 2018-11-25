@@ -45,9 +45,11 @@ class A
 	  function()
            {
 
-            A.a = i ;
-            A.b = i+1 ;
-            A.c = i+2 ;
+//          A.a = i ;
+//          A.b = i+1 ;
+//          A.c = i+2 ;
+
+            console.log( 'aadd:' , A.aadd() ) ;
 
    	    resolve( true ) ;
 
