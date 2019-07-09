@@ -1,5 +1,5 @@
 
-module.exports = { tns: Tns , tensor: Tensor } ;
+module.exports = { tns: Tns , tensor: Tensor , idx: idx } ;
 
 
 function Tns()
@@ -55,7 +55,7 @@ function idx( i , j )
 
   var k = i;
 
-  if( i - j )  k = ( i + j + 2 );
+  if( i - j )  k = ( i + j + 1 );
 
   return k;
 
