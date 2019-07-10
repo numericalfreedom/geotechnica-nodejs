@@ -87,6 +87,8 @@ function Matrix( nr , nc , nv )
   this.vmm = vmm ;
   this.vmd = vmd ;
   this.mmm = mmm ;
+  this.mmd = mmd ;
+  this.mmt = mmt ;
 
  } ; // end function Matrix
 
@@ -431,9 +433,11 @@ function vmd( x , y )
 function mmm( x , y )
  {
 
-  let i = undefined ;
-  let j = undefined ;
-  let k = undefined ;
+  let i  = undefined ;
+  let j  = undefined ;
+  let k  = undefined ;
+  let ik = undefined ;
+  let kj = undefined ;
 
   if( this.d )
    {
@@ -446,9 +450,9 @@ function mmm( x , y )
 
           for( k = this.v[ this.idx( i , j ) ] = 0; k < x.nc; ++k )
 
-            if( ((ix = this.idx( i , k )) < this.nv) && ((iy = this.idx( k , j )) < this.nv) )
+            if( ((ik = this.idx( i , k )) < this.nv) && ((kj = this.idx( k , j )) < this.nv) )
 
-              this.v[ this.idx( i , j ) ] += ( x.v[ ix ] * y.v[ iy ] );
+              this.v[ this.idx( i , j ) ] += ( x.v[ ik ] * y.v[ kj ] );
 
    }
 
@@ -468,6 +472,112 @@ function mmm( x , y )
   return ;
 
  } ; // end function mmm()
+
+
+
+/** Function mmd
+ *
+ *
+ */
+
+function mmd( x )
+ {
+
+  let i  = undefined ;
+  let j  = undefined ;
+  let k  = undefined ;
+  let ik = undefined ;
+  let kj = undefined ;
+  
+  if( this.d )
+   {
+
+    for( i = 0; i < this.nr; ++i )
+
+      for( j = i; j < this.nc; ++j )
+
+        if( this.idx( i , j ) < this.nv )
+
+          for( k = this.v[ this.idx( i , j ) ] = 0; k < x.nc; ++k )
+
+            if( ((ik = this.idx( i , k )) < this.nv) && ((kj = this.idx( k , j )) < this.nv) )
+
+              this.v[ this.idx( i , j ) ] += ( x.v[ ik ] * x.v[ kj ] );
+
+   }
+  
+  else
+   {
+
+    for( i = 0; i < this.nr; ++i )
+
+      for( j = 0; j < this.nc; ++j )
+
+        for( k = this.v[ this.idx( i , j ) ] = 0; k < x.nc; ++k )
+
+          this.v[ this.idx( i , j ) ] += ( x.v[ x.idx( i , k ) ] * x.v[ x.idx( k , j ) ] );
+
+   }
+  
+  return ;
+ 
+ } ; // end function mmd()
+
+
+
+/** Function mmt
+ *
+ *
+ */
+
+function mmt( x )
+ {
+
+  let i  = undefined ;
+  let j  = undefined ;
+  let m  = undefined ;
+  let n  = undefined ;
+  let im = undefined ;
+  let mn = undefined ;
+  let nj = undefined ;
+
+  if( this.d )
+   {
+
+    for( i = 0; i < this.nr; ++i )
+
+      for( j = i; j < this.nc; ++j )
+
+        if( this.idx( i , j ) < this.nv )
+
+          for( m = this.v[ this.idx( i , j ) ] = 0; m < x.nc; ++m )
+
+            for( n = this.v[ this.idx( i , j ) ] = 0; n < x.nc; ++n )
+
+              if( ((im = this.idx( i , m )) < this.nv) && ((mn = this.idx( m , n )) < this.nv) && ((nj = this.idx( n , j )) < this.nv)  )
+
+              this.v[ this.idx( i , j ) ] += ( x.v[ im ] * x.v[ mn ] * x.v[ nj ] );
+
+   }
+
+  else
+   {
+
+    for( i = 0; i < this.nr; ++i )
+
+      for( j = 0; j < this.nc; ++j )
+
+        for( m = this.v[ this.idx( i , j ) ] = 0; m < x.nc; ++m )
+
+          for( n = 0; n < x.nc; ++n )
+
+            this.v[ this.idx( i , j ) ] += ( x.v[ x.idx( i , m ) ] * x.v[ x.idx( m , n ) ] * x.v[ x.idx( n , j ) ] );
+
+   }
+  
+  return ;
+
+ } ; // end function mmt()
 
 
 var a = new Matrix( 9 , 9 ) ;
