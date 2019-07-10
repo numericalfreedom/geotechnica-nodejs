@@ -686,7 +686,7 @@ function inv()
     if( bii = this.v[ this.idx( i , i ) ] )
      {
     
-      for( k = 0;  k < this.nc;  this.v[ x.idx( i , k ) ] /= bii , k++ ) ;
+      for( k = 0;  k < this.nc;  this.v[ this.idx( i , k ) ] /= bii , k++ ) ;
 
       this.v[ this.idx( i , i ) ] = ( 1.0 / bii ) ;
 
@@ -705,7 +705,7 @@ function inv()
 
     else
 
-      for( k = 0;  k < this.nc;  ++k )  this.v[ x.idx( i , k ) ] = undefined ;
+      for( k = 0;  k < this.nc;  this.v[ this.idx( i , k++ ) ] = undefined ) ;
 
   return ;
 
