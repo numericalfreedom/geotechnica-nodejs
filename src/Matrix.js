@@ -686,28 +686,28 @@ function inv()
     if( bii = this.v[ this.idx( i , i ) ] )
      {
     
-      for( k = 0;  k < this.nr;  this.v[ x.idx( i , k ) ] /= bii , k++ ) ;
+      for( k = 0;  k < this.nc;  this.v[ x.idx( i , k ) ] /= bii , k++ ) ;
 
       this.v[ this.idx( i , i ) ] = ( 1.0 / bii ) ;
 
-      for( j = 0;  j < this.nr;  ++j )
+      for( j = 0;  j < this.nc;  ++j )
 
         if( j != i )
          {
 
           bji = this.v[ this.idx( j , i ) ] ;
 
-          for( k = 0;  k < this.nr;  this.v[ this.idx( j , k ) ] -= (bij * this.v[ this.idx( i , k++ ) ]) ) ;
+          for( k = 0;  k < this.nc;  this.v[ this.idx( j , k ) ] -= (bji * this.v[ this.idx( i , k++ ) ]) ) ;
 
-          this.v[ this.idx( j , i ) ] -= ( bji * bii ) ;
+          this.v[ this.idx( j , i ) ] = (- bji * bii ) ;
 
          } ; // end if-
 
-     } ; // end if -
+     } // end if +
 
     else
 
-      for( j = 0;  j < this.nr;  ++j )  this.v[ x.idx( i , j ) ] = undefined ;
+      for( j = 0;  j < this.nc;  ++j )  this.v[ x.idx( i , j ) ] = undefined ;
 
   return ;
 
@@ -828,14 +828,26 @@ console.log( e ) ;
 
 
 
-var x = new Matrix( 6 , 6 ) ;
+var x = new Matrix( 2 , 2 ) ;
 
-console.log( x ) ;
+var y = new Matrix( 2 , 2 ) ;
 
-for( i = 0; i < x.nv ; x.v[i] = (1 + i++) ) ;
+var r = new Matrix( 2 , 2 ) ;
+
+for( i = 0;  (i < x.nv);  x.v[i] = Math.random() , i++ ) ;
+
+y.eqt( x ) ;
+
+console.log( y.v ) ;
+
+console.log( x.v ) ;
 
 x.inv()
 
-console.log( x ) ;
+console.log( x.v ) ;
+
+r.mmm( x , y ) ;
+
+console.log( r.v ) ;
 
 
