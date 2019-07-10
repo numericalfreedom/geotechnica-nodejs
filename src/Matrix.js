@@ -671,7 +671,7 @@ function mmt( x )
  *
  */
 
-function inv( x )
+function inv()
  {
 
   let i   = undefined ;
@@ -681,25 +681,25 @@ function inv( x )
   let bji = undefined ;
 
 
-  for( i = 0; i < x.nr; ++i )
+  for( i = 0;  i < this.nr;  ++i )
 
-    if( bii = x.v[ x.idx( i , i ) ] )
+    if( bii = this.v[ this.idx( i , i ) ] )
      {
     
-      for( k = 0; k < x.nr;  x.v[ x.idx( i , k ) ] /= bii , k++ ) ;
+      for( k = 0;  k < this.nr;  this.v[ x.idx( i , k ) ] /= bii , k++ ) ;
 
-      x.v[ x.idx( i , i ) ] = ( 1.0 / bii ) ;
+      this.v[ this.idx( i , i ) ] = ( 1.0 / bii ) ;
 
-      for( j = 0; j < x.nr; ++j )
+      for( j = 0;  j < this.nr;  ++j )
 
         if( j != i )
          {
 
-          bji = x.v[ x.idx( j , i ) ] ;
+          bji = this.v[ this.idx( j , i ) ] ;
 
-          for( k = 0; k < x.nr;  x.v[ x.idx( j , k ) ] -= (bij * x.v[ x.idx( i , k++ ) ]) ) ;
+          for( k = 0;  k < this.nr;  this.v[ this.idx( j , k ) ] -= (bij * this.v[ this.idx( i , k++ ) ]) ) ;
 
-          x.v[ x.idx( j , i ) ] -= ( bji * bii ) ;
+          this.v[ this.idx( j , i ) ] -= ( bji * bii ) ;
 
          } ; // end if-
 
@@ -707,7 +707,7 @@ function inv( x )
 
     else
 
-      for( j = 0; j < x.nr; ++j )  x.v[ x.idx( i , j ) ] = undefined ;
+      for( j = 0;  j < this.nr;  ++j )  this.v[ x.idx( i , j ) ] = undefined ;
 
   return ;
 
@@ -825,5 +825,13 @@ console.log( xx ) ;
 let e = xx.enm() ;
 
 console.log( e ) ;
+
+
+
+var x = new Matrix( 6 , 6 ) ;
+
+var r = new Matrix( 6 , 6 ) ;
+
+
 
 
