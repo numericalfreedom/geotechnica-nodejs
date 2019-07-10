@@ -77,6 +77,11 @@ function Matrix( nr , nc , nv )
   this.idx = idx ;
   this.put = put ;
   this.get = get ;
+  this.eqt = eqt ;
+  this.unt = unt ;
+  this.cst = cst ;
+  this.trc = trc ;
+  this.enm = enm ;
   this.add = add ;
   this.sub = sub ;
   this.cmm = cmm ;
@@ -122,6 +127,11 @@ function idx( i , j )
 
 
 
+/** Function put
+ *
+ *
+ */
+
 function put( i , j , v )
  {
 
@@ -131,6 +141,11 @@ function put( i , j , v )
 
 
 
+/** Function get
+ *
+ *
+ */
+
 function get( i , j )
  {
 
@@ -139,15 +154,110 @@ function get( i , j )
  }
 
 
+/** Function eqt
+ *
+ *
+ */
 
-function add( x , y )
+function eqt( x )
+ {
+  
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; this.v[ i ] = x.v[ i++ ] ) ;
+
+  return ;
+
+ } ; // end function eqt()
+
+
+
+/** Function cst
+ *
+ *
+ */
+
+function cst( s )
  {
 
   let i = undefined ;
 
-  for( i = 0; i < this.nv; ++i )
+  for( i = 0; i < this.nv; this.v[ i++ ] = s ) ;
 
-    this.v[ i ] = ( x.v[ i ] + y.v[ i ] ) ;
+  return ;
+
+ } ; // end function cst()
+
+
+
+/** Function unt
+ *
+ *
+ */
+
+function unt( s )
+ {
+  
+  let i = undefined ;
+
+  for( i = 0; i < 3; this.v[ i++ ] = s ) ;
+
+  return ;
+
+ } ; // end function unt ()
+
+
+
+/** Function trc
+ *
+ *
+ */
+
+function trc()
+ {
+
+  let i = undefined ;
+  let r = undefined ;
+
+  for( i = r = 0; i < this.nv; r += this.v[ i++ ] ) ;
+
+  return( r ) ;
+
+ } ; // end function trc()
+
+
+
+/** Function enm
+ *
+ *
+ */
+
+function enm( x )
+ {
+
+  let i = undefined ;
+  let r = undefined ;
+  let v = undefined ;
+
+  for( i = r = 0; i < this.nv; v = this.v[ i++ ] , r += (v * v)  ) ;
+
+  return( Math.sqrt( r ) ) ;
+
+ } ; // end function enm()
+
+
+
+/** Function add
+ *
+ *
+ */
+
+function add( x , y )
+ {
+  
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; this.v[ i ] = ( x.v[ i ] + y.v[ i++ ] ) ) ;
 
   return ;
 
@@ -155,12 +265,17 @@ function add( x , y )
 
 
 
+/** Function sub
+ *
+ *
+ */
+
 function sub( x , y )
  {
+  
+  let i = undefined ;
 
-  for( i = 0; i < this.nv; ++i )
-
-    this.v[ i ] = ( x.v[ i ] - y.v[ i ] ) ;
+  for( i = 0; i < this.nv; this.v[ i ] = ( x.v[ i ] - y.v[ i++ ] ) ) ;
 
   return ;
 
@@ -168,18 +283,28 @@ function sub( x , y )
 
 
 
+/** Function cmm
+ *
+ *
+ */
+
 function cmm( c , x )
  {
 
-  for( i = 0; i < this.nv; ++i )
+  let i = undefined ;
 
-    this.v[ i ] = ( c * x.v[ i ] ) ;
+  for( i = 0; i < this.nv; this.v[ i ] = ( c * x.v[ i++ ] ) ) ;
 
   return ;
 
  } ; // end function cmm()
 
 
+
+/** Function cmd
+ *
+ *
+ */
 
 function cmd( c , x )
  {
@@ -202,6 +327,11 @@ function cmd( c , x )
 
 
 
+/** Function smm
+ *
+ *
+ */
+
 function smm( x , y )
  {
 
@@ -216,6 +346,11 @@ function smm( x , y )
  } ; // end function smm()
 
 
+
+/** Function smd
+ *
+ *
+ */
 
 function smd( x , y )
  {
@@ -238,6 +373,11 @@ function smd( x , y )
 
 
 
+/** Function vmm
+ *
+ *
+ */
+
 function vmm( x , y )
  {
 
@@ -255,6 +395,11 @@ function vmm( x , y )
  } ; // end function vmm()
 
 
+
+/** Function vmd
+ *
+ *
+ */
 
 function vmd( x , y )
  {
@@ -279,6 +424,11 @@ function vmd( x , y )
  } ; // end function vmd()
 
 
+
+/** Function mmm
+ *
+ *
+ */
 
 function mmm( x , y )
  {
@@ -378,16 +528,16 @@ var y = new Matrix( 3 , 3 ) ;
 var r = new Matrix( 3 , 3 ) ;
 
 
-// for( var ii = 0; ii < 1e7; ++ii , r.mmm( x , y ) )
-//  {
+for( var ii = 0; ii < 1; ++ii , r.mmm( x , y ) )
+ {
 
-//   for( i = 0; i < x.nv ; x.v[i] = Math.random() , i++ ) ;
+  for( i = 0; i < x.nv ; x.v[i] = Math.random() , i++ ) ;
 
-//   for( i = 0; i < y.nv ; y.v[i] = Math.random() , i++ ) ;
+  for( i = 0; i < y.nv ; y.v[i] = Math.random() , i++ ) ;
 
-//   if( (ii % 1e6) == 0 )  console.log( ii ) ;
+  if( (ii % 1e6) == 0 )  console.log( ii ) ;
 
-//  }
+ }
 
 
 console.log( x ) ;
@@ -428,4 +578,10 @@ xx.cmd( 2.0 , yy ) ;
 
 
 console.log( xx ) ;
+
+
+let e = xx.enm() ;
+
+console.log( e ) ;
+
 
