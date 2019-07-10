@@ -1,5 +1,6 @@
 
-module.exports = { tns: Tns , tensor: Tensor } ;
+
+module.exports = { tns: Tns , tensor: Tensor , idx: idx } ;
 
 
 function Tns()
