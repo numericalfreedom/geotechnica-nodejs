@@ -690,14 +690,12 @@ function inv()
 
       this.v[ this.idx( i , i ) ] = ( 1.0 / bii ) ;
 
-      for( j = 0;  j < this.nc;  ++j )
+      for( j = 0;  j < this.nr;  ++j )
 
         if( j != i )
          {
 
-          bji = this.v[ this.idx( j , i ) ] ;
-
-          for( k = 0;  k < this.nc;  this.v[ this.idx( j , k ) ] -= (bji * this.v[ this.idx( i , k++ ) ]) ) ;
+          for( bji = this.v[ this.idx( j , i ) ] , k = 0;  k < this.nc;  this.v[ this.idx( j , k ) ] -= (bji * this.v[ this.idx( i , k++ ) ]) ) ;
 
           this.v[ this.idx( j , i ) ] = (- bji * bii ) ;
 
@@ -707,7 +705,7 @@ function inv()
 
     else
 
-      for( j = 0;  j < this.nc;  ++j )  this.v[ x.idx( i , j ) ] = undefined ;
+      for( k = 0;  k < this.nc;  ++k )  this.v[ x.idx( i , k ) ] = undefined ;
 
   return ;
 
