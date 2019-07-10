@@ -9,7 +9,12 @@
  * @author       Numericalfreedom Foundation
  * @version      0.0.1
  */
- 
+
+
+
+module.exports = { Matrix }
+
+
  
 /**
  *  @constructor
@@ -24,7 +29,6 @@
  *  @property { function }  i       Index function
  *  @returns  { Object }            Matrix  object
  */
-
 
 function Matrix( nr , nc , nv )
  {
@@ -43,30 +47,9 @@ function Matrix( nr , nc , nv )
 
   let d = 0 ;
 
-  if( (nr > 1) && (nc > 1) )
+  if(  (nr == 2) && (nc == 2)  && (nv == 3) )  d = 1 ;
 
-    switch( nv )
-     {
-
-      case 3:
-
-       d = 1 ;
-
-       break ;
-
-      case 4:
-      case 6:
-
-       d = 2 ;
-
-       break ;
-
-      default:
-
-       d = 0 ;
-
-     } ; // end switch
-
+  if( ((nr == 3) && (nc == 3)) && ((nv == 4) || (nv == 6)) )  d = 2 ;
 
   this.nr  = nr ;
   this.nc  = nc ;
