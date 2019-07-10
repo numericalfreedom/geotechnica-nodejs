@@ -828,11 +828,11 @@ console.log( e ) ;
 
 
 
-var x = new Matrix( 2 , 2 ) ;
+var x = new Matrix( 6 , 6 ) ;
 
-var y = new Matrix( 2 , 2 ) ;
+var y = new Matrix( 6 , 6 ) ;
 
-var r = new Matrix( 2 , 2 ) ;
+var r = new Matrix( 6 , 6 ) ;
 
 for( i = 0;  (i < x.nv);  x.v[i] = Math.random() , i++ ) ;
 
