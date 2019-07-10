@@ -41,29 +41,32 @@ function Matrix( nr , nc , nv )
  *  
  *  @type { number } */
 
-  var d = undefined ;
+  let d = 0 ;
 
-  switch( nv )
-   {
+  if( (nr > 1) && (nc > 1) )
 
-    case 3:
+    switch( nv )
+     {
 
-     d = 1 ;
+      case 3:
 
-     break ;
+       d = 1 ;
 
-    case 4:
-    case 6:
+       break ;
 
-     d = 2 ;
+      case 4:
+      case 6:
 
-     break ;
+       d = 2 ;
 
-    default:
+       break ;
 
-     d = 0 ;
+      default:
 
-   }
+       d = 0 ;
+
+     } ; // end switch
+
 
   this.nr  = nr ;
   this.nc  = nc ;
@@ -375,16 +378,16 @@ var y = new Matrix( 3 , 3 ) ;
 var r = new Matrix( 3 , 3 ) ;
 
 
-for( var ii = 0; ii < 1e7; ++ii , r.mmm( x , y ) )
- {
+// for( var ii = 0; ii < 1e7; ++ii , r.mmm( x , y ) )
+//  {
 
-  for( i = 0; i < x.nv ; x.v[i] = Math.random() , i++ ) ;
+//   for( i = 0; i < x.nv ; x.v[i] = Math.random() , i++ ) ;
 
-  for( i = 0; i < y.nv ; y.v[i] = Math.random() , i++ ) ;
+//   for( i = 0; i < y.nv ; y.v[i] = Math.random() , i++ ) ;
 
-  if( (ii % 1e6) == 0 )  console.log( ii ) ;
+//   if( (ii % 1e6) == 0 )  console.log( ii ) ;
 
- }
+//  }
 
 
 console.log( x ) ;
@@ -392,4 +395,37 @@ console.log( x ) ;
 console.log( y ) ;
 
 console.log( r ) ;
+
+
+
+var xx = new Matrix( 3 , 1 ) ;
+
+var yy = new Matrix( 3 , 1 ) ;
+
+var rr = new Matrix( 3 , 3 ) ;
+
+
+for( i = 0; i < xx.nv ; xx.v[i] = (1 + i++) ) ;
+
+for( i = 0; i < yy.nv ; yy.v[i] = (1 + i++) ) ;
+
+
+rr.vmm( xx , yy ) ;
+
+
+console.log( rr ) ;
+
+
+
+xx.cmm( 2.0 , yy ) ;
+
+
+console.log( xx ) ;
+
+
+
+xx.cmd( 2.0 , yy ) ;
+
+
+console.log( xx ) ;
 
