@@ -74,6 +74,10 @@ function Matrix( nr , nc , nv )
   this.idx = idx ;
   this.put = put ;
   this.get = get ;
+  this.add = add ;
+  this.sub = sub ;
+  this.vmm = vmm ;
+  this.vmd = vmd ;
   this.mmm = mmm ;
 
  } ; // end function Matrix
@@ -129,8 +133,70 @@ function get( i , j )
 
 
 
+function add( x , y )
+ {
+
+  for( i = 0; i < this.nv; ++i )
+
+    this.v[ i ] = ( x.v[ i ] + y.v[ i ] ) ;
+
+  return ;
+
+ } ; // end function add()
+
+
+
+function sub( x , y )
+ {
+
+  for( i = 0; i < this.nv; ++i )
+
+    this.v[ i ] = ( x.v[ i ] - y.v[ i ] ) ;
+
+  return ;
+
+ } ; // end function sub()
+
+
+
+function smm( x , y )
+ {
+
+  for( i = 0; i < this.nv; ++i )
+
+    this.v[ i ] = ( x.v[ i ] * y.v[ i ] ) ;
+
+  return ;
+
+ } ; // end function sub
+
+
+
+function smd( x , y )
+ {
+
+  for( i = 0; i < this.nv; ++i )
+
+    if( y.v[ i ] )
+
+      this.v[ i ] = ( x.v[ i ] * y.v[ i ] ) ;
+
+    else
+
+      this.v[ i ] = 0 ;
+
+  return ;
+
+ } ; // end function sub
+
+
+
 function mmm( x , y )
  {
+
+  var i = undefined ;
+  var j = undefined ;
+  var k = undefined ;
 
   if( this.d )
    {
@@ -212,22 +278,27 @@ console.log( y ) ;
 console.log( r ) ;
 
 
-var x = new Matrix( 3 , 4 ) ;
-
-for( i = 0; i < x.nv ; x.v[i] = (1 + i++) ) ;
+var x = new Matrix( 3 , 3 ) ;
 
 
-var y = new Matrix( 4 , 3 ) ;
 
-for( i = 0; i < y.nv ; y.v[i] = (1 + i++) ) ;
+var y = new Matrix( 3 , 3 ) ;
+
 
 
 var r = new Matrix( 3 , 3 ) ;
 
 
-for( i = 0; i < 4; i++ , r.mmm( x , y ) ) ;
+for( var ii = 0; ii < 1e7; ++ii , r.mmm( x , y ) )
+ {
 
-//  if( (i % 2) == 0 )  console.log( i ) ;
+  for( i = 0; i < x.nv ; x.v[i] = Math.random() , i++ ) ;
+
+  for( i = 0; i < y.nv ; y.v[i] = Math.random() , i++ ) ;
+
+  if( (ii % 1e6) == 0 )  console.log( ii ) ;
+
+ }
 
 
 console.log( x ) ;
