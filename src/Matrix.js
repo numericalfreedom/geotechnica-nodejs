@@ -1,12 +1,46 @@
 
+/**
+ * @fileOverview Matrix class definitions.
+ * @author       Numericalfreedom Foundation
+ * @version      0.0.1
+ */
+ 
+ 
+/**
+ *  @constructor
+ *  @author: Numericalfreedom Foundation
+ *  @param    { number }    nr      Number of rows
+ *  @param    { number }    nc      Number of columns
+ *  @property { number }    nr      Number of rows
+ *  @property { number }    nc      Number of columns
+ *  @property { number }    nv      Number of values
+ *  @property { Array  }    v       Vector of values
+ *  @property { number }    d       Index difference for sparse representation
+ *  @property { function }  i       Index function
+ *  @returns  { Object }            Matrix  object
+ */
+
+
 function Matrix( nr , nc )
  {
 
-  var d = undefined ;
+  if( ! nc )  var nc = 1 ;
 
-  if( nc )  nr *= nc ;
+/**
+ *  Number of values
+ * 
+ *  @constant { number } */
 
-  switch( nr )
+  const nv = ( nr * nc ) ;
+
+/**
+ *  Index difference value
+ *  
+ *  @type { number } */
+
+  var   d = undefined ;
+
+  switch( nv )
    {
 
     case 3:
@@ -30,42 +64,59 @@ function Matrix( nr , nc )
 
   this.nr = nr ;
   this.nc = nc ;
-  this.v = new Array( nr ) ;
-  this.d = d ;
-  this.i = idx ;
+  this.nv = nv ;
+  this.v  = new Array( nv ) ;
+  this.d  = d ;
+  this.i  = idx ;
 
- }
+ } ; // end function Matrix
 
+
+/**
+ *  Index function
+ *
+ *  @param    { number }    i      Number of rows
+ *  @param    { number }    j      Number of columns
+ */
 
 function idx( i , j )
  {
 
-  var r = i ;
+  var r  = undefined ;
+  var ri = i ;
 
   if( this.d )
    {
 
-    if( i - j )  r = ( i + j + this.d ) ;
+    if( i - j )  ri = ( i + j + this.d ) ;
 
    } // end if
 
   else
    {
 
-    r = ( (i * this.nc) + j ) ;
+    ri = ( (i * this.nc) + j ) ;
 
    } ; // end else
 
-  return( this.v[r] ) ;
+  if( ri < this.nv )
 
- }
+   rv = this.v[ri] ;
+   
+  else
+  
+   rv = 0.0 ;
+
+  return( rv ) ;
+
+ } ; // end function idx()
 
 
 var a = new Matrix( 9 , 9 ) ;
 
 var i = 0 ;
 
-for( i = 0; i < a.nr ; a.v[i] = (1 + i++) ) ;
+for( i = 0; i < a.nv ; a.v[i] = (1 + i++) ) ;
 
 
 console.log( a ) ;
@@ -79,3 +130,4 @@ console.log( a.i(1,2) ) ;
 console.log( a.i(2,0) ) ;
 console.log( a.i(2,1) ) ;
 console.log( a.i(2,2) ) ;
+
