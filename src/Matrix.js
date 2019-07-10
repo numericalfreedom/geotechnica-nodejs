@@ -519,7 +519,7 @@ function mmd( x )
 
    }
   
-  return ;
+  return( this.trc() ) ;
  
  } ; // end function mmd()
 
@@ -575,7 +575,7 @@ function mmt( x )
 
    }
   
-  return ;
+  return( this.trc() ) ;
 
  } ; // end function mmt()
 
