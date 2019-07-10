@@ -76,6 +76,10 @@ function Matrix( nr , nc , nv )
   this.get = get ;
   this.add = add ;
   this.sub = sub ;
+  this.cmm = cmm ;
+  this.cmd = cmd ;
+  this.smm = smm ;
+  this.smd = smd ;
   this.vmm = vmm ;
   this.vmd = vmd ;
   this.mmm = mmm ;
@@ -93,7 +97,7 @@ function Matrix( nr , nc , nv )
 function idx( i , j )
  {
 
-  var r = i ;
+  let r = i ;
 
   if( this.d )
    {
@@ -136,6 +140,8 @@ function get( i , j )
 function add( x , y )
  {
 
+  let i = undefined ;
+
   for( i = 0; i < this.nv; ++i )
 
     this.v[ i ] = ( x.v[ i ] + y.v[ i ] ) ;
@@ -159,8 +165,44 @@ function sub( x , y )
 
 
 
+function cmm( c , x )
+ {
+
+  for( i = 0; i < this.nv; ++i )
+
+    this.v[ i ] = ( c * x.v[ i ] ) ;
+
+  return ;
+
+ } ; // end function cmm()
+
+
+
+function cmd( c , x )
+ {
+
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; ++i )
+
+    if( c )
+
+      this.v[ i ] = ( x.v[ i ] / c ) ;
+
+    else
+
+      this.v[ i ] = undefined ;
+
+  return ;
+
+ } ; // end function cmd()
+
+
+
 function smm( x , y )
  {
+
+  let i = undefined ;
 
   for( i = 0; i < this.nv; ++i )
 
@@ -168,18 +210,20 @@ function smm( x , y )
 
   return ;
 
- } ; // end function sub
+ } ; // end function smm()
 
 
 
 function smd( x , y )
  {
 
+  let i = undefined ;
+
   for( i = 0; i < this.nv; ++i )
 
     if( y.v[ i ] )
 
-      this.v[ i ] = ( x.v[ i ] * y.v[ i ] ) ;
+      this.v[ i ] = ( x.v[ i ] / y.v[ i ] ) ;
 
     else
 
@@ -187,16 +231,58 @@ function smd( x , y )
 
   return ;
 
- } ; // end function sub
+ } ; // end function smd()
+
+
+
+function vmm( x , y )
+ {
+
+  let i = undefined ;
+  let j = undefined ;
+
+  for( i = 0; i < x.nv; ++i )
+  
+    for( j = 0; j < y.nv; ++j )
+
+      this.v[ this.idx( i , j ) ] = ( x.v[ i ] * y.v[ j ] ) ;
+
+  return ;
+
+ } ; // end function vmm()
+
+
+
+function vmd( x , y )
+ {
+
+  let i = undefined ;
+  let j = undefined ;
+
+  for( i = 0; i < x.nv; ++i )
+  
+    for( j = 0; j < y.nv; ++j )
+
+      if( y.v[ j ] )
+
+        this.v[ this.idx( i , j ) ] = ( x.v[ i ] / y.v[ j ] ) ;
+
+      else
+	
+	this.v[ this.idx( i , j ) ] = 0.0 ;
+
+  return ;
+
+ } ; // end function vmd()
 
 
 
 function mmm( x , y )
  {
 
-  var i = undefined ;
-  var j = undefined ;
-  var k = undefined ;
+  let i = undefined ;
+  let j = undefined ;
+  let k = undefined ;
 
   if( this.d )
    {
