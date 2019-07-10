@@ -93,6 +93,7 @@ function Matrix( nr , nc , nv )
   this.mmm = mmm ;
   this.mmd = mmd ;
   this.mmt = mmt ;
+  this.inv = inv ;
 
  } ; // end function Matrix
 
@@ -662,6 +663,58 @@ function mmt( x )
   return( this.trc() ) ;
 
  } ; // end function mmt()
+
+
+
+/** Function inv
+ *
+ *
+ */
+
+function inv( x )
+ {
+
+  let i   = undefined ;
+  let j   = undefined ;
+  let k   = undefined ;
+  let bii = undefined ;
+  let bij = undefined ;
+
+
+  for( i = 0; i < x.nr; ++i )
+   {
+
+    if( bii = x.v[ x.idx( i , i ) ] )
+     {
+    
+      for( k = 0; k < x.nr;  x.v[ x.idx( i , k ) ] /= bii , k++ ) ;
+
+      x.v[ x.idx( i , i ) ] = ( 1.0 / bii ) ;
+
+      for( j = 0; j < x.nr; ++j )
+
+       if( j != i )
+        {
+
+         bji = x.v[ x.idx( j , i ) ] ;
+
+         for( k = 0; k < x.nr;  x.v[ x.idx( j , k ) ] -= (bij * x.v[ x.idx( i , k++ ) ]) ) ;
+
+         x.v[ x.idx( j , i ) ] -= ( bji * bii ) ;
+
+        } ; // end if-
+
+     } ; // end if -
+
+    else
+
+      for( j = 0; j < x.nr; ++j )  x.v[ x.idx( i , j ) ] = undefined ;
+
+   } ; // end for()
+
+  return ;
+
+ } ; // end function inv()
 
 
 var a = new Matrix( 9 , 9 ) ;
