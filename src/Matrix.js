@@ -78,10 +78,14 @@ function Matrix( nr , nc , nv )
   this.cst = cst ;
   this.trc = trc ;
   this.enm = enm ;
-  this.add = add ;
-  this.sub = sub ;
+  this.mma = mma ;
+  this.msa = msa ;
+  this.mms = mms ;
+  this.mss = mss ;
   this.cmm = cmm ;
+  this.csm = csm ;
   this.cmd = cmd ;
+  this.csd = csd ;
   this.smm = smm ;
   this.smd = smd ;
   this.vmm = vmm ;
@@ -247,12 +251,12 @@ function enm( x )
 
 
 
-/** Function add
+/** Function mma
  *
  *
  */
 
-function add( x , y )
+function mma( x , y )
  {
   
   let i = undefined ;
@@ -261,16 +265,34 @@ function add( x , y )
 
   return ;
 
- } ; // end function add()
+ } ; // end function mma()
 
 
 
-/** Function sub
+/** Function msa
  *
  *
  */
 
-function sub( x , y )
+function msa( x )
+ {
+
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; this.v[ i ] += x.v[ i++ ] ) ;
+
+  return ;
+
+ } ; // end function msa()
+
+
+
+/** Function mms
+ *
+ *
+ */
+
+function mms( x , y )
  {
   
   let i = undefined ;
@@ -279,7 +301,25 @@ function sub( x , y )
 
   return ;
 
- } ; // end function sub()
+ } ; // end function mms()
+
+
+
+/** Function mss
+ *
+ *
+ */
+
+function mss( x )
+ {
+
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; this.v[ i ] -= x.v[ i++ ] ) ;
+
+  return ;
+
+ } ; // end function mss()
 
 
 
@@ -298,6 +338,24 @@ function cmm( c , x )
   return ;
 
  } ; // end function cmm()
+
+
+
+/** Function csm
+ *
+ *
+ */
+
+function csm( c )
+ {
+
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; this.v[ i ] *= c , ++i ) ;
+
+  return ;
+
+ } ; // end function csm()
 
 
 
@@ -324,6 +382,32 @@ function cmd( c , x )
   return ;
 
  } ; // end function cmd()
+
+
+
+/** Function csd
+ *
+ *
+ */
+
+function csd( c )
+ {
+
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; ++i )
+
+    if( c )
+
+      this.v[ i ] /= c ;
+
+    else
+
+      this.v[ i ] = undefined ;
+
+  return ;
+
+ } ; // end function csd()
 
 
 
@@ -365,7 +449,7 @@ function smd( x , y )
 
     else
 
-      this.v[ i ] = 0 ;
+      this.v[ i ] = undefined ;
 
   return ;
 
