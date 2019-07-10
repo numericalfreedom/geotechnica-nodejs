@@ -51,11 +51,24 @@ function Matrix( nr , nc , nv )
 
   if( ((nr == 3) && (nc == 3)) && ((nv == 4) || (nv == 6)) )  d = 2 ;
 
+/** 
+ *
+ * @properpty {number} nr
+ *
+ * */
+
   this.nr  = nr ;
   this.nc  = nc ;
   this.nv  = nv ;
   this.v   = new Array( nv ) ;
   this.d   = d ;
+
+/** 
+ *
+ * @properpty {Function} idx
+ * @returns {number}
+ *
+ * */
 
   this.idx = idx ;
   this.put = put ;
@@ -80,6 +93,8 @@ function Matrix( nr , nc , nv )
 
 /**
  *  Index function
+ *
+ *  @description function index
  *
  *  @param    { number }    i      Number of rows
  *  @param    { number }    j      Number of columns
@@ -112,7 +127,7 @@ function idx( i , j )
 
 /** Function put
  *
- *
+ *  @description function put
  */
 
 function put( i , j , v )
