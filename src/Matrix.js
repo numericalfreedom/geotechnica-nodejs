@@ -830,8 +830,12 @@ console.log( e ) ;
 
 var x = new Matrix( 6 , 6 ) ;
 
-var r = new Matrix( 6 , 6 ) ;
+console.log( x ) ;
 
+for( i = 0; i < x.nv ; x.v[i] = (1 + i++) ) ;
 
+x.inv()
+
+console.log( x ) ;
 
 
