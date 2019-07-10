@@ -695,9 +695,11 @@ function inv()
         if( j != i )
          {
 
-          for( bji = this.v[ this.idx( j , i ) ] , k = 0;  k < this.nc;  this.v[ this.idx( j , k ) ] -= (bji * this.v[ this.idx( i , k++ ) ]) ) ;
+          bji = this.v[ this.idx( j , i ) ] ;
 
-          this.v[ this.idx( j , i ) ] = (- bji * bii ) ;
+          for( k = 0;  k < this.nc;  this.v[ this.idx( j , k ) ] -= (bji * this.v[ this.idx( i , k++ ) ]) ) ;
+
+          this.v[ this.idx( j , i ) ] = (- bji / bii ) ;
 
          } ; // end if-
 
@@ -835,6 +837,10 @@ var r = new Matrix( 2 , 2 ) ;
 for( i = 0;  (i < x.nv);  x.v[i] = Math.random() , i++ ) ;
 
 y.eqt( x ) ;
+
+console.log( y ) ;
+
+console.log( x ) ;
 
 console.log( y.v ) ;
 
