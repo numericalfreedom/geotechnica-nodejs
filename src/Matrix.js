@@ -678,11 +678,10 @@ function inv( x )
   let j   = undefined ;
   let k   = undefined ;
   let bii = undefined ;
-  let bij = undefined ;
+  let bji = undefined ;
 
 
   for( i = 0; i < x.nr; ++i )
-   {
 
     if( bii = x.v[ x.idx( i , i ) ] )
      {
@@ -693,24 +692,22 @@ function inv( x )
 
       for( j = 0; j < x.nr; ++j )
 
-       if( j != i )
-        {
+        if( j != i )
+         {
 
-         bji = x.v[ x.idx( j , i ) ] ;
+          bji = x.v[ x.idx( j , i ) ] ;
 
-         for( k = 0; k < x.nr;  x.v[ x.idx( j , k ) ] -= (bij * x.v[ x.idx( i , k++ ) ]) ) ;
+          for( k = 0; k < x.nr;  x.v[ x.idx( j , k ) ] -= (bij * x.v[ x.idx( i , k++ ) ]) ) ;
 
-         x.v[ x.idx( j , i ) ] -= ( bji * bii ) ;
+          x.v[ x.idx( j , i ) ] -= ( bji * bii ) ;
 
-        } ; // end if-
+         } ; // end if-
 
      } ; // end if -
 
     else
 
       for( j = 0; j < x.nr; ++j )  x.v[ x.idx( i , j ) ] = undefined ;
-
-   } ; // end for()
 
   return ;
 
