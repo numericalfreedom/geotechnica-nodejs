@@ -26,24 +26,22 @@
  */
 
 
-function Matrix( nr , nc )
+function Matrix( nr , nc , nv )
  {
-
-  if( ! nc )  var nc = 1 ;
 
 /**
  *  Number of values
  * 
  *  @constant { number } */
 
-  const nv = ( nr * nc ) ;
+  if( ! nv )  var nv = ( nr * nc ) ;
 
 /**
  *  Index difference value
  *  
  *  @type { number } */
 
-  var   d = undefined ;
+  var d = undefined ;
 
   switch( nv )
    {
@@ -67,12 +65,16 @@ function Matrix( nr , nc )
 
    }
 
-  this.nr = nr ;
-  this.nc = nc ;
-  this.nv = nv ;
-  this.v  = new Array( nv ) ;
-  this.d  = d ;
-  this.i  = idx ;
+  this.nr  = nr ;
+  this.nc  = nc ;
+  this.nv  = nv ;
+  this.v   = new Array( nv ) ;
+  this.d   = d ;
+
+  this.idx = idx ;
+  this.put = put ;
+  this.get = get ;
+  this.mmm = mmm ;
 
  } ; // end function Matrix
 
@@ -87,34 +89,82 @@ function Matrix( nr , nc )
 function idx( i , j )
  {
 
-  var r  = undefined ;
-  var ri = i ;
+  var r = i ;
 
   if( this.d )
    {
 
-    if( i - j )  ri = ( i + j + this.d ) ;
+    if( i - j )  r = ( i + j + this.d ) ;
 
    } // end if
 
   else
    {
 
-    ri = ( (i * this.nc) + j ) ;
+    r = ( (i * this.nc) + j ) ;
 
    } ; // end else
 
-  if( ri < this.nv )
-
-   rv = this.v[ri] ;
-   
-  else
-  
-   rv = 0.0 ;
-
-  return( rv ) ;
+  return( r ) ;
 
  } ; // end function idx()
+
+
+
+function put( i , j , v )
+ {
+
+  return( this.v[ this.idx( i , j ) ] = v ) ;
+
+ }
+
+
+
+function get( i , j )
+ {
+
+  return( this.v[ this.idx( i , j ) ] ) ;
+
+ }
+
+
+
+function mmm( x , y )
+ {
+
+  if( this.d )
+   {
+
+    for( i = 0; i < this.nr; ++i )
+
+      for( j = i; j < this.nc; ++j )
+
+        if( this.idx( i , j ) < this.nv )
+
+          for( k = this.v[ this.idx( i , j ) ] = 0; k < x.nc; ++k )
+
+            if( ((ix = this.idx( i , k )) < this.nv) && ((iy = this.idx( k , j )) < this.nv) )
+
+              this.v[ this.idx( i , j ) ] += ( x.v[ ix ] * y.v[ iy ] );
+
+   }
+
+  else
+   {
+
+    for( i = 0; i < this.nr; ++i )
+
+      for( j = 0; j < this.nc; ++j )
+
+        for( k = this.v[ this.idx( i , j ) ] = 0; k < x.nc; ++k )
+
+          this.v[ this.idx( i , j ) ] += ( x.v[ x.idx( i , k ) ] * y.v[ y.idx( k , j ) ] );
+
+   }
+
+  return ;
+
+ } ; // end function mmm()
 
 
 var a = new Matrix( 9 , 9 ) ;
@@ -126,13 +176,63 @@ for( i = 0; i < a.nv ; a.v[i] = (1 + i++) ) ;
 
 console.log( a ) ;
 
-console.log( a.i(0,0) ) ;
-console.log( a.i(0,1) ) ;
-console.log( a.i(0,2) ) ;
-console.log( a.i(1,0) ) ;
-console.log( a.i(1,1) ) ;
-console.log( a.i(1,2) ) ;
-console.log( a.i(2,0) ) ;
-console.log( a.i(2,1) ) ;
-console.log( a.i(2,2) ) ;
+console.log( a.v[ a.idx( 0 , 0 ) ] ) ;
+console.log( a.v[ a.idx( 0 , 1 ) ] ) ;
+console.log( a.v[ a.idx( 0 , 2 ) ] ) ;
+console.log( a.v[ a.idx( 1 , 0 ) ] ) ;
+console.log( a.v[ a.idx( 1 , 1 ) ] ) ;
+console.log( a.v[ a.idx( 1 , 2 ) ] ) ;
+console.log( a.v[ a.idx( 2 , 0 ) ] ) ;
+console.log( a.v[ a.idx( 2 , 1 ) ] ) ;
+console.log( a.v[ a.idx( 2 , 2 ) ] ) ;
+
+
+
+
+var x = new Matrix( 3 , 3 , 4 ) ;
+
+for( i = 0; i < x.nv ; x.v[i] = (1 + i++) ) ;
+
+
+var y = new Matrix( 3 , 3 , 4 ) ;
+
+for( i = 0; i < y.nv ; y.v[i] = (1 + i++) ) ;
+
+
+var r = new Matrix( 3 , 3 , 4 ) ;
+
+
+r.mmm( x , y ) ;
+
+
+console.log( x ) ;
+
+console.log( y ) ;
+
+console.log( r ) ;
+
+
+var x = new Matrix( 3 , 4 ) ;
+
+for( i = 0; i < x.nv ; x.v[i] = (1 + i++) ) ;
+
+
+var y = new Matrix( 4 , 3 ) ;
+
+for( i = 0; i < y.nv ; y.v[i] = (1 + i++) ) ;
+
+
+var r = new Matrix( 3 , 3 ) ;
+
+
+for( i = 0; i < 4; i++ , r.mmm( x , y ) ) ;
+
+//  if( (i % 2) == 0 )  console.log( i ) ;
+
+
+console.log( x ) ;
+
+console.log( y ) ;
+
+console.log( r ) ;
 
