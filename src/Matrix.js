@@ -1,6 +1,11 @@
 
 /**
  * @fileOverview Matrix class definitions.
+ *
+ * This is the FleX project.
+ *
+ *
+ *
  * @author       Numericalfreedom Foundation
  * @version      0.0.1
  */
