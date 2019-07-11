@@ -91,8 +91,8 @@ function Matrix( nr , nc , nv )
   this.vmm = vmm ;
   this.vmd = vmd ;
   this.mmm = mmm ;
-  this.mmd = mmd ;
-  this.mmt = mmt ;
+  this.msd = msd ;
+  this.mst = mst ;
   this.inv = inv ;
 
  } ; // end function Matrix
@@ -560,12 +560,12 @@ function mmm( x , y )
 
 
 
-/** Function mmd
+/** Function msd
  *
  *
  */
 
-function mmd( x )
+function msd( x )
  {
 
   let i  = undefined ;
@@ -606,16 +606,16 @@ function mmd( x )
   
   return( this.trc() ) ;
  
- } ; // end function mmd()
+ } ; // end function msd()
 
 
 
-/** Function mmt
+/** Function mst
  *
  *
  */
 
-function mmt( x )
+function mst( x )
  {
 
   let i  = undefined ;
@@ -662,7 +662,7 @@ function mmt( x )
   
   return( this.trc() ) ;
 
- } ; // end function mmt()
+ } ; // end function mst()
 
 
 
@@ -697,7 +697,11 @@ function inv()
 
           bji = this.v[ this.idx( j , i ) ] ;
 
-          for( k = 0;  k < this.nc;  this.v[ this.idx( j , k ) ] -= (bji * this.v[ this.idx( i , k++ ) ]) ) ;
+          for( k = 0;  k < this.nc;  k++ )
+
+            if( this.v[ this.idx( j , k ) ] )
+
+              this.v[ this.idx( j , k ) ] -= ( bji * this.v[ this.idx( i , k ) ] ) ;
 
           this.v[ this.idx( j , i ) ] = (- bji / bii ) ;
 
@@ -712,6 +716,7 @@ function inv()
   return ;
 
  } ; // end function inv()
+
 
 
 var a = new Matrix( 9 , 9 ) ;
