@@ -580,7 +580,7 @@ function mmd( x , y )
 
         if( this.idx( i , j ) < this.nv )
 
-          for( k = this.v[ this.idx( i , j ) ] = 0; k < x.nc; ++k )
+          for( this.v[ this.idx( i , j ) ] = k = 0; k < x.nc; ++k )
 
             if( ((ik = x.idx( i , k )) < x.nv) && ((kj = y.idx( k , j )) < y.nv) )
 
@@ -595,7 +595,7 @@ function mmd( x , y )
 
       for( j = 0; j < this.nc; ++j )
 
-        for( k = this.v[ this.idx( i , j ) ] = 0; k < x.nc; ++k )
+        for( this.v[ this.idx( i , j ) ] = k = 0; k < x.nc; ++k )
 
           this.v[ this.idx( i , j ) ] += ( x.v[ x.idx( i , k ) ] * y.v[ y.idx( k , j ) ] );
 
@@ -631,7 +631,7 @@ function mmt( x , y , z )
 
         if( this.idx( i , j ) < this.nv )
 
-          for( m = this.v[ this.idx( i , j ) ] = 0; m < y.nr; ++m )
+          for( this.v[ this.idx( i , j ) ] = m = 0; m < y.nr; ++m )
 
             for( n = 0; n < y.nc; ++n )
 
@@ -789,24 +789,32 @@ function inv()
       if( bii = this.v[ this.idx( i , i ) ] )
        {
     
-        for( k = (i + 1);  k < this.nc;  this.v[ this.idx( i , k ) ] /= bii , k++ ) ;
+        for( k = 0;  k < this.nc; ++k )
+
+          if( (this.idx( i , k ) < this.nv) && (this.v[ this.idx( i , k ) ]) )
+
+            this.v[ this.idx( i , k ) ] /= bii ;
 
         this.v[ this.idx( i , i ) ] = ( 1.0 / bii ) ;
 
-        for( j = 0;  j < i;  ++j )
-         {
+        for( j = 0;  j < this.nr;  ++j )
+        
+          if( j != i )
+           {
 
-          bji = this.v[ this.idx( j , i ) ] ;
+            bji = this.v[ this.idx( j , i ) ] ;
 
-          for( k = (i + 1);  k < this.nc;  k++ )
+            for( k = 0;  k < this.nc;  k++ )
 
-            if( this.v[ this.idx( j , k ) ] )
+              if( (this.idx( i , k ) < this.nv) && (this.idx( j , k ) < this.nv) && (this.v[ this.idx( j , k ) ]) )
 
-              this.v[ this.idx( j , k ) ] -= ( bji * this.v[ this.idx( i , k ) ] ) ;
+                this.v[ this.idx( j , k ) ] -= ( bji * this.v[ this.idx( i , k ) ] ) ;
 
-          this.v[ this.idx( j , i ) ] = (- bji / bii ) ;
+            if( this.idx( j , i ) < this.nv )
 
-         } ; // end if-
+              this.v[ this.idx( j , i ) ] = (- bji / bii ) ;
+
+           } ; // end if-
 
        } // end if +
 
@@ -968,9 +976,9 @@ console.log( e ) ;
 
 
 
-var x = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 5 , 7 , 11 , 13 , 17 , 19 ] ) ;
+var x = new Matrix( 3 , 3 , undefined , [ 1 , 5 , 0 , 5 , 2 , 0 , 0 , 0 , 3 ] ) ;
 
-var y = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 5 , 7 , 11 , 13 , 17 , 19 ] ) ;
+var y = new Matrix( 3 , 3 , undefined , [ 1 , 5 , 0 , 5 , 2 , 0 , 0 , 0 , 3 ] ) ;
 
 var r = new Matrix( 3 , 3 ) ;
 
@@ -993,3 +1001,28 @@ r.mmd( x , y ) ;
 console.log( r.v ) ;
 
 
+var x = new Matrix( 3 , 3 , 4 , [ 1 , 2 , 3 , 5 ] ) ;
+
+var y = new Matrix( 3 , 3 , 4 , [ 1 , 2 , 3 , 5 ] ) ;
+
+var r = new Matrix( 3 , 3 , 4 ) ;
+
+y.eqt( x ) ;
+
+// console.log( y ) ;
+
+// console.log( x ) ;
+
+console.log( y.v ) ;
+
+console.log( x.v ) ;
+
+x.inv()
+
+console.log( y.v ) ;
+
+console.log( x.v ) ;
+
+r.mmd( x , y ) ;
+
+console.log( r.v ) ;
