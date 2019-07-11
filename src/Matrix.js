@@ -816,21 +816,23 @@ function inv()
              } ; // end if{} -
 
 
-        for( i = 0;  i < this.nc;  ++i )
+        for( i = 0;  i < k;  ++i )
 
-          if( (i != k) && (this.idx( i , k ) < this.nv) )
+          if( this.idx( i , k ) < this.nv )
 
             this.v[ this.idx( i , k ) ] /= (- akk ) ;
 
 
-        for( j = 0;  j < this.nr;  ++j )
+        for( j = (k + 1);  j < this.nr;  ++j )
 
-          if( (k != j) && (this.idx( k , j ) < this.nv) )
+          if( this.idx( k , j ) < this.nv )
 
             this.v[ this.idx( k , j ) ] /= akk ;
 
 
         this.v[ this.idx( k , k ) ] = ( 1.0 / akk ) ;
+
+        console.log( 'k=' , k , this.v ) ;
 
        } // end if{} +
 
@@ -877,6 +879,7 @@ function inv()
 
         this.v[ this.idx( k , k ) ] = ( 1.0 / akk ) ;
 
+        console.log( 'k=' , k , this.v ) ;
 
        } // end if{} +
 
