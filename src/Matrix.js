@@ -786,9 +786,59 @@ function inv()
 
   if( this.d )
   
+    for( k = 0;  k < this.nr;  ++k )
+
+      if( akk = this.v[ this.idx( k , k ) ] )
+       {
+
+        for( i = 0;  i < this.nc;  ++i )
+
+          for( j = 0;  j < this.nr;  ++j )
+
+            if( (i != k) && (j != k) )
+             {
+
+              if( (this.idx( k , j ) < this.nv) && (this.idx( i , k ) < this.nv) && ( this.idx( i , j ) < this.nv) )
+               {
+
+                akj = this.v[ this.idx( k , j ) ] ;
+              
+                aik = this.v[ this.idx( i , k ) ] ;
+
+                this.v[ this.idx( i , j ) ] -= ( (akj * aik) / akk ) ;
+
+               } // end if{} +
+                
+              else
+              
+                akj = aik = 0 ;
+
+             } ; // end if{} -
+
+
+        for( i = 0;  i < this.nc;  ++i )
+
+          if( (i != k) && (this.idx( i , k ) < this.nv) )
+
+            this.v[ this.idx( i , k ) ] /= (- akk ) ;
+
+
+        for( j = 0;  j < this.nr;  ++j )
+
+          if( (k != j) && (this.idx( k , j ) < this.nv) )
+
+            this.v[ this.idx( k , j ) ] /= akk ;
+
+
+        this.v[ this.idx( k , k ) ] = ( 1.0 / akk ) ;
+
+       } // end if{} +
+
+      else
+
+        this.v[ this.idx( k , k ) ] = undefined ;
 
   else
-
 
     for( k = 0;  k < this.nr;  ++k )
 
@@ -806,7 +856,7 @@ function inv()
 
               aik = this.v[ this.idx( i , k ) ] ;
 
-              this.v[ this.idx( i , i ) ] -= ( (akj * aik) / akk ) ;
+              this.v[ this.idx( i , j ) ] -= ( (akj * aik) / akk ) ;
 
              } ;
 
@@ -954,10 +1004,9 @@ let e = xx.enm() ;
 console.log( e ) ;
 
 
+var x = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 5 , 7 , 11 , 13 , 17 , 19 ] ) ;
 
-var x = new Matrix( 3 , 3 , undefined , [ 1 , 5 , 0 , 5 , 2 , 0 , 0 , 0 , 3 ] ) ;
-
-var y = new Matrix( 3 , 3 , undefined , [ 1 , 5 , 0 , 5 , 2 , 0 , 0 , 0 , 3 ] ) ;
+var y = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 5 , 7 , 11 , 13 , 17 , 19 ] ) ;
 
 var r = new Matrix( 3 , 3 ) ;
 
@@ -978,6 +1027,32 @@ console.log( x.v ) ;
 r.mmd( x , y ) ;
 
 console.log( r.v ) ;
+
+
+var x = new Matrix( 3 , 3 , undefined , [ 1 , 5 , 0 , 5 , 2 , 0 , 0 , 0 , 3 ] ) ;
+
+var y = new Matrix( 3 , 3 , undefined , [ 1 , 5 , 0 , 5 , 2 , 0 , 0 , 0 , 3 ] ) ;
+
+var r = new Matrix( 3 , 3 ) ;
+
+y.eqt( x ) ;
+
+// console.log( y ) ;
+
+// console.log( x ) ;
+
+console.log( y.v ) ;
+
+console.log( x.v ) ;
+
+x.inv()
+
+console.log( x.v ) ;
+
+r.mmd( x , y ) ;
+
+console.log( r.v ) ;
+
 
 
 var x = new Matrix( 3 , 3 , 4 , [ 1 , 2 , 3 , 5 ] ) ;
