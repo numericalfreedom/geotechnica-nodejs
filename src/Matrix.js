@@ -30,8 +30,11 @@ module.exports = { Matrix }
  *  @returns  { Object }            Matrix  object
  */
 
-function Matrix( nr , nc , nv )
+function Matrix( nr , nc , nv , v )
  {
+
+  let i  = undefined ;
+  let ix = undefined ;
 
 /**
  *  Number of values
@@ -63,6 +66,15 @@ function Matrix( nr , nc , nv )
   this.v   = new Array( nv ) ;
   this.d   = d ;
 
+  if( v && (ix = v.length) )
+   {
+
+    if( ix > nv )  ix = nv ;
+
+    for( i < 0; i < ix; this.v[i] = v[i++] ) ;
+
+   } ; // end for
+
 /** 
  *
  * @properpty {Function} idx
@@ -71,11 +83,11 @@ function Matrix( nr , nc , nv )
  * */
 
   this.idx = idx ;
-  this.put = put ;
-  this.get = get ;
+  this.val = val ;
   this.eqt = eqt ;
   this.unt = unt ;
   this.cst = cst ;
+  this.sum = sum ;
   this.trc = trc ;
   this.enm = enm ;
   this.mma = mma ;
@@ -87,10 +99,12 @@ function Matrix( nr , nc , nv )
   this.cmd = cmd ;
   this.csd = csd ;
   this.smm = smm ;
+  this.dmm = dmm ;
   this.smd = smd ;
   this.vmm = vmm ;
   this.vmd = vmd ;
-  this.mmm = mmm ;
+  this.mmd = mmd ;
+  this.mmt = mmt ;
   this.msd = msd ;
   this.mst = mst ;
   this.inv = inv ;
@@ -132,31 +146,27 @@ function idx( i , j )
 
 
 
-/** Function put
+/** Function val
  *
  *  @description function put
  */
 
-function put( i , j , v )
+function val( i , j , v )
  {
 
-  return( this.v[ this.idx( i , j ) ] = v ) ;
+  var r = undefined ; 
 
- }
+  if( ! v )
+   
+    r = this.v[ this.idx( i , j ) ] ;
+  
+  else 
 
+    r = this.v[ this.idx( i , j ) ] = v
 
+  return( r ) ;
 
-/** Function get
- *
- *
- */
-
-function get( i , j )
- {
-
-  return( this.v[ this.idx( i , j ) ] ) ;
-
- }
+ } ; // end function val()
 
 
 /** Function eqt
@@ -213,6 +223,25 @@ function unt( s )
 
 
 
+/** Function sum
+ *
+ *
+ */
+
+function sum()
+ {
+
+  let i = undefined ;
+  let r = undefined ;
+
+  for( i = r = 0; i < this.nv; r += this.v[ i++ ] ) ;
+
+  return( r ) ;
+
+ } ; // end function sum()
+
+
+
 /** Function trc
  *
  *
@@ -224,7 +253,7 @@ function trc()
   let i = undefined ;
   let r = undefined ;
 
-  for( i = r = 0; i < this.nv; r += this.v[ i++ ] ) ;
+  for( i = r = 0; i < this.nr; r += this.v[ i++ ] ) ;
 
   return( r ) ;
 
@@ -432,6 +461,27 @@ function smm( x , y )
 
 
 
+/** Function dmm
+ *
+ *
+ */
+
+function dmm( x , y )
+ {
+
+  let i = undefined ;
+  let r = undefined ;
+
+  for( r = i = 0; i < this.nv; ++i )
+
+    r += this.v[ i ] = ( x.v[ i ] * y.v[ i ] ) ;
+
+  return( r ) ;
+
+ } ; // end function dmm()
+
+
+
 /** Function smd
  *
  *
@@ -510,12 +560,12 @@ function vmd( x , y )
 
 
 
-/** Function mmm
+/** Function mmd
  *
  *
  */
 
-function mmm( x , y )
+function mmd( x , y )
  {
 
   let i  = undefined ;
@@ -535,7 +585,7 @@ function mmm( x , y )
 
           for( k = this.v[ this.idx( i , j ) ] = 0; k < x.nc; ++k )
 
-            if( ((ik = this.idx( i , k )) < this.nv) && ((kj = this.idx( k , j )) < this.nv) )
+            if( ((ik = x.idx( i , k )) < x.nv) && ((kj = y.idx( k , j )) < y.nv) )
 
               this.v[ this.idx( i , j ) ] += ( x.v[ ik ] * y.v[ kj ] );
 
@@ -556,7 +606,62 @@ function mmm( x , y )
 
   return ;
 
- } ; // end function mmm()
+ } ; // end function mmd()
+
+
+/** Function mmt
+ *
+ *
+ */
+
+function mmt( x , y , z )
+ {
+
+  let i  = undefined ;
+  let j  = undefined ;
+  let m  = undefined ;
+  let n  = undefined ;
+  let im = undefined ;
+  let mn = undefined ;
+  let nj = undefined ;
+
+  if( this.d )
+   {
+
+    for( i = 0; i < this.nr; ++i )
+
+      for( j = i; j < this.nc; ++j )
+
+        if( this.idx( i , j ) < this.nv )
+
+          for( m = this.v[ this.idx( i , j ) ] = 0; m < y.nr; ++m )
+
+            for( n = 0; n < y.nc; ++n )
+
+              if( ((im = x.idx( i , m )) < x.nv) && ((mn = y.idx( m , n )) < y.nv) && ((nj = z.idx( n , j )) < z.nv) )
+
+                this.v[ this.idx( i , j ) ] += ( x.v[ im ] * y.v[ mn ] * z.v[ nj ] );
+
+   }
+
+  else
+   {
+
+    for( i = 0; i < this.nr; ++i )
+
+      for( j = 0; j < this.nc; ++j )
+
+        for( m = this.v[ this.idx( i , j ) ] = 0; m < y.nr; ++m )
+
+          for( n = 0; n < y.nc; ++n )
+
+            this.v[ this.idx( i , j ) ] += ( x.v[ x.idx( i , m ) ] * y.v[ y.idx( m , n ) ] * z.v[ z.idx( n , j ) ] );
+
+   }
+  
+  return( this.trc() ) ;
+
+ } ; // end function mmt()
 
 
 
@@ -585,7 +690,7 @@ function msd( x )
 
           for( k = this.v[ this.idx( i , j ) ] = 0; k < x.nc; ++k )
 
-            if( ((ik = this.idx( i , k )) < this.nv) && ((kj = this.idx( k , j )) < this.nv) )
+            if( ((ik = x.idx( i , k )) < x.nv) && ((kj = x.idx( k , j )) < x.nv) )
 
               this.v[ this.idx( i , j ) ] += ( x.v[ ik ] * x.v[ kj ] );
 
@@ -635,13 +740,13 @@ function mst( x )
 
         if( this.idx( i , j ) < this.nv )
 
-          for( m = this.v[ this.idx( i , j ) ] = 0; m < x.nc; ++m )
+          for( m = this.v[ this.idx( i , j ) ] = 0; m < x.nr; ++m )
 
-            for( n = this.v[ this.idx( i , j ) ] = 0; n < x.nc; ++n )
+            for( n = 0; n < x.nc; ++n )
 
-              if( ((im = this.idx( i , m )) < this.nv) && ((mn = this.idx( m , n )) < this.nv) && ((nj = this.idx( n , j )) < this.nv)  )
+              if( ((im = x.idx( i , m )) < x.nv) && ((mn = x.idx( m , n )) < x.nv) && ((nj = x.idx( n , j )) < x.nv)  )
 
-              this.v[ this.idx( i , j ) ] += ( x.v[ im ] * x.v[ mn ] * x.v[ nj ] );
+                this.v[ this.idx( i , j ) ] += ( x.v[ im ] * x.v[ mn ] * x.v[ nj ] );
 
    }
 
@@ -652,7 +757,7 @@ function mst( x )
 
       for( j = 0; j < this.nc; ++j )
 
-        for( m = this.v[ this.idx( i , j ) ] = 0; m < x.nc; ++m )
+        for( m = this.v[ this.idx( i , j ) ] = 0; m < x.nr; ++m )
 
           for( n = 0; n < x.nc; ++n )
 
