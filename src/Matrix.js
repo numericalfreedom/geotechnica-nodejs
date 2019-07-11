@@ -43,6 +43,12 @@ function Matrix( nr , nc , nv , v )
 
   if( ! nv )  var nv = ( nr * nc ) ;
 
+  var vv  = new Array( nv ) ;
+
+  if( v && (ix = v.length) && (ix = ((ix < nv) ? ix : nv)) )
+ 
+    for( i = 0;  i < ix;  vv[i] = v[i++] ) ;
+
 /**
  *  Index difference value
  *  
@@ -63,17 +69,8 @@ function Matrix( nr , nc , nv , v )
   this.nr  = nr ;
   this.nc  = nc ;
   this.nv  = nv ;
-  this.v   = new Array( nv ) ;
+  this.v   = vv ;
   this.d   = d ;
-
-  if( v && (ix = v.length) )
-   {
-
-    if( ix > nv )  ix = nv ;
-
-    for( i < 0; i < ix; this.v[i] = v[i++] ) ;
-
-   } ; // end for
 
 /** 
  *
@@ -938,13 +935,11 @@ console.log( e ) ;
 
 
 
-var x = new Matrix( 6 , 6 ) ;
+var x = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 5 , 7 , 11 , 13 , 17 , 19 ] ) ;
 
-var y = new Matrix( 6 , 6 ) ;
+var y = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 5 , 7 , 11 , 13 , 17 , 19 ] ) ;
 
-var r = new Matrix( 6 , 6 ) ;
-
-for( i = 0;  (i < x.nv);  x.v[i] = Math.random() , i++ ) ;
+var r = new Matrix( 3 , 3 ) ;
 
 y.eqt( x ) ;
 
