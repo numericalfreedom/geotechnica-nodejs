@@ -859,7 +859,7 @@ for( i = 0; i < y.nv ; y.v[i] = (1 + i++) ) ;
 var r = new Matrix( 3 , 3 , 4 ) ;
 
 
-r.mmm( x , y ) ;
+r.mmd( x , y ) ;
 
 
 console.log( x ) ;
@@ -880,7 +880,7 @@ var y = new Matrix( 3 , 3 ) ;
 var r = new Matrix( 3 , 3 ) ;
 
 
-for( var ii = 0; ii < 1; ++ii , r.mmm( x , y ) )
+for( var ii = 0; ii < 1; ++ii , r.mmd( x , y ) )
  {
 
   for( i = 0; i < x.nv ; x.v[i] = Math.random() , i++ ) ;
@@ -960,7 +960,7 @@ x.inv()
 
 console.log( x.v ) ;
 
-r.mmm( x , y ) ;
+r.mmd( x , y ) ;
 
 console.log( r.v ) ;
 
