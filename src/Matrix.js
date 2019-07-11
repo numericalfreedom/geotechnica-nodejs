@@ -782,7 +782,6 @@ function inv()
   let bii = undefined ;
   let bji = undefined ;
 
-
   for( i = 0;  i < this.nr;  ++i )
 
     if( bii = this.v[ this.idx( i , i ) ] )
