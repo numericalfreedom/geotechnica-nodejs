@@ -107,6 +107,7 @@ function Matrix( nr , nc , nv , v )
   this.vmd = vmd ;
   this.xmm = xmm ;
   this.mmd = mmd ;
+  this.mdt = mdt ;
   this.mmt = mmt ;
   this.msd = msd ;
   this.mst = mst ;
@@ -674,6 +675,38 @@ function mmd( x , y )
   return ;
 
  } ; // end function mmd()
+
+
+
+/** Function mdt
+ *
+ *
+ */
+
+function mdt( x , y )
+ {
+
+  let i  = undefined ;
+  let k  = undefined ;
+  let ik = undefined ;
+  let ki = undefined ;
+  let r  = undefined ;
+  let rr = undefined ;
+
+  for( r = 0 , i = 0; i < this.nr; ++i )
+
+    if( this.idx( i , i ) < this.nv )
+
+      for( this.v[ this.idx( i , i ) ] = k = 0; k < x.nc; r += rr , ++k )
+
+        if( ((ik = x.idx( i , k )) < x.nv) && ((ki = y.idx( k , i )) < y.nv) )
+
+          this.v[ this.idx( i , i ) ] += ( r = (x.v[ ik ] * y.v[ ki ]) );
+
+  return ;
+
+ } ; // end function mdt()
+
 
 
 /** Function mmt
