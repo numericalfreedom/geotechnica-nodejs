@@ -701,9 +701,9 @@ function mdt( x , y )
 
         if( ((ik = x.idx( i , k )) < x.nv) && ((ki = y.idx( k , i )) < y.nv) )
 
-          this.v[ this.idx( i , i ) ] += ( r = (x.v[ ik ] * y.v[ ki ]) );
+          this.v[ this.idx( i , i ) ] += ( rr = (x.v[ ik ] * y.v[ ki ]) );
 
-  return ;
+  return( r ) ;
 
  } ; // end function mdt()
 
@@ -1192,4 +1192,19 @@ console.log( y.v ) ;
 r.xmm( x , y ) ;
 
 console.log( r.v ) ;
+
+
+var x  = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ] ) ;
+
+var y  = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ] ) ;
+
+var r  = new Matrix( 3 , 3 ) ;
+
+console.log( x.v ) ;
+
+console.log( y.v ) ;
+
+console.log( r.v ) ;
+
+console.log( r.mdt( x , y ) );
 
