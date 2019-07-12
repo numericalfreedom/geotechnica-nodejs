@@ -48,6 +48,10 @@ function Matrix( nr , nc , nv , v )
   if( v && (ix = v.length) && (ix = ((ix < nv) ? ix : nv)) )
  
     for( i = 0;  i < ix;  vv[i] = v[i++] ) ;
+    
+  else
+  
+    for( i = 0;  i < nv;  vv[i++] = 0.0 ) ;
 
 /**
  *  Index difference value
@@ -100,6 +104,8 @@ function Matrix( nr , nc , nv , v )
   this.smd = smd ;
   this.vmm = vmm ;
   this.vmd = vmd ;
+  this.xmm = xmm ;
+  this.xms = xms ;
   this.mmd = mmd ;
   this.mmt = mmt ;
   this.msd = msd ;
@@ -557,6 +563,63 @@ function vmd( x , y )
 
 
 
+/** Function xmm
+ *
+ *
+ */
+
+function xmm( x , y )
+ {
+
+  let i = undefined ;
+  let j = undefined ;
+
+  for( i = 0; i < x.nv; ++i )
+  
+    for( j = 0; j < y.nv; ++j )
+
+      if( y.v[ j ] )
+
+        this.v[ this.idx( i , j ) ] = ( x.v[ i ] / y.v[ j ] ) ;
+
+      else
+	
+	this.v[ this.idx( i , j ) ] = 0.0 ;
+
+  return ;
+
+ } ; // end function xmm()
+
+
+/** Function xms
+ *
+ *
+ */
+
+function xms( x )
+ {
+
+  let i = undefined ;
+  let j = undefined ;
+
+  for( i = 0; i < x.nv; ++i )
+  
+    for( j = 0; j < y.nv; ++j )
+
+      if( y.v[ j ] )
+
+        this.v[ this.idx( i , j ) ] = ( x.v[ i ] / y.v[ j ] ) ;
+
+      else
+	
+	this.v[ this.idx( i , j ) ] = 0.0 ;
+
+  return ;
+
+ } ; // end function xms()
+
+
+
 /** Function mmd
  *
  *
@@ -785,6 +848,8 @@ function inv()
 
   let r = new Matrix( this.nr , this.nc ) ;
 
+  console.log( 'r=' , r ) ;
+
   for( i = 0;  i < this.nr;  ++i )
 
     for( j = 0;  j < this.nc;  ++j )
@@ -817,7 +882,7 @@ function inv()
 
         if( i != k )
 
-          this.v[ this.idx( i , k ) ] /= (- akk ) ;
+          r.v[ r.idx( i , k ) ] /= (- akk ) ;
 
       for( j = 0;  j < r.nr;  ++j )
 
