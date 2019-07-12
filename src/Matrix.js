@@ -578,15 +578,20 @@ function xmm( x , y )
   let c = undefined ;
   let d = undefined ;
 
-  let e = [ 2 , 3 , 3 , 2 , 3 , 1 , 1 , 3 , 1 , 2 , 2 , 1 ] ;
+  let e = [ 1 , 2 , 2 , 1 , 2 , 0 , 0 , 2 , 0 , 1 , 1 , 0 ] ;
 
   for( j = 0; j < this.nc; ++j )
 
-    for( i = k = f = 0 , a = 1 , b = 2 , c = 3 , d = 4;  k < e.length; ++i , c += 3 , a += 3 , b += 3 , k += 3 )
+    for( i = k = 0 , a = 0 , b = 1 , c = 2 , d = 3;  k < e.length; ++i , a += 4 , b += 4 , c += 4 , d += 4 , k += 4 )
 
-      if( (this.idx( i , j ) < this.nv) && (x.idx( e[a] , j ) < x.nv) && (y.idx( e[b] , j ) < x.nv) && (x.idx( e[c] , j ) < x.nv) && (y.idx( e[d] , j ) < x.nv) )
+      if( (this.idx( i , j ) < this.nv) && (x.idx( e[a] , j ) < x.nv) && (y.idx( e[b] , j ) < y.nv) && (x.idx( e[c] , j ) < x.nv) && (y.idx( e[d] , j ) < y.nv) )
+       {
+
+        console.log( i , j , e[a] , e[b] , e[c] , e[d] ) ;
 
         this.v[ this.idx( i , j ) ] = ( (x.v[ x.idx( e[a] , j ) ] * y.v[ y.idx( e[b] , j ) ]) - (x.v[ x.idx( e[c] , j ) ] * y.v[ y.idx( e[d] , j ) ]) );
+
+       }
 
   return ;
 
@@ -1075,3 +1080,19 @@ console.log( x.v ) ;
 r.mmd( x , y ) ;
 
 console.log( r.v ) ;
+
+
+var x = new Matrix( 3 , 4 , undefined , [ 1 , 1 , 1 , 1 , 3 , 3 , 3 , 3 , 5 , 5 , 5 , 5 ] ) ;
+
+var y = new Matrix( 3 , 4 , undefined , [ 7 , 7 , 7 , 7 , 11 , 11 , 11 , 11 , 13 , 13 , 13 , 13 ] ) ;
+
+var r = new Matrix( 3 , 4 ) ;
+
+console.log( x.v ) ;
+
+console.log( y.v ) ;
+
+r.xmm( x , y ) ;
+
+console.log( r.v ) ;
+
