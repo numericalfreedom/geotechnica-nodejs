@@ -91,6 +91,7 @@ function Matrix( nr , nc , nv , v )
   this.sum = sum ;
   this.trc = trc ;
   this.enm = enm ;
+  this.tsp = tsp ;
   this.mma = mma ;
   this.msa = msa ;
   this.mms = mms ;
@@ -282,6 +283,31 @@ function enm( x )
   return( Math.sqrt( r ) ) ;
 
  } ; // end function enm()
+
+
+
+/** Function tsp
+ *
+ *
+ */
+
+function tsp( x )
+ {
+
+  let i = undefined ;
+  let j = undefined ;
+  
+  if( ! this.d )
+  
+    for( i = 0; i < this.nr; ++i )
+    
+      for( j = 0; j < this.nc; ++j )
+      
+        this.v[ this.idx( j , i ) ] = x.v[ x.idx( i , j ) ] ;
+
+  return ;
+
+ } ; // end function tsp()
 
 
 
