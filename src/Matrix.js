@@ -110,6 +110,8 @@ function Matrix( nr , nc , nv , v )
   this.msd = msd ;
   this.mst = mst ;
   this.inv = inv ;
+  this.evl = evl ;
+  this.evv = evv ;
 
  } ; // end function Matrix
 
@@ -888,6 +890,42 @@ function inv()
   return ;
 
  } ; // end function inv()
+
+
+
+/** Function evl
+ *
+ *
+ */
+
+function evl( c )
+ {
+
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; ++i ) ;
+
+  return ;
+
+ } ; // end function evl()
+
+
+
+/** Function evv
+ *
+ *
+ */
+
+function evv( c )
+ {
+
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; ++i ) ;
+
+  return ;
+
+ } ; // end function evv()
 
 
 
