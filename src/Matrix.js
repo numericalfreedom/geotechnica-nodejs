@@ -105,7 +105,6 @@ function Matrix( nr , nc , nv , v )
   this.vmm = vmm ;
   this.vmd = vmd ;
   this.xmm = xmm ;
-  this.xms = xms ;
   this.mmd = mmd ;
   this.mmt = mmt ;
   this.msd = msd ;
@@ -574,27 +573,24 @@ function xmm( x , y )
   let i = undefined ;
   let j = undefined ;
   let k = undefined ;
+  let a = undefined ;
+  let b = undefined ;
+  let c = undefined ;
+  let d = undefined ;
+
+  let e = [ 2 , 3 , 3 , 2 , 3 , 1 , 1 , 3 , 1 , 2 , 2 , 1 ] ;
+
+  for( j = 0; j < this.nc; ++j )
+
+    for( i = k = f = 0 , a = 1 , b = 2 , c = 3 , d = 4;  k < e.length; ++i , c += 3 , a += 3 , b += 3 , k += 3 )
+
+      if( (this.idx( i , j ) < this.nv) && (x.idx( e[a] , j ) < x.nv) && (y.idx( e[b] , j ) < x.nv) && (x.idx( e[c] , j ) < x.nv) && (y.idx( e[d] , j ) < x.nv) )
+
+        this.v[ this.idx( i , j ) ] = ( (x.v[ x.idx( e[a] , j ) ] * y.v[ y.idx( e[b] , j ) ]) - (x.v[ x.idx( e[c] , j ) ] * y.v[ y.idx( e[d] , j ) ]) );
 
   return ;
 
  } ; // end function xmm()
-
-
-/** Function xms
- *
- *
- */
-
-function xms( x )
- {
-
-  let i = undefined ;
-  let j = undefined ;
-  let k = undefined ;
-
-  return ;
-
- } ; // end function xms()
 
 
 
