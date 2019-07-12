@@ -783,110 +783,63 @@ function inv()
   let akj = undefined ;
   let aik = undefined ;
 
+  let r = new Matrix( this.nr , this.nc ) ;
 
-  if( this.d )
-  
-    for( k = 0;  k < this.nr;  ++k )
+  for( i = 0;  i < this.nr;  ++i )
 
-      if( akk = this.v[ this.idx( k , k ) ] )
-       {
+    for( j = 0;  j < this.nc;  ++j )
+      
+      if( this.idx( i ,  j ) < this.nv )
+        
+        r.v[ r.idx( i , j ) ] = this.v[ this.idx( i , j ) ] ;
 
-        for( i = 0;  i < this.nc;  ++i )
+  for( k = 0;  k < r.nr;  ++k )
 
-          for( j = 0;  j < this.nr;  ++j )
+    if( akk = r.v[ r.idx( k , k ) ] )
+     {
 
-            if( (i != k) && (j != k) )
-             {
+      for( i = 0;  i < r.nc;  ++i )
 
-              if( (this.idx( k , j ) < this.nv) && (this.idx( i , k ) < this.nv) && ( this.idx( i , j ) < this.nv) )
-               {
+        for( j = 0;  j < r.nr;  ++j )
 
-                akj = this.v[ this.idx( k , j ) ] ;
-              
-                aik = this.v[ this.idx( i , k ) ] ;
+          if( (i != k) && (j != k) )
+           {
 
-                this.v[ this.idx( i , j ) ] -= ( (akj * aik) / akk ) ;
+            akj = r.v[ r.idx( k , j ) ] ;
 
-               } // end if{} +
-                
-              else
-              
-                akj = aik = 0 ;
+            aik = r.v[ r.idx( i , k ) ] ;
 
-             } ; // end if{} -
+            r.v[ r.idx( i , j ) ] -= ( (akj * aik) / akk ) ;
 
+           } ;
 
-        for( i = 0;  i < k;  ++i )
+      for( i = 0;  i < r.nc;  ++i )
 
-          if( this.idx( i , k ) < this.nv )
+        if( i != k )
 
-            this.v[ this.idx( i , k ) ] /= (- akk ) ;
+          this.v[ this.idx( i , k ) ] /= (- akk ) ;
 
+      for( j = 0;  j < r.nr;  ++j )
 
-        for( j = (k + 1);  j < this.nr;  ++j )
+        if( k != j )
 
-          if( this.idx( k , j ) < this.nv )
+          r.v[ r.idx( k , j ) ] /= akk ;
 
-            this.v[ this.idx( k , j ) ] /= akk ;
+      r.v[ r.idx( k , k ) ] = ( 1.0 / akk ) ;
 
+     } // end if{} +
 
-        this.v[ this.idx( k , k ) ] = ( 1.0 / akk ) ;
+    else
 
-        console.log( 'k=' , k , this.v ) ;
+      r.v[ r.idx( k , k ) ] = undefined ;
 
-       } // end if{} +
+  for( i = 0;  i < this.nr;  ++i )
 
-      else
-
-        this.v[ this.idx( k , k ) ] = undefined ;
-
-  else
-
-    for( k = 0;  k < this.nr;  ++k )
-
-      if( akk = this.v[ this.idx( k , k ) ] )
-       {
-
-        for( i = 0;  i < this.nc;  ++i )
-
-          for( j = 0;  j < this.nr;  ++j )
-
-            if( (i != k) && (j != k) )
-             {
-
-              akj = this.v[ this.idx( k , j ) ] ;
-
-              aik = this.v[ this.idx( i , k ) ] ;
-
-              this.v[ this.idx( i , j ) ] -= ( (akj * aik) / akk ) ;
-
-             } ;
-
-
-        for( i = 0;  i < this.nc;  ++i )
-
-          if( i != k )
-
-            this.v[ this.idx( i , k ) ] /= (- akk ) ;
-
-
-        for( j = 0;  j < this.nr;  ++j )
-
-          if( k != j )
-
-            this.v[ this.idx( k , j ) ] /= akk ;
-
-
-        this.v[ this.idx( k , k ) ] = ( 1.0 / akk ) ;
-
-        console.log( 'k=' , k , this.v ) ;
-
-       } // end if{} +
-
-      else
-
-        this.v[ this.idx( k , k ) ] = undefined ;
-
+    for( j = 0;  j < this.nc;  ++j )
+      
+      if( this.idx( i ,  j ) < this.nv )
+        
+        this.v[ this.idx( i , j ) ] = r.v[ r.idx( i , j ) ];
 
   return ;
 
