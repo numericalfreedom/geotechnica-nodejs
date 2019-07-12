@@ -1194,11 +1194,11 @@ r.xmm( x , y ) ;
 console.log( r.v ) ;
 
 
-var x  = new Matrix( 3 , 3 , 4 , [ 1 , 2 , 3 , 4 ] ) ;
+var x  = new Matrix( 2 , 2 , 3 , [ 1 , 2 , 3 ] ) ;
 
-var y  = new Matrix( 3 , 3 , 4 , [ 1 , 2 , 3 , 4 ] ) ;
+var y  = new Matrix( 2 , 2 , 3 , [ 1 , 2 , 3 ] ) ;
 
-var r  = new Matrix( 3 , 3 , 4 ) ;
+var r  = new Matrix( 2 , 2 , 3 ) ;
 
 var rr = undefined ;
 
