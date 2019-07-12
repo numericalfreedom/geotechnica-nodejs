@@ -693,15 +693,15 @@ function mdt( x , y )
   let r  = undefined ;
   let rr = undefined ;
 
-  for( r = 0 , i = 0; i < this.nr; ++i )
+  for( r = 0 , i = 0; i < this.nr; r += rr , ++i )
 
     if( this.idx( i , i ) < this.nv )
 
-      for( this.v[ this.idx( i , i ) ] = k = 0; k < x.nc; r += rr , ++k )
+      for( this.v[ this.idx( i , i ) ] = k = 0; k < x.nc; ++k )
 
         if( ((ik = x.idx( i , k )) < x.nv) && ((ki = y.idx( k , i )) < y.nv) )
 
-          this.v[ this.idx( i , i ) ] += ( rr = (x.v[ ik ] * y.v[ ki ]) );
+          rr = ( this.v[ this.idx( i , i ) ] += (x.v[ ik ] * y.v[ ki ]) );
 
   return( r ) ;
 
@@ -1194,17 +1194,21 @@ r.xmm( x , y ) ;
 console.log( r.v ) ;
 
 
-var x  = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ] ) ;
+var x  = new Matrix( 3 , 3 , 4 , [ 1 , 2 , 3 , 4 ] ) ;
 
-var y  = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ] ) ;
+var y  = new Matrix( 3 , 3 , 4 , [ 1 , 2 , 3 , 4 ] ) ;
 
-var r  = new Matrix( 3 , 3 ) ;
+var r  = new Matrix( 3 , 3 , 4 ) ;
+
+var rr = undefined ;
 
 console.log( x.v ) ;
 
 console.log( y.v ) ;
 
+rr = r.mdt( x , y ) ;
+
 console.log( r.v ) ;
 
-console.log( r.mdt( x , y ) );
+console.log( rr );
 
