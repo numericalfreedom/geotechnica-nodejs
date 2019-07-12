@@ -554,8 +554,8 @@ function vmd( x , y )
         this.v[ this.idx( i , j ) ] = ( x.v[ i ] / y.v[ j ] ) ;
 
       else
-	
-	this.v[ this.idx( i , j ) ] = 0.0 ;
+
+        this.v[ this.idx( i , j ) ] = 0.0 ;
 
   return ;
 
@@ -573,18 +573,7 @@ function xmm( x , y )
 
   let i = undefined ;
   let j = undefined ;
-
-  for( i = 0; i < x.nv; ++i )
-  
-    for( j = 0; j < y.nv; ++j )
-
-      if( y.v[ j ] )
-
-        this.v[ this.idx( i , j ) ] = ( x.v[ i ] / y.v[ j ] ) ;
-
-      else
-	
-	this.v[ this.idx( i , j ) ] = 0.0 ;
+  let k = undefined ;
 
   return ;
 
@@ -601,18 +590,7 @@ function xms( x )
 
   let i = undefined ;
   let j = undefined ;
-
-  for( i = 0; i < x.nv; ++i )
-  
-    for( j = 0; j < y.nv; ++j )
-
-      if( y.v[ j ] )
-
-        this.v[ this.idx( i , j ) ] = ( x.v[ i ] / y.v[ j ] ) ;
-
-      else
-	
-	this.v[ this.idx( i , j ) ] = 0.0 ;
+  let k = undefined ;
 
   return ;
 
