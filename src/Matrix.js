@@ -1099,7 +1099,7 @@ function evl()
   let ldb  = undefined ; 
   let ldc  = undefined ; 
 
-  let pi_2_3 = ( (2 * Math.pi) / 3 ) ;
+  let pi_2_3 = ( (2 * Math.PI) / 3 ) ;
 
 
   if( this.nv <= 4 )
@@ -1124,7 +1124,7 @@ function evl()
 
     p = (- (a + b) ) ;
 
-    q = ( (a * b) - (c * c) ) ;
+    q = ( (a * b) - (d * d) ) ;
 
     r = Math.sqrt( (p * p) - (4 * q) ) ;
 
@@ -1160,9 +1160,21 @@ function evl()
     q = ( m + ((2 * k * kk) / 27) - ((k * l) / 3) ) ;
 
 
-    bt = Math.sqrt( - (4 * p) / 3 ) ;
+    if( (p != 0) && (q != 0) )
+     {
 
-    ap = ( (Math.PI / 2) - Math.asin( (3 * q) / (p * bt) ) ) ;
+      bt = Math.sqrt( - (4 * p) / 3 ) ;
+
+      ap = ( ((Math.PI / 2) - Math.asin( (3 * q) / (p * bt) )) / 3 ) ;
+
+     } // end if{} +
+
+    else
+     {
+	   
+      bt = ap = 0 ;
+
+     } ; // end else
 
 
     k_3 = ( k / 3 ) ;
@@ -1495,4 +1507,9 @@ console.log( 'r334=' , r.v ) ;
 y.tfm( r )
 
 console.log( 'y=' , y.v ) ;
+
+
+var x = new Matrix( 3 , 3 , 6 , [ -2 , 1 , 5 , -4 , 2 , 2 , 0 , 0 , 0 ] ) ;
+
+console.log( x.evl() ) ;
 
