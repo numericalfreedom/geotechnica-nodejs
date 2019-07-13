@@ -172,7 +172,13 @@ function tfm( x )
 
       if( this.idx( i , j ) < this.nv )
 
-        this.v[ this.idx( i , j ) ] = x.v[ x.idx( i , j ) ] ;
+        if( x.idx( i , j ) < x.nv )
+
+          this.v[ this.idx( i , j ) ] = x.v[ x.idx( i , j ) ] ;
+
+        else
+
+	  this.v[ this.idx( i , j ) ] = 0 ;
 
   return ;
 
