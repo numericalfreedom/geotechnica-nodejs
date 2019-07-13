@@ -168,11 +168,11 @@ function tfm( x )
 
   for( i = 0;  i < this.nr;  ++i )
 
-    for( j = 0;  j < this.nr;  ++j )
+    for( j = 0;  j < this.nc;  ++j )
 
       if( this.idx( i , j ) < this.nv )
 
-        if( x.idx( i , j ) < x.nv )
+        if( (x.idx( i , j ) < x.nv) && (i < x.nr) && (j < x.nc) )
 
           this.v[ this.idx( i , j ) ] = x.v[ x.idx( i , j ) ] ;
 
