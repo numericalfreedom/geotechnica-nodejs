@@ -1061,14 +1061,125 @@ function inv()
  *
  */
 
-function evl( c )
+function evl()
  {
 
-  let i = undefined ;
+  let i    = undefined ;
 
-  for( i = 0; i < this.nv; ++i ) ;
+  let a    = undefined ;
+  let b    = undefined ;
+  let c    = undefined ;
+  let d    = undefined ;
+  let e    = undefined ;
+  let f    = undefined ;
 
-  return ;
+  let k    = undefined ;
+  let l    = undefined ;
+  let m    = undefined ;
+
+  let ab   = undefined ;
+  let bc   = undefined ;
+  let ac   = undefined ;
+
+  let dd   = undefined ;
+  let ee   = undefined ;
+  let ff   = undefined ;
+
+  let p    = undefined ;
+  let q    = undefined ;
+
+  let kk   = undefined ;
+
+  let ap   = undefined ;
+  let bt   = undefined ;
+  
+  let k_3  = undefined ;
+
+  let lda  = undefined ; 
+  let ldb  = undefined ; 
+  let ldc  = undefined ; 
+
+  let pi_2_3 = ( (2 * Math.pi) / 3 ) ;
+
+
+  if( this.nv <= 4 )
+   {
+
+    a = this.v[0] ;
+    b = this.v[1] ;
+    d = this.v[2] ;
+
+    c = e = f = 0 ;
+
+    if( this.nv == 4 )
+     {
+
+      c = this.v[2] ;
+      d = this.v[3] ;
+
+      e = f = 0 ;
+
+     } ; // if{} +
+
+
+    p = (- (a + b) ) ;
+
+    q = ( (a * b) - (c * c) ) ;
+
+    r = Math.sqrt( (p * p) - (4 * q) ) ;
+
+
+    lda = ( ((- p) + r) / 2 ) ;
+
+    ldb = ( ((- p) - r) / 2 ) ;
+
+    ldc = c ;
+
+
+   } // end if{} +
+
+  else
+   {
+
+    a = this.v[0] ;
+    b = this.v[1] ;
+    c = this.v[2] ;
+    d = this.v[3] ;
+    e = this.v[4] ;
+    f = this.v[5] ;
+  
+    k = (- (a + b + c) ) ;
+
+    l = ( (ab = (a * b)) + (bc = (b * c)) + (ac = (a * c)) - (dd = (d * d)) - (ee = (e * e)) - (ff = (f * f)) ) ;
+
+    m = ( (a * ff) + (b * ee) + (c * dd) - (a * b * c) - (2 * d * e * f) ) ;
+
+
+    p = ( l - ((kk = (k * k)) / 3) ) ;
+   
+    q = ( m + ((2 * k * kk) / 27) - ((k * l) / 3) ) ;
+
+
+    bt = Math.sqrt( - (4 * p) / 3 ) ;
+
+    ap = ( (Math.PI / 2) - Math.asin( (3 * q) / (p * bt) ) ) ;
+
+
+    k_3 = ( k / 3 ) ;
+
+
+    lda = ( (bt * Math.cos( ap )) - k_3 ) ;
+
+    ldb = ( (bt * Math.cos( ap - pi_2_3 )) - k_3 ) ;
+
+    ldc = ( (bt * Math.cos( ap + pi_2_3 )) - k_3 ) ;
+
+
+   } ; // end else -
+
+
+  return( [ lda , ldb , ldc ] ) ;
+
 
  } ; // end function evl()
 
@@ -1079,7 +1190,7 @@ function evl( c )
  *
  */
 
-function evv( c )
+function evv()
  {
 
   let i = undefined ;
