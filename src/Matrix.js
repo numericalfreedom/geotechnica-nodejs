@@ -84,6 +84,7 @@ function Matrix( nr , nc , nv , v )
  * */
 
   this.idx = idx ;
+  this.tfm = tfm ;
   this.val = val ;
   this.eqt = eqt ;
   this.unt = unt ;
@@ -92,6 +93,8 @@ function Matrix( nr , nc , nv , v )
   this.trc = trc ;
   this.enm = enm ;
   this.tsp = tsp ;
+  this.tms = tms ;
+  this.tma = tma ;
   this.mma = mma ;
   this.msa = msa ;
   this.mms = mms ;
@@ -149,6 +152,31 @@ function idx( i , j )
   return( r ) ;
 
  } ; // end function idx()
+
+
+
+/** Function tfm
+ *
+ *
+ */
+
+function tfm( x )
+ {
+
+  let i   = undefined ;
+  let j   = undefined ;
+
+  for( i = 0;  i < this.nr;  ++i )
+
+    for( j = 0;  j < this.nr;  ++j )
+
+      if( this.idx( i , j ) < this.nv )
+
+        this.v[ this.idx( i , j ) ] = x.v[ x.idx( i , j ) ] ;
+
+  return ;
+
+ } ; // end function tfm()
 
 
 
@@ -300,15 +328,85 @@ function tsp( x )
   
   if( ! this.d )
   
-    for( i = 0; i < this.nr; ++i )
+    for( i = 0;  i < this.nr;  ++i )
     
-      for( j = 0; j < this.nc; ++j )
-      
+      for( j = 0;  j < this.nc;  ++j )
+
         this.v[ this.idx( j , i ) ] = x.v[ x.idx( i , j ) ] ;
 
   return ;
 
  } ; // end function tsp()
+
+
+
+/** Function tms
+ *
+ *
+ */
+
+function tms()
+ {
+
+  let i   = undefined ;
+  let j   = undefined ;
+  let aij = undefined ;
+  let aji = undefined ;
+
+  if( ! this.d )
+
+    for( i = 0;  i < this.nr;  ++i )
+
+      for( j = (i + 1);  j < this.nr;  ++j )
+       {
+
+        aij = this.v[ this.idx( i , j ) ] ;
+
+	aji = this.v[ this.idx( j , i ) ] ;
+
+        this.v[ this.idx( j , i ) ] = this.v[ this.idx( i , j ) ] = ( (aij + aji) / 2 ) ;
+
+       } ; // end for()
+
+  return ;
+
+ } ; // end function tms()
+
+
+
+/** Function tma
+ *
+ *
+ */
+
+function tma()
+ {
+
+  let i   = undefined ;
+  let j   = undefined ;
+  let aij = undefined ;
+  let aji = undefined ;
+
+  if( ! this.d )
+
+    for( i = 0;  i < this.nr;  ++i )
+
+      for( j = (i + 1);  j < this.nr;  ++j )
+       {
+
+        this.v[ this.idx( i , i ) ] = 0 ;
+
+        aij = this.v[ this.idx( i , j ) ] ; 
+
+        aji = this.v[ this.idx( j , i ) ] ;
+
+        this.v[ this.idx( j , i ) ] = this.v[ this.idx( i , j ) ] = ( (aij - aji) / 2 ) ;
+
+       } ; // end for()
+
+  return ;
+
+ } ; // end function tma()
 
 
 
@@ -1215,16 +1313,69 @@ console.log( rr );
 
 var x  = new Matrix( 3 , 4 , undefined , [ 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 11 , 12 ] ) ;
 
-var y  = new Matrix( 4 , 1 , undefined , [ 1 , 2 , 3 , 4 ] ) ;
+var y  = new Matrix( 4 , 3 , undefined , [ 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 11 , 12 ] ) ;
 
-var r  = new Matrix( 3 , 1 , undefined ) ;
+var rs = new Matrix( 3 , 3 , undefined ) ;
+
+var ra = new Matrix( 3 , 3 , undefined ) ;
 
 console.log( x.v ) ;
 
 console.log( y.v ) ;
 
-r.mmd( x , y ) ;
 
-console.log( r.v ) ;
+rs.mmd( x , y ) ;
 
+console.log( rs.v ) ;
+
+rs.tms() ;
+
+console.log( rs.v ) ;
+
+
+ra.mmd( x , y ) ;
+
+console.log( ra.v ) ;
+
+ra.tma() ;
+
+console.log( ra.v ) ;
+
+
+var x = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ] ) ;
+
+var y = new Matrix( 3 , 3 , undefined ) ;
+
+
+var r = new Matrix( 2 , 2 , 3 ) ;
+
+r.tfm( x )
+
+console.log( 'r223=' , r.v ) ;
+
+y.tfm( r )
+
+console.log( 'y=' , y.v ) ;
+
+
+var r = new Matrix( 3 , 3 , 4 ) ;
+
+r.tfm( x )
+
+console.log( 'r334=' , r.v ) ;
+
+y.tfm( r )
+
+console.log( 'y=' , y.v ) ;
+
+
+var r = new Matrix( 3 , 3 , 6 ) ;
+
+r.tfm( x )
+
+console.log( 'r334=' , r.v ) ;
+
+y.tfm( r )
+
+console.log( 'y=' , y.v ) ;
 
