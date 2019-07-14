@@ -1023,7 +1023,7 @@ function inv()
 
       for( i = 0;  i < r.nc;  ++i )
 
-        f( i != k )
+        if( i != k )
 
           r.v[ r.idx( i , k ) ] /= (- akk ) ;
 
@@ -1105,7 +1105,7 @@ function evl( x )
   let r    = undefined ;
 
   let kk   = undefined ;
-  let ee   = undefined ;
+  let ev   = undefined ;
 
   let ap   = undefined ;
   let bt   = undefined ;
@@ -1323,29 +1323,29 @@ function evl( x )
        {
 
 
-	ee = evs( (a - lda) , (b - lda) , d , e , f )
+	ev = evs( (a - lda) , (b - lda) , d , e , f )
 
-        this.v[ this.idx( 0 , 1 ) ] = ee[ 0 ] ;
+        this.v[ this.idx( 0 , 1 ) ] = ev[ 0 ] ;
 
-        this.v[ this.idx( 1 , 1 ) ] = ee[ 1 ] ;
+        this.v[ this.idx( 1 , 1 ) ] = ev[ 1 ] ;
  
         this.v[ this.idx( 2 , 1 ) ] = 1 ;
 
 
-	ee = evs( (a - ldb) , (e - ldb) , c , d , f )
+	ev = evs( (a - ldb) , (e - ldb) , c , d , f )
 
-        this.v[ this.idx( 0 , 2 ) ] = ee[ 0 ] ;
+        this.v[ this.idx( 0 , 2 ) ] = ev[ 0 ] ;
 
-        this.v[ this.idx( 1 , 2 ) ] = ee[ 1 ] ;
+        this.v[ this.idx( 1 , 2 ) ] = ev[ 1 ] ;
 
         this.v[ this.idx( 2 , 2 ) ] = 1 ;
 
 
-        ee = evs( (b - ldc) , (f - ldc) , c , d , e )
+        ev = evs( (b - ldc) , (f - ldc) , c , d , e )
 
-        this.v[ this.idx( 0 , 3 ) ] = ee[ 0 ] ;
+        this.v[ this.idx( 0 , 3 ) ] = ev[ 0 ] ;
 
-        this.v[ this.idx( 1 , 3 ) ] = ee[ 1 ] ;
+        this.v[ this.idx( 1 , 3 ) ] = ev[ 1 ] ;
 
         this.v[ this.idx( 2 , 3 ) ] = 1 ;
 
