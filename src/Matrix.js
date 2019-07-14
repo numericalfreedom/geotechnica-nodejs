@@ -1061,7 +1061,7 @@ function inv()
  *
  */
 
-function evl()
+function evl( x )
  {
 
   let i    = undefined ;
@@ -1087,6 +1087,7 @@ function evl()
 
   let p    = undefined ;
   let q    = undefined ;
+  let r    = undefined ;
 
   let kk   = undefined ;
 
@@ -1097,23 +1098,23 @@ function evl()
   let ldb  = undefined ; 
   let ldc  = undefined ; 
 
-  let pi_2_3 = ( (2 * Math.PI) / 3 ) ;
+  let pi_3   = ( Math.PI / 3 ) ;
 
 
-  if( this.nv <= 4 )
+  if( x.nv <= 4 )
    {
 
-    a = this.v[0] ;
-    b = this.v[1] ;
-    d = this.v[2] ;
+    a = x.v[0] ;
+    b = x.v[1] ;
+    d = x.v[2] ;
 
     c = e = f = 0 ;
 
-    if( this.nv == 4 )
+    if( x.nv == 4 )
      {
 
-      c = this.v[2] ;
-      d = this.v[3] ;
+      c = x.v[2] ;
+      d = x.v[3] ;
 
       e = f = 0 ;
 
@@ -1127,11 +1128,11 @@ function evl()
     r = Math.sqrt( (p * p) - (4 * q) ) ;
 
 
-    lda = ( ((- p) + r) / 2 ) ;
+    this.v[ 0 ] = ( ((- p) + r) / 2 ) ;
 
-    ldb = ( ((- p) - r) / 2 ) ;
+    this.v[ 1 ] = ( ((- p) - r) / 2 ) ;
 
-    ldc = c ;
+    this.v[ 2 ] = c ;
 
 
    } // end if{} +
@@ -1139,12 +1140,12 @@ function evl()
   else
    {
 
-    a = this.v[0] ;
-    b = this.v[1] ;
-    c = this.v[2] ;
-    d = this.v[3] ;
-    e = this.v[4] ;
-    f = this.v[5] ;
+    a = x.v[0] ;
+    b = x.v[1] ;
+    c = x.v[2] ;
+    d = x.v[3] ;
+    e = x.v[4] ;
+    f = x.v[5] ;
   
     k = (- (a + b + c) ) ;
 
@@ -1158,34 +1159,52 @@ function evl()
     q = ( m + ((2 * k * kk) / 27) - ((k * l) / 3) ) ;
 
 
-    if( (p != 0) && (q != 0) )
+    if( p < 0 )
      {
 
-      bt = Math.sqrt( - (p / 3) ) ;
+      if( ((4 * p * p* p) + (27 * q * q)) > 0 )
+       {
 
-      ap = ( (Math.acos( (3 * q) / (2 * p * bt) )) / 3 ) ;
+        bt = Math.sqrt( - (p / 3) ) ;
+
+        ap = ( Math.acosh( ((- 3) * abs(q)) / (2 * p * bt) ) / 3 ) ;
+
+        this.v[ 0 ] = this.v[1] = this.v[2] = ( ((- 2) * (abs(q) / q) * bt * Math.cosh( ap )) - (k / 3) ) ;
+
+       } // end if{}+
+
+      else
+       {
+
+        bt = Math.sqrt( - (p / 3) ) ;
+
+        ap = ( Math.acos( (3 * q) / (2 * p * bt) ) / 3 ) ;
+
+        this.v[ 0 ] = ( (2 * bt * Math.cos( ap )) - (k / 3) ) ;
+
+        this.v[ 1 ] = ( (2 * bt * Math.cos( ap - (2 * pi_3) )) - (k / 3) ) ;
+
+        this.v[ 2 ] = ( (2 * bt * Math.cos( ap + (2 * pi_3) )) - (k / 3) ) ;
+
+       }; // end else -
 
      } // end if{} +
 
     else
      {
-	   
-      bt = ap = 0 ;
 
-     } ; // end else
+      bt = Math.sqrt( p / 3 ) ;
 
+      ap = ( Math.asinh( (3 * q) / (2 * p * bt) ) / 3 ) ;
 
-    lda = ( 2 * bt * Math.cos( ap ) ) ;
+      this.v[ 0 ] = this.v[1] = this.v[2] = ( ((- 2) * bt * Math.sinh( ap )) - (k / 3) ) ;
 
-    ldb = ( 2 * bt * Math.cos( ap - pi_2_3 ) ) ;
-
-    ldc = ( 2 * bt * Math.cos( ap + pi_2_3 ) ) ;
-
+     } ; // end else -
 
    } ; // end else -
 
 
-  return( [ lda , ldb , ldc ] ) ;
+  return ;
 
 
  } ; // end function evl()
@@ -1197,7 +1216,7 @@ function evl()
  *
  */
 
-function evv()
+function evv( x )
  {
 
   let i = undefined ;
@@ -1504,7 +1523,36 @@ y.tfm( r )
 console.log( 'y=' , y.v ) ;
 
 
-var x = new Matrix( 3 , 3 , 6 , [ -2 , 1 , 5 , -4 , 2 , 2 , 0 , 0 , 0 ] ) ;
+var x = new Matrix( 3 , 3 , 6 , [ 4 , 10 , 1 , -14 , -12 , 13 , 0 , 0 , 0 ] ) ;
 
-console.log( x.evl() ) ;
+var r = new Matrix( 3 , 1 , undefined ) ;
+
+
+console.log( 'x=' , x.v ) ;
+
+r.evl( x ) ;
+
+console.log( r.v ) ;
+
+
+var x = new Matrix( 3 , 3 , 6 , [ 3 , 0 , 3 , 2 , 4 , 2 , 0 , 0 , 0 ] ) ;
+
+var r = new Matrix( 3 , 1 , undefined ) ;
+
+console.log( 'x=' , x.v ) ;
+
+r.evl( x )
+
+console.log( r.v ) ;
+
+
+var x = new Matrix( 3 , 3 , 6 , [ 1 , 1 , 1 , 2 , 2 , 2 , 0 , 0 , 0 ] ) ;
+
+var r = new Matrix( 3 , 1 , undefined ) ;
+
+console.log( 'x=' , x.v ) ;
+
+r.evl( x )
+
+console.log( r.v ) ;
 
