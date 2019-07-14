@@ -1093,8 +1093,6 @@ function evl()
   let ap   = undefined ;
   let bt   = undefined ;
   
-  let k_3  = undefined ;
-
   let lda  = undefined ; 
   let ldb  = undefined ; 
   let ldc  = undefined ; 
@@ -1163,9 +1161,9 @@ function evl()
     if( (p != 0) && (q != 0) )
      {
 
-      bt = Math.sqrt( - (4 * p) / 3 ) ;
+      bt = Math.sqrt( - (p / 3) ) ;
 
-      ap = ( ((Math.PI / 2) - Math.asin( (3 * q) / (p * bt) )) / 3 ) ;
+      ap = ( (Math.acos( (3 * q * bt) / (2 * p) )) / 3 ) ;
 
      } // end if{} +
 
@@ -1177,14 +1175,11 @@ function evl()
      } ; // end else
 
 
-    k_3 = ( k / 3 ) ;
+    lda = ( 2 * bt * Math.cos( ap ) ) ;
 
+    ldb = ( 2 * bt * Math.cos( ap - pi_2_3 ) ) ;
 
-    lda = ( (bt * Math.cos( ap )) - k_3 ) ;
-
-    ldb = ( (bt * Math.cos( ap - pi_2_3 )) - k_3 ) ;
-
-    ldc = ( (bt * Math.cos( ap + pi_2_3 )) - k_3 ) ;
+    ldc = ( 2 * bt * Math.cos( ap + pi_2_3 ) ) ;
 
 
    } ; // end else -
