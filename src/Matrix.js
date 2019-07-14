@@ -1066,7 +1066,7 @@ function evs( p , q , r , m , n )
 
   let d = ( (p * q) - (r * r) ) ;
 
-  return( [ (((r * n) - (p * m)) / d) , (((r * m) - (q * n)) / d) ] ) ;
+  return( [ (((r * n) - (q * m)) / d) , (((r * m) - (p * n)) / d) ] ) ;
 
  } ; // end function evs()
 
@@ -1598,4 +1598,9 @@ console.log( 'x=' , x.v ) ;
 r.evl( x )
 
 console.log( r.v ) ;
+
+
+console.log( evs( 1 , 2 , 3 , 2 , 3 ) ) ;
+
+
 
