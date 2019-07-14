@@ -1163,7 +1163,7 @@ function evl()
 
       bt = Math.sqrt( - (p / 3) ) ;
 
-      ap = ( (Math.acos( (3 * q * bt) / (2 * p) )) / 3 ) ;
+      ap = ( (Math.acos( (3 * q) / (2 * p * bt) )) / 3 ) ;
 
      } // end if{} +
 
