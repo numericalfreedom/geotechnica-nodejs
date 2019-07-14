@@ -116,7 +116,7 @@ function Matrix( nr , nc , nv , v )
   this.mst = mst ;
   this.inv = inv ;
   this.evl = evl ;
-  this.evv = evv ;
+  this.evc = evc ;
 
  } ; // end function Matrix
 
@@ -1056,6 +1056,22 @@ function inv()
 
 
 
+/** Function evs
+ *
+ *
+ */
+
+function evs( p , q , r , m , n )
+ {
+
+  let d = ( (p * q) - (r * r) ) ;
+
+  return( [ (((r * n) - (p * m)) / d) , (((r * m) - (q * n)) / d) ] ) ;
+
+ } ; // end function evs()
+
+
+
 /** Function evl
  *
  *
@@ -1159,26 +1175,50 @@ function evl( x )
     q = ( m + ((2 * k * kk) / 27) - ((k * l) / 3) ) ;
 
 
-    if( p < 0 )
+    if( p <= 0 )
      {
 
       if( ((4 * p * p* p) + (27 * q * q)) > 0 )
        {
 
-        bt = Math.sqrt( - (p / 3) ) ;
+        if( p < 0 )
+         {
 
-        ap = ( Math.acosh( ((- 3) * abs(q)) / (2 * p * bt) ) / 3 ) ;
+          bt = Math.sqrt( - (p / 3) ) ;
 
-        this.v[ 0 ] = this.v[1] = this.v[2] = ( ((- 2) * (abs(q) / q) * bt * Math.cosh( ap )) - (k / 3) ) ;
+          ap = ( Math.acosh( ((- 3) * Math.abs( q )) / (2 * p * bt) ) / 3 ) ;
+
+         } // end if{} +
+
+	else
+	 {
+
+          bt = ap = 0 ;
+
+         } ; // end else
+
+        this.v[ 0 ] = this.v[1] = this.v[2] = ( ((- 2) * (Math.abs( q ) / q) * bt * Math.cosh( ap )) - (k / 3) ) ;
 
        } // end if{}+
 
       else
        {
 
-        bt = Math.sqrt( - (p / 3) ) ;
+        if( p < 0 )
+	 {
 
-        ap = ( Math.acos( (3 * q) / (2 * p * bt) ) / 3 ) ;
+          bt = Math.sqrt( - (p / 3) ) ;
+
+          ap = ( Math.acos( (3 * q) / (2 * p * bt) ) / 3 ) ;
+
+	 } // end if{} +
+
+	else
+	 {
+
+          bt = ap = 0 ;
+
+         } ; // end else -
 
         this.v[ 0 ] = ( (2 * bt * Math.cos( ap )) - (k / 3) ) ;
 
@@ -1186,7 +1226,7 @@ function evl( x )
 
         this.v[ 2 ] = ( (2 * bt * Math.cos( ap + (2 * pi_3) )) - (k / 3) ) ;
 
-       }; // end else -
+       } ; // end else -
 
      } // end if{} +
 
@@ -1204,6 +1244,9 @@ function evl( x )
    } ; // end else -
 
 
+  debugger ;
+
+
   return ;
 
 
@@ -1211,12 +1254,12 @@ function evl( x )
 
 
 
-/** Function evv
+/** Function evc
  *
  *
  */
 
-function evv( x )
+function evc( x )
  {
 
   let i = undefined ;
@@ -1225,7 +1268,7 @@ function evv( x )
 
   return ;
 
- } ; // end function evv()
+ } ; // end function evc()
 
 
 
@@ -1546,7 +1589,7 @@ r.evl( x )
 console.log( r.v ) ;
 
 
-var x = new Matrix( 3 , 3 , 6 , [ 1 , 1 , 1 , 2 , 2 , 2 , 0 , 0 , 0 ] ) ;
+var x = new Matrix( 3 , 3 , 6 , [ 1 , 1 , 2 , 0 , 0 , 0 , 0 , 0 , 0 ] ) ;
 
 var r = new Matrix( 3 , 1 , undefined ) ;
 
