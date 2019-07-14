@@ -1687,7 +1687,7 @@ console.log( r.v ) ;
 
 var x = new Matrix( 3 , 3 , 6 , [ 1 , 1 , 2 , 0 , 0 , 0 , 0 , 0 , 0 ] ) ;
 
-var r = new Matrix( 3 , 1 , undefined ) ;
+var r = new Matrix( 3 , 4 , undefined ) ;
 
 console.log( 'x=' , x.v ) ;
 
