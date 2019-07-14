@@ -116,7 +116,6 @@ function Matrix( nr , nc , nv , v )
   this.mst = mst ;
   this.inv = inv ;
   this.evl = evl ;
-  this.evc = evc ;
 
  } ; // end function Matrix
 
@@ -1024,7 +1023,7 @@ function inv()
 
       for( i = 0;  i < r.nc;  ++i )
 
-        if( i != k )
+        f( i != k )
 
           r.v[ r.idx( i , k ) ] /= (- akk ) ;
 
@@ -1106,6 +1105,7 @@ function evl( x )
   let r    = undefined ;
 
   let kk   = undefined ;
+  let ee   = undefined ;
 
   let ap   = undefined ;
   let bt   = undefined ;
@@ -1144,21 +1144,88 @@ function evl( x )
     r = Math.sqrt( (p * p) - (4 * q) ) ;
 
 
-    this.v[ 0 ] = ( ((- p) + r) / 2 ) ;
+    if( (this.nv == 2) || this.nv == 6 )
+     {
 
-    this.v[ 1 ] = ( ((- p) - r) / 2 ) ;
+      lda = ( ((- p) + r) / 2 ) ;
 
-    this.v[ 2 ] = c ;
+      ldb = ( ((- p) - r) / 2 ) ;
+
+      ldc = 0 ;
+
+      if( this.nv == 6 )
+       {
+
+        this.v[ this.idx( 0 , 0 ) ] = lda ;
+
+        this.v[ this.idx( 1 , 0 ) ] = ldb ;
+
+
+        this.v[ this.idx( 0 , 1 ) ] = ( c / (b - lda) ) ;
+
+        this.v[ this.idx( 1 , 1 ) ] = 1 ;
+
+
+        this.v[ this.idx( 0 , 2 ) ] = ( c / (a - ldb) ) ;
+      
+        this.v[ this.idx( 1 , 2 ) ] = 1 ;
+
+       }
+
+     }
+
+    if( (this.nv == 3) || (this.nv == 12) )
+     {
+
+      this.v[ this.idx( 0 , 0 ) ] = lda ;
+
+      this.v[ this.idx( 1 , 0 ) ] = ldb ;
+ 
+      this.v[ this.idx( 2 , 0 ) ] = ldc ;
+
+
+      if( this.nv == 12 )
+       {
+
+
+        this.v[ this.idx( 0 , 1 ) ] = ( d / (b - lda) ) ;
+
+        this.v[ this.idx( 1 , 1 ) ] = 1 ;
+
+        this.v[ this.idx( 2 , 1 ) ] = 1 ;
+
+
+        this.v[ this.idx( 0 , 2 ) ] = ( d / (a - ldb) ) ;
+
+        this.v[ this.idx( 1 , 2 ) ] = 1 ;
+
+        this.v[ this.idx( 2 , 2 ) ] = 1 ;
+
+
+        this.v[ this.idx( 0 , 2 ) ] = 0 ;
+
+        this.v[ this.idx( 1 , 2 ) ] = 0 ;
+
+        this.v[ this.idx( 2 , 2 ) ] = 1 ;
+
+
+       } ; // end if{} -
+
+
+     } ; // end if{} -
 
 
    } // end if{} +
 
+
   else
    {
+
 
     a = x.v[0] ;
     b = x.v[1] ;
     c = x.v[2] ;
+    
     d = x.v[3] ;
     e = x.v[4] ;
     f = x.v[5] ;
@@ -1197,7 +1264,7 @@ function evl( x )
 
          } ; // end else
 
-        this.v[ 0 ] = this.v[1] = this.v[2] = ( ((- 2) * (Math.abs( q ) / q) * bt * Math.cosh( ap )) - (k / 3) ) ;
+        lda = ldb = ldc = ( ((- 2) * (Math.abs( q ) / q) * bt * Math.cosh( ap )) - (k / 3) ) ;
 
        } // end if{}+
 
@@ -1220,11 +1287,11 @@ function evl( x )
 
          } ; // end else -
 
-        this.v[ 0 ] = ( (2 * bt * Math.cos( ap )) - (k / 3) ) ;
+        lda = ( (2 * bt * Math.cos( ap )) - (k / 3) ) ;
 
-        this.v[ 1 ] = ( (2 * bt * Math.cos( ap - (2 * pi_3) )) - (k / 3) ) ;
+        ldb = ( (2 * bt * Math.cos( ap - (2 * pi_3) )) - (k / 3) ) ;
 
-        this.v[ 2 ] = ( (2 * bt * Math.cos( ap + (2 * pi_3) )) - (k / 3) ) ;
+        ldc = ( (2 * bt * Math.cos( ap + (2 * pi_3) )) - (k / 3) ) ;
 
        } ; // end else -
 
@@ -1237,9 +1304,56 @@ function evl( x )
 
       ap = ( Math.asinh( (3 * q) / (2 * p * bt) ) / 3 ) ;
 
-      this.v[ 0 ] = this.v[1] = this.v[2] = ( ((- 2) * bt * Math.sinh( ap )) - (k / 3) ) ;
+      lda = ldb = ldc = ( ((- 2) * bt * Math.sinh( ap )) - (k / 3) ) ;
 
      } ; // end else -
+
+
+    if( (this.nv == 3) || (this.nv == 12) )
+     {
+
+      this.v[ this.idx( 0 , 0 ) ] = lda ;
+
+      this.v[ this.idx( 1 , 0 ) ] = ldb ;
+      
+      this.v[ this.idx( 2 , 0 ) ] = ldc ;
+
+
+      if( this.nv == 12 )
+       {
+
+
+	ee = evs( (a - lda) , (b - lda) , d , e , f )
+
+        this.v[ this.idx( 0 , 1 ) ] = ee[ 0 ] ;
+
+        this.v[ this.idx( 1 , 1 ) ] = ee[ 1 ] ;
+ 
+        this.v[ this.idx( 2 , 1 ) ] = 1 ;
+
+
+	ee = evs( (a - ldb) , (e - ldb) , c , d , f )
+
+        this.v[ this.idx( 0 , 2 ) ] = ee[ 0 ] ;
+
+        this.v[ this.idx( 1 , 2 ) ] = ee[ 1 ] ;
+
+        this.v[ this.idx( 2 , 2 ) ] = 1 ;
+
+
+        ee = evs( (b - ldc) , (f - ldc) , c , d , e )
+
+        this.v[ this.idx( 0 , 3 ) ] = ee[ 0 ] ;
+
+        this.v[ this.idx( 1 , 3 ) ] = ee[ 1 ] ;
+
+        this.v[ this.idx( 2 , 3 ) ] = 1 ;
+
+       } ; // end if{} -
+
+
+     } ; // end if{} -
+
 
    } ; // end else -
 
@@ -1251,24 +1365,6 @@ function evl( x )
 
 
  } ; // end function evl()
-
-
-
-/** Function evc
- *
- *
- */
-
-function evc( x )
- {
-
-  let i = undefined ;
-
-  for( i = 0; i < this.nv; ++i ) ;
-
-  return ;
-
- } ; // end function evc()
 
 
 
