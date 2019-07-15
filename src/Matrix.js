@@ -117,6 +117,10 @@ function Matrix( nr , nc , nv , v )
   this.inv = inv ;
   this.evl = evl ;
 
+  this.srt = srt ;
+  this.crt = crt ;
+  this.evs = evs ;
+
  } ; // end function Matrix
 
 
@@ -1055,26 +1059,29 @@ function inv()
 
 
 
-
-
 /** Function srt
  *
+ *  Root of a quadratic polynomial equation
  *
+ *  x*x* + a*x + b = 0
  */
 
-function srt( p , q )
+function srt( a , b )
  {
 
-  let d  = undefined ;
-  let dd = undefined ;
+  const p  = a ;
+  const q  = b ;
+  const d  = ( (p * p) - (4 * q) ) ;
+  const dd = Math.sqrt( Math.abs( d ) ) ;
 
-  d = ( (p * p) - (4 * q) ) ;
+  let   r1 = undefined ;
+  let   r2 = undefined ;
+  let   r3 = undefined ;
+  let   r4 = undefined ;
 
-  dd = Math.sqrt( Math.abs( d ) ) ;
 
   if( d >= 0 )
    {
-
 
     r1 = ( ((- p) + dd) / 2 ) ;
     r2 = 0.0 ;
@@ -1084,18 +1091,21 @@ function srt( p , q )
 
    }
 
+
   else
    {
 
-    r1 = ( -p / 2 ) ;
+    r1 = ( (- p) / 2 ) ;
     r2 = (- dd ) ;
 
-    r3 = ( -p / 2 ) ;
+    r3 = ( (- p) / 2 ) ;
     r4 = (  dd ) ;
 
    } ;
 
+
   return( [ r1 , r2 , r3 , r4 ] ) ;
+
 
  } ; // end function srt()
 
@@ -1103,15 +1113,18 @@ function srt( p , q )
 
 /** Function crt
  *
+ *  Root of a cubic polynomial equation
  *
+ *  x*x*x + a*x*x + b*x + c = 0
  */
 
 function crt( a , b , c )
  {
 
-  let p   = undefined ;
-  let q   = undefined ;
-  let d   = undefined ;
+  const p = ( ((3 * b) - (a * a)) / 9 ) ;
+  const q = ( (((2 * a * a * a) / 27) - ((a * b) / 3) + c) / 2 ) ;
+  const d = ( (p * p * p) + (q * q) ) ;
+
   let w1  = undefined ;
   let w2  = undefined ;
   let u   = undefined ;
@@ -1125,14 +1138,7 @@ function crt( a , b , c )
   let r6  = undefined ;
 
 
-  p = ( ((3.0 * b) - (a * a)) / 9.0 ) ;
-
-  q = ( (((2.0 * a * a * a) / 27.0) - ((a * b) / 3.0) + c) / 2.0 ) ;
-
-  d = ( (p * p * p) + (q * q) ) ;
-
-
-  if( d > 0.0 )
+  if( d >= 0 )
    {
 
 
@@ -1143,7 +1149,7 @@ function crt( a , b , c )
 
     if( Math.abs( w1 ) > 0.0 )
 
-      u = ( Math.floor( Math.abs( w1 ) / w1 ) * Math.pow( Math.abs( w1 ) , (1.0 / 3.0) ) ) ;
+      u = ( Math.floor( Math.abs( w1 ) / w1 ) * Math.pow( Math.abs( w1 ) , (1 / 3) ) ) ;
 
     else
 
@@ -1152,7 +1158,7 @@ function crt( a , b , c )
 
     if( Math.abs( w2 ) > 0.0 )
 
-      v = ( Math.floor( Math.abs( w2 ) / w2 ) * Math.pow( Math.abs( w2 ) , (1.0 / 3.0) ) ) ;
+      v = ( Math.floor( Math.abs( w2 ) / w2 ) * Math.pow( Math.abs( w2 ) , (1 / 3) ) ) ;
 
     else
 
@@ -1161,23 +1167,23 @@ function crt( a , b , c )
 
 //  First root:
 
-    r1 = ( u + v - (a / 3.0) ) ;
+    r1 = ( u + v - (a / 3) ) ;
 
     r2 = 0.0 ;
 
 
 //  Second root:
   
-    r3 = (- ((u + v) / 2.0) - (a / 3.0) ) ;
+    r3 = (- ((u + v) / 2) - (a / 3) ) ;
 
-    r4 = (  ((u - v) / 2.0) * Math.sqrt( 3.0 ) ) ;
+    r4 = (  ((u - v) / 2) * Math.sqrt( 3 ) ) ;
 
 
 // Third root:
 
-    r5 = (- ((u + v) / 2.0) - (a / 3.0) ) ;
+    r5 = (- ((u + v) / 2) - (a / 3) ) ;
 
-    r6 = (- ((u - v) / 2.0) * Math.sqrt( 3.0 ) ) ;
+    r6 = (- ((u - v) / 2) * Math.sqrt( 3 ) ) ;
 
 
    }  // end if{} +
@@ -1188,28 +1194,28 @@ function crt( a , b , c )
 
     q = ( (- q) / Math.sqrt( Math.abs( p * p * p ) ) )
  
-    if( q == (- 1.0) )
+    if( q == (- 1) )
 
       phi = Math.PI ;
 
     else
 
-      phi = ( (Math.PI / 2.0) - Math.atan2( q , Math.sqrt( 1.0 - (q * q) ) ) ) ;
+      phi = ( (Math.PI / 2) - Math.atan2( q , Math.sqrt( 1 - (q * q) ) ) ) ;
 
-    q = ( 2.0 * Math.sqrt( Math.abs( p ) ) ) ;
+    q  = ( 2 * Math.sqrt( Math.abs( p ) ) ) ;
 
 
-    r1 = (    (q * Math.cos(  phi            / 3.0 ))  - (a / 3.0) ) ;
+    r1 = (    (q * Math.cos(  phi            / 3 ))  - (a / 3) ) ;
 
     r2 = 0.0 ;
 
 
-    r3 = ( (- (q * Math.cos( (phi + Math.PI) / 3.0 ))) - (a / 3.0) ) ;
+    r3 = ( (- (q * Math.cos( (phi + Math.PI) / 3 ))) - (a / 3) ) ;
 
     r4 = 0.0 ;
 
 
-    r5 = ( (- (q * Math.cos( (phi - Math.PI) / 3.0 ))) - (a / 3.0) ) ;
+    r5 = ( (- (q * Math.cos( (phi - Math.PI) / 3 ))) - (a / 3) ) ;
 
     r6 = 0.0 ;
 
@@ -1232,7 +1238,7 @@ function crt( a , b , c )
 function evs( p , q , r , m , n )
  {
 
-  let d = ( (p * q) - (r * r) ) ;
+  const d = ( (p * q) - (r * r) ) ;
 
   return( [ (((r * n) - (q * m)) / d) , (((r * m) - (p * n)) / d) ] ) ;
 
