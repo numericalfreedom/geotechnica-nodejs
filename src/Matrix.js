@@ -1055,6 +1055,175 @@ function inv()
 
 
 
+
+
+/** Function srt
+ *
+ *
+ */
+
+function srt( p , q )
+ {
+
+  let d  = undefined ;
+  let dd = undefined ;
+
+  d = ( (p * p) - (4 * q) ) ;
+
+  dd = Math.sqrt( Math.abs( d ) ) ;
+
+  if( d >= 0 )
+   {
+
+
+    r1 = ( ((- p) + dd) / 2 ) ;
+    r2 = 0.0 ;
+
+    r3 = ( ((- p) - dd) / 2 ) ;
+    r4 = 0.0 ;
+
+   }
+
+  else
+   {
+
+    r1 = ( -p / 2 ) ;
+    r2 = (- dd ) ;
+
+    r3 = ( -p / 2 ) ;
+    r4 = (  dd ) ;
+
+   } ;
+
+  return( [ r1 , r2 , r3 , r4 ] ) ;
+
+ } ; // end function srt()
+
+
+
+/** Function crt
+ *
+ *
+ */
+
+function crt( a , b , c )
+ {
+
+  let p   = undefined ;
+  let q   = undefined ;
+  let d   = undefined ;
+  let w1  = undefined ;
+  let w2  = undefined ;
+  let u   = undefined ;
+  let v   = undefined ;
+  let phi = undefined ;
+  let r1  = undefined ;
+  let r2  = undefined ;
+  let r3  = undefined ;
+  let r4  = undefined ;
+  let r5  = undefined ;
+  let r6  = undefined ;
+
+
+  p = ( ((3.0 * b) - (a * a)) / 9.0 ) ;
+
+  q = ( (((2.0 * a * a * a) / 27.0) - ((a * b) / 3.0) + c) / 2.0 ) ;
+
+  d = ( (p * p * p) + (q * q) ) ;
+
+
+  if( d > 0.0 )
+   {
+
+
+    w1 = ( (- q) + Math.sqrt( d ) ) ;
+
+    w2 = ( (- q) - Math.sqrt( d ) ) ;
+
+
+    if( Math.abs( w1 ) > 0.0 )
+
+      u = ( Math.floor( Math.abs( w1 ) / w1 ) * Math.pow( Math.abs( w1 ) , (1.0 / 3.0) ) ) ;
+
+    else
+
+      u = 0.0 ;
+
+
+    if( Math.abs( w2 ) > 0.0 )
+
+      v = ( Math.floor( Math.abs( w2 ) / w2 ) * Math.pow( Math.abs( w2 ) , (1.0 / 3.0) ) ) ;
+
+    else
+
+      v = 0.0 ;
+
+
+//  First root:
+
+    r1 = ( u + v - (a / 3.0) ) ;
+
+    r2 = 0.0 ;
+
+
+//  Second root:
+  
+    r3 = (- ((u + v) / 2.0) - (a / 3.0) ) ;
+
+    r4 = (  ((u - v) / 2.0) * Math.sqrt( 3.0 ) ) ;
+
+
+// Third root:
+
+    r5 = (- ((u + v) / 2.0) - (a / 3.0) ) ;
+
+    r6 = (- ((u - v) / 2.0) * Math.sqrt( 3.0 ) ) ;
+
+
+   }  // end if{} +
+
+
+  else
+   {
+
+    q = ( (- q) / Math.sqrt( Math.abs( p * p * p ) ) )
+ 
+    if( q == (- 1.0) )
+
+      phi = Math.PI ;
+
+    else
+
+      phi = ( (Math.PI / 2.0) - Math.atan2( q , Math.sqrt( 1.0 - (q * q) ) ) ) ;
+
+    q = ( 2.0 * Math.sqrt( Math.abs( p ) ) ) ;
+
+
+    r1 = (    (q * Math.cos(  phi            / 3.0 ))  - (a / 3.0) ) ;
+
+    r2 = 0.0 ;
+
+
+    r3 = ( (- (q * Math.cos( (phi + Math.PI) / 3.0 ))) - (a / 3.0) ) ;
+
+    r4 = 0.0 ;
+
+
+    r5 = ( (- (q * Math.cos( (phi - Math.PI) / 3.0 ))) - (a / 3.0) ) ;
+
+    r6 = 0.0 ;
+
+
+   } // end if{} +
+
+
+  return( [ r1 , r2 , r3 , r4 , r5 , r6 ] ) ;
+
+
+ } ; // end function evs()
+
+
+
 /** Function evs
  *
  *
@@ -1229,6 +1398,7 @@ function evl( x )
     d = x.v[3] ;
     e = x.v[4] ;
     f = x.v[5] ;
+
   
     k = (- (a + b + c) ) ;
 
