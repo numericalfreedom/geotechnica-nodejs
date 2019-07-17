@@ -1498,6 +1498,10 @@ function evl( x )
   let ev1  = undefined ;
   let ev2  = undefined ;
 
+  let lbc  = 0 ;
+  let ivc  = 1 ;
+  let evc  = 2 ;
+
   let eps  = 1.0e-6 ;
 
 
@@ -1689,7 +1693,7 @@ function evl( x )
          {
 
 
-          if( (ld = (((blb = (b - lbd)) * (clb = (c - lbd))) - (f * f)) > eps )
+          if( (ld = (((blb = (b - lbd)) * (clb = (c - lbd))) - (f * f))) > eps )
            {
 
             ev0 = 1 ;
@@ -1701,7 +1705,7 @@ function evl( x )
            } // end if{} +
 
 
-          else if( (ld = (((alb = (a - lbd)) * (clb = (c - lbd))) - (e * e)) > eps )
+          else if( (ld = (((alb = (a - lbd)) * (clb = (c - lbd))) - (e * e))) > eps )
            {
 
             ev0 = ( ((e * f) - (clb * d)) / ld ) ;
@@ -1713,7 +1717,7 @@ function evl( x )
            } // end if{} +
 
 
-          else if( (ld = (((alb = (a - lbd)) * (blb = (b - lbd))) - (d * d)) > eps )
+          else if( (ld = (((alb = (a - lbd)) * (blb = (b - lbd))) - (d * d))) > eps )
            {
 
             ev0 = ( ((d * f) - (blb * e)) / ld ) ;
