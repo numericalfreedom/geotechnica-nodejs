@@ -1909,7 +1909,7 @@ console.log( 'y=' , y.v ) ;
 
 var x = new Matrix( 3 , 3 , 6 , [ 4 , 10 , 1 , -14 , -12 , 13 , 0 , 0 , 0 ] ) ;
 
-var r = new Matrix( 3 , 1 , undefined ) ;
+var r = new Matrix( 3 , 5 , undefined ) ;
 
 
 console.log( 'x=' , x.v ) ;
@@ -1921,7 +1921,7 @@ console.log( r.v ) ;
 
 var x = new Matrix( 3 , 3 , 6 , [ 3 , 0 , 3 , 2 , 4 , 2 , 0 , 0 , 0 ] ) ;
 
-var r = new Matrix( 3 , 1 , undefined ) ;
+var r = new Matrix( 3 , 5 , undefined ) ;
 
 console.log( 'x=' , x.v ) ;
 
@@ -1932,16 +1932,13 @@ console.log( r.v ) ;
 
 var x = new Matrix( 3 , 3 , 6 , [ 1 , 1 , 2 , 0 , 0 , 0 , 0 , 0 , 0 ] ) ;
 
-var r = new Matrix( 3 , 4 , undefined ) ;
+var r = new Matrix( 3 , 5 , undefined ) ;
 
 console.log( 'x=' , x.v ) ;
 
 r.evl( x )
 
 console.log( r.v ) ;
-
-
-console.log( evs( 1 , 2 , 3 , 2 , 3 ) ) ;
 
 
 
