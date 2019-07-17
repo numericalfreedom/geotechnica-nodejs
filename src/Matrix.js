@@ -1538,8 +1538,88 @@ function evl( x )
         e = f = 0 ;
 
 
-      if( (Math.abs( lda - ldb ) > eps) && (Math.abs( ldb - ldc ) > eps) && (Math.abs( ldc - lda ) > eps) )
+      if( (Math.abs( lda - ldb ) < eps) || (Math.abs( ldb - ldc ) < eps) || (Math.abs( ldc - lda ) < eps) )
        {
+
+
+        if( (Math.abs( lda - ldb ) < eps) && (Math.abs( ldb - ldc ) < eps) && (Math.abs( ldc - lda ) < eps) )
+         {
+
+          ev0 = 1 ;
+
+          ev1 = 0 ;
+
+          ev2 = 0 ;
+
+          this.v[ this.idx( 0 , 2 ) ] = ev0 ;
+
+          this.v[ this.idx( 1 , 2 ) ] = ev1 ;
+
+          this.v[ this.idx( 2 , 2 ) ] = ev2 ;
+
+
+          this.v[ this.idx( 0 , 3 ) ] = ev1 ;
+
+          this.v[ this.idx( 1 , 3 ) ] = ev2 ;
+
+          this.v[ this.idx( 2 , 3 ) ] = ev0 ;
+
+
+          this.v[ this.idx( 0 , 4 ) ] = ev2 ;
+
+          this.v[ this.idx( 1 , 4 ) ] = ev0 ;
+
+          this.v[ this.idx( 2 , 4 ) ] = ev1 ;
+
+
+         } // end if{} +
+
+       else
+        {
+
+
+          [ ev0 , ev1 ] = evs( (a - lda) , (b - lda) , d , e , f )
+
+          ev2 = 1 ;
+
+          this.v[ this.idx( 0 , 2 ) ] = ev0 ;
+
+          this.v[ this.idx( 1 , 2 ) ] = ev1 ;
+
+          this.v[ this.idx( 2 , 2 ) ] = ev2 ;
+
+
+          ev0 = (- (d / (a - ldb)) ) ;
+
+          ev1 = 1 ;
+
+          ev2 = 0 ;
+
+          this.v[ this.idx( 0 , 3 ) ] = ev1 ;
+
+          this.v[ this.idx( 1 , 3 ) ] = ev2 ;
+
+          this.v[ this.idx( 2 , 3 ) ] = ev0 ;
+
+
+          ev0 = (- (d / (b - ldb)) ) ;
+
+          this.v[ this.idx( 0 , 4 ) ] = ev2 ;
+
+          this.v[ this.idx( 1 , 4 ) ] = ev0 ;
+
+          this.v[ this.idx( 2 , 4 ) ] = ev1 ;
+
+
+         } ; // end else -
+
+
+       } // end if{} +
+
+
+      else
+       {
+
 
         ev2 = 1 ;
 
@@ -1554,66 +1634,27 @@ function evl( x )
 
         [ ev0 , ev1 ] = evs( (a - ldb) , (c - ldb) , e , d , f )
 
-        this.v[ this.idx( 0 , 3 ) ] = ev0 ;
+        this.v[ this.idx( 0 , 3 ) ] = ev1 ;
 
-        this.v[ this.idx( 1 , 3 ) ] = ev1 ;
+        this.v[ this.idx( 1 , 3 ) ] = ev2 ;
 
-        this.v[ this.idx( 2 , 3 ) ] = ev2 ;
+        this.v[ this.idx( 2 , 3 ) ] = ev0 ;
 
 
         [ ev0 , ev1 ] = evs( (b - ldc) , (c - ldc) , f , d , e )
 
-        this.v[ this.idx( 0 , 4 ) ] = ev0 ;
+        this.v[ this.idx( 0 , 4 ) ] = ev2 ;
 
-        this.v[ this.idx( 1 , 4 ) ] = ev1 ;
+        this.v[ this.idx( 1 , 4 ) ] = ev0 ;
 
-        this.v[ this.idx( 2 , 4 ) ] = ev2 ;
-
-       } // end if{} -
+        this.v[ this.idx( 2 , 4 ) ] = ev1 ;
 
 
-      else
-       {
+       } ; // end else{} -
 
-
-        [ ev0 , ev1 ] = evs( (a - lda) , (b - lda) , d , e , f )
-
-        ev2 = 1 ;
-
-        ev2 = 0 ;
-
-        this.v[ this.idx( 0 , 2 ) ] = ev0 ;
-
-        this.v[ this.idx( 1 , 2 ) ] = ev1 ;
-
-        this.v[ this.idx( 2 , 2 ) ] = ev2 ;
-
-
-        ev0 = (- d / (a - lda) ) ;
-
-        ev1 = 0 ;
-
-        ev2 = 0 ;
-
-
-        this.v[ this.idx( 0 , 3 ) ] = ev0 ;
-
-        this.v[ this.idx( 1 , 3 ) ] = ev1 ;
-
-        this.v[ this.idx( 2 , 3 ) ] = ev2 ;
-
-        ev0 = (- d / (b - ldb) ) ;
-
-        this.v[ this.idx( 0 , 4 ) ] = ev0 ;
-
-        this.v[ this.idx( 1 , 4 ) ] = ev1 ;
-
-        this.v[ this.idx( 2 , 4 ) ] = ev2 ;
-
-
-       } ; // end else -
 
      } ; // end if{} -
+
 
    } ; // end if{}  -
 
