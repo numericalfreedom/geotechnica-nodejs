@@ -1417,7 +1417,7 @@ function evsold( p , q , r , m , n )
 
 
 
-/** Function evs2
+/** Function evs
  *
  *
  */
@@ -1425,13 +1425,38 @@ function evsold( p , q , r , m , n )
 function evs( a , b , c , d , e , f )
  {
 
+
   const deaf = ( (d * e) - (a * f) ) ;
 
   const dfbe = ( (d * f) - (b * e) ) ;
 
   const efcd = ( (e * f) - (c * d) ) ;
 
-  return( [ (dfbe * efcd) , (efcd * deaf) , (dfbe * deaf) ] ) ;
+
+  let   ex   = ( dfbe * efcd ) ;
+
+  let   ey   = ( efcd * deaf ) ;
+
+  let   ez   = ( dfbe * deaf ) ;
+
+
+  let   r    = undefined ;
+
+
+  if( r = Math.sqrt( (ex * ex) + (ey * ey) + (ez * ez) ) )
+   {
+
+    ex /= r ;
+
+    ey /= r ;
+
+    ez /= r ;
+
+   } ; // end if{} -
+
+
+  return( [ ex , ey , ez ] ) ;
+
 
  } ; // end function evs()
 
