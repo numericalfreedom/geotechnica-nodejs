@@ -1230,6 +1230,161 @@ function crt( a , b , c )
 
 
 
+/** Function i21
+ *
+ */
+
+function i21( x )
+ {
+
+  let a = x.v[ 0 ] ;
+  let b = x.v[ 1 ] ;
+
+  let r = ( a + b )
+
+  return( r ) ;
+
+ } ; // end function i31() -
+
+
+
+/** Function i22
+ *
+ */
+
+function i22( x )
+ {
+
+  let a = x.v[ 0 ] ;
+  let b = x.v[ 1 ] ;
+  let c = x.v[ 2 ] ;
+
+  let r = ( (a * b) - (c * c) ) ;
+
+  return( r ) ;
+
+ }
+
+
+
+/** Function i31
+ *
+ */
+
+function i31( x )
+ {
+
+  let a = x.v[ 0 ] ;
+  let b = x.v[ 1 ] ;
+  let c = x.v[ 2 ] ;
+
+  let r = ( a + b + c )
+
+  return( r ) ;
+
+ } ; // end function i31() -
+
+
+
+/** Function i32
+ *
+ */
+
+function i32( x )
+ {
+
+  let a = x.v[ 0 ] ;
+  let b = x.v[ 1 ] ;
+  let c = x.v[ 2 ] ;
+
+  let d = x.v[ 3 ] ;
+  let e = 0 ;
+  let f = 0 ;
+
+  if( x.nv == 6 )
+   {
+
+    e = x.v[ 4 ] ;
+    f = x.v[ 5 ] ;
+
+   } ; // end if{} -
+
+  let r = ( (a * b) + (b * c) + (a * c) - (d * d) - (e * e) - (f * f) ) ;
+
+  return( r ) ;
+
+ }
+
+
+/** Function j32
+ *
+ */
+
+function j32( x )
+ {
+
+  let r = undefined ;
+
+  let i1 = i31( x )
+  let i2 = i32( x )
+
+  r = ( i2 - ((i1 * i1) / 3) ) ;
+
+  return( r ) ;
+
+ }
+
+
+/** Function i33
+ *
+ */
+
+function i33( x )
+ {
+
+  let a = x.v[ 0 ] ;
+  let b = x.v[ 1 ] ;
+  let c = x.v[ 2 ] ;
+
+  let d = x.v[ 3 ] ;
+  let e = 0 ;
+  let f = 0 ;
+  
+  if( x.nv == 6 )
+   {
+    
+    e = x.v[ 4 ] ;
+    f = x.v[ 5 ] ;
+
+   } ; // end if{} -
+
+  let r = ( (a * b * c) + (2 * d * e * f) - (a * f * f) - (b * e * e) - (c * d * d) ) ;
+
+  return( r ) ;
+
+ }
+
+
+/** Function j32
+ *
+ */
+
+function j33( x )
+ {
+
+  let r = undefined ;
+
+  let i1 = i31( x )
+  let i2 = i32( x )
+  let i3 = i33( x )
+
+  r = ( ((2 * i1 * i1 * i1) / 27) - ((i1 * i2) / 3) + i3 ) ;
+
+  return( r ) ;
+
+ }
+
+
 /** Function evs
  *
  *
@@ -1311,52 +1466,91 @@ function evl( x )
 
      } ; // if{} +
 
+   } ; // if{} +
+
+
+
+
+  if( x.nv == 6 )
+   {
+
+    a = x.v[0] ;
+    b = x.v[1] ;
+    c = x.v[2] ;
+    
+    d = x.v[3] ;
+    e = x.v[4] ;
+    f = x.v[5] ;
+
+   } ; // end if{}  -
+
+
+  k = (- i31( x ) ) ;
+
+  l = i32( x ) ;
+
+  m = (- i33( x ) ) ;
+
+
+  if( x.nv < 6 )
+   {
 
     p = (- (a + b) ) ;
 
     q = ( (a * b) - (d * d) ) ;
 
-    r = Math.sqrt( (p * p) - (4 * q) ) ;
+    [ lda , ldb ] = srt( p , q ) ;
+
+    if( c )  ldc = c ;
+
+   } // end if{} +
 
 
-    if( (this.nv == 2) || this.nv == 6 )
-     {
-
-      lda = ( ((- p) + r) / 2 ) ;
-
-      ldb = ( ((- p) - r) / 2 ) ;
-
-      ldc = 0 ;
-
-      if( this.nv == 6 )
-       {
-
-        this.v[ this.idx( 0 , 0 ) ] = lda ;
-
-        this.v[ this.idx( 1 , 0 ) ] = ldb ;
 
 
-        this.v[ this.idx( 0 , 1 ) ] = ( c / (b - lda) ) ;
 
-        this.v[ this.idx( 1 , 1 ) ] = 1 ;
+  if( (x.nv == 4) || (x.nv == 6) )
+   {
+
+    [ lda , ldb , ldc ] = crt( k , l , m ) ;
+
+   } ; // end else
 
 
-        this.v[ this.idx( 0 , 2 ) ] = ( c / (a - ldb) ) ;
-      
-        this.v[ this.idx( 1 , 2 ) ] = 1 ;
+  if( (this.nv == 2) || (this.nv == 4) )
+   {
 
-       }
+    this.v[ this.idx( 0 , 0 ) ] = k ;
 
-     }
+    this.v[ this.idx( 1 , 0 ) ] = l ;
 
-    if( (this.nv == 3) || (this.nv == 12) )
+    if( (this.nv == 4) || (this.nv == 4) )
      {
 
       this.v[ this.idx( 0 , 0 ) ] = lda ;
 
       this.v[ this.idx( 1 , 0 ) ] = ldb ;
+
+     } ; // end if{} -
+
+
+
+
+
+
+
+   } ; // end if{} -
+
+
+
+  if( (this.nv == 3) || (this.nv == 12) )
+   {
+
+    this.v[ this.idx( 0 , 0 ) ] = lda ;
+
+    this.v[ this.idx( 1 , 0 ) ] = ldb ;
  
-      this.v[ this.idx( 2 , 0 ) ] = ldc ;
+    this.v[ this.idx( 2 , 0 ) ] = ldc ;
 
 
       if( this.nv == 12 )
@@ -1387,102 +1581,12 @@ function evl( x )
        } ; // end if{} -
 
 
-     } ; // end if{} -
-
-
    } // end if{} +
 
 
   else
    {
 
-
-    a = x.v[0] ;
-    b = x.v[1] ;
-    c = x.v[2] ;
-    
-    d = x.v[3] ;
-    e = x.v[4] ;
-    f = x.v[5] ;
-
-  
-    k = (- (a + b + c) ) ;
-
-    l = ( (ab = (a * b)) + (bc = (b * c)) + (ac = (a * c)) - (dd = (d * d)) - (ee = (e * e)) - (ff = (f * f)) ) ;
-
-    m = ( (a * ff) + (b * ee) + (c * dd) - (a * b * c) - (2 * d * e * f) ) ;
-
-
-    p = ( l - ((kk = (k * k)) / 3) ) ;
-   
-    q = ( m + ((2 * k * kk) / 27) - ((k * l) / 3) ) ;
-
-
-    if( p <= 0 )
-     {
-
-      if( ((4 * p * p* p) + (27 * q * q)) > 0 )
-       {
-
-        if( p < 0 )
-         {
-
-          bt = Math.sqrt( - (p / 3) ) ;
-
-          ap = ( Math.acosh( ((- 3) * Math.abs( q )) / (2 * p * bt) ) / 3 ) ;
-
-         } // end if{} +
-
-	else
-	 {
-
-          bt = ap = 0 ;
-
-         } ; // end else
-
-        lda = ldb = ldc = ( ((- 2) * (Math.abs( q ) / q) * bt * Math.cosh( ap )) - (k / 3) ) ;
-
-       } // end if{}+
-
-      else
-       {
-
-        if( p < 0 )
-	 {
-
-          bt = Math.sqrt( - (p / 3) ) ;
-
-          ap = ( Math.acos( (3 * q) / (2 * p * bt) ) / 3 ) ;
-
-	 } // end if{} +
-
-	else
-	 {
-
-          bt = ap = 0 ;
-
-         } ; // end else -
-
-        lda = ( (2 * bt * Math.cos( ap )) - (k / 3) ) ;
-
-        ldb = ( (2 * bt * Math.cos( ap - (2 * pi_3) )) - (k / 3) ) ;
-
-        ldc = ( (2 * bt * Math.cos( ap + (2 * pi_3) )) - (k / 3) ) ;
-
-       } ; // end else -
-
-     } // end if{} +
-
-    else
-     {
-
-      bt = Math.sqrt( p / 3 ) ;
-
-      ap = ( Math.asinh( (3 * q) / (2 * p * bt) ) / 3 ) ;
-
-      lda = ldb = ldc = ( ((- 2) * bt * Math.sinh( ap )) - (k / 3) ) ;
-
-     } ; // end else -
 
 
     if( (this.nv == 3) || (this.nv == 12) )
