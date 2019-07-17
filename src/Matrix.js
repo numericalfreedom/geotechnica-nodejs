@@ -1523,7 +1523,7 @@ function evl( x )
         e = f = 0 ;
 
 
-      if( (Math.abs( lda - ldb ) > eps) && (Math.abs( ldb - ldc ) > eps) && (Math.abs( ldc - lda ) > eps)
+      if( (Math.abs( lda - ldb ) > eps) && (Math.abs( ldb - ldc ) > eps) && (Math.abs( ldc - lda ) > eps) )
        {
 
         ev2 = 1 ;
@@ -1561,7 +1561,7 @@ function evl( x )
        {
 
 
-        [ ev0 , ev1 ] = = evs( (a - lda) , (b - lda) , d , e , f )
+        [ ev0 , ev1 ] = evs( (a - lda) , (b - lda) , d , e , f )
 
         ev2 = 1 ;
 
