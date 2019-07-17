@@ -1121,9 +1121,9 @@ function srt( a , b )
 function crt( a , b , c )
  {
 
-  const p = ( ((3 * b) - (a * a)) / 9 ) ;
-  const q = ( (((2 * a * a * a) / 27) - ((a * b) / 3) + c) / 2 ) ;
-  const d = ( (p * p * p) + (q * q) ) ;
+  let p   = ( ((3 * b) - (a * a)) / 9 ) ;
+  let q   = ( (((2 * a * a * a) / 27) - ((a * b) / 3) + c) / 2 ) ;
+  let d   = ( (p * p * p) + (q * q) ) ;
 
   let w1  = undefined ;
   let w2  = undefined ;
