@@ -1395,7 +1395,22 @@ function evs( p , q , r , m , n )
 
   const d = ( (p * q) - (r * r) ) ;
 
-  return( [ (((r * n) - (q * m)) / d) , (((r * m) - (p * n)) / d) ] ) ;
+  let ev1 = undefined ;
+  let ev2 = undefined ;
+
+  if( d )
+   {
+
+    ev1 = ( ((r * n) - (q * m)) / d ) ;
+    ev2 = ( ((r * m) - (p * n)) / d ) ;
+
+   } // end if{} +
+
+  else
+
+   ev1 = ev2 = 0 ;
+
+  return( [ ev1 , ev2 ] ) ;
 
  } ; // end function evs()
 
