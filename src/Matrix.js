@@ -119,7 +119,6 @@ function Matrix( nr , nc , nv , v )
 
   this.srt = srt ;
   this.crt = crt ;
-  this.evs = evs ;
 
  } ; // end function Matrix
 
@@ -1386,85 +1385,6 @@ function j33( x )
 
 
 
-/** Function evs
- *
- *
- */
-
-function evs( p , q , r , m , n )
- {
-
-  const d = ( (p * q) - (r * r) ) ;
-
-  let ev1 = undefined ;
-  let ev2 = undefined ;
-
-  if( d )
-   {
-
-    ev1 = ( ((r * n) - (q * m)) / d ) ;
-
-    ev2 = ( ((r * m) - (p * n)) / d ) ;
-
-   } // end if{} +
-
-  else
-
-   ev1 = ev2 = 0 ;
-
-  return( [ ev1 , ev2 ] ) ;
-
- } ; // end function evs()
-
-
-
-
-
-/** Function evsnew
- *
- *
- */
-
-function evsnew( a , b , c , d , e , f )
- {
-
-
-  const deaf = ( (d * e) - (a * f) ) ;
-
-  const dfbe = ( (d * f) - (b * e) ) ;
-
-  const efcd = ( (e * f) - (c * d) ) ;
-
-
-  let   ex   = ( dfbe * efcd ) ;
-
-  let   ey   = ( efcd * deaf ) ;
-
-  let   ez   = ( dfbe * deaf ) ;
-
-
-  let   r    = undefined ;
-
-
-  if( r = Math.sqrt( (ex * ex) + (ey * ey) + (ez * ez) ) )
-   {
-
-    ex /= r ;
-
-    ey /= r ;
-
-    ez /= r ;
-
-   } ; // end if{} -
-
-
-  return( [ ex , ey , ez ] ) ;
-
-
- } ; // end function evsnew()
-
-
-
 /** Function evl
  *
  *
@@ -1575,13 +1495,22 @@ function evl( x )
   if( (this.nv == 6) || (this.nv == 15) )
    {
 
+    iv31 = i31( x ) ;
+
+    iv32 = i32( x ) ;
+
+    iv33 = i33( x ) ;
+
+
     [ lda , i , ldb , i , ldc , i ] = crt( (- iv31) , iv32 , (- iv33) ) ;
+
 
     lds = [ lda , ldb , ldc ] ;
 
-    ivs = [ i31( x ) , i32( x ) , i33( x ) ] ;
+    ivs = [ iv31 , iv32 , iv33 ] ;
 
-    for( i = 0;  i < 3; this.v[ this.idx( i , lbc ) ] = lds[i] , this.v[ this.idx( i , ivc ) ] = ivs[i++] ) ;
+
+    for( i = 0;  i < 3; this.v[ this.idx( i , lbc ) ] = lds[i] , this.v[ this.idx( i , ivc ) ] = ivs[ i++ ] ) ;
 
 
     if( this.nv == 15 )
@@ -1606,11 +1535,15 @@ function evl( x )
         e = f = 0 ;
 
 
-      for( lm = 1 , ls = 0 , ld = 0 , i = 0 , j = 1;  i < 3; ls += ld , ++i , ++j )
+      for( lm = 1 , ls = 0 , ld = 0 , i = 0 , j = 1;  i < 3;  ls += ld , ++i , ++j )
 
-        if( Math.abs( ld = (lds[ i ] - lds[ j % 3 ]) ) < eps )  lm = 2 ;
+        if( (ld = Math.abs( lds[ i ] - lds[ j % 3 ] )) < eps )  lm = 2 ;
 
       if( Math.abs( ls ) < eps )  lm = 3 ;
+
+
+      console.log( "ls=" , ls ) ;
+      console.log( "lm=" , lm ) ;
 
 
       if( lm == 3 )
@@ -1621,11 +1554,11 @@ function evl( x )
 
             if( i == j )
 
-              this.v[ this.idx( i , (evc + j) ) ] = ev1 ;
+              this.v[ this.idx( i , (evc + j) ) ] = 1 ;
 
             else
 
-              this.v[ this.idx( i , (evc + j) ) ] = ev0 ;
+              this.v[ this.idx( i , (evc + j) ) ] = 0 ;
 
 
       else if( lm == 2 )
@@ -1692,15 +1625,37 @@ function evl( x )
         for( lbd = lds[ j = 0 ];  j < 3;  lbd = lds[ j++ ] )
          {
 
+          abd = ( ((a - lbd) * (b - lbd)) - (d * d) ) ;
 
-          if( (ld = (((blb = (b - lbd)) * (clb = (c - lbd))) - (f * f))) > eps )
+          acd = ( ((a - lbd) * (c - lbd)) - (e * e) ) ;
+
+          bcd = ( ((b - lbd) * (c - lbd)) - (f * f) ) ;
+
+
+          if( ((aabd = Math.abs( abd )) >= Math.abs( acd )) && (Math.abs( abd ) >= Math.abs( bcd )) )
            {
 
-            ev0 = 1 ;
+            if( aabd )
+             {
 
-            ev1 = ( ((e * f) - (clb * d)) / ld ) ;
+              ev0 = 1 ;
 
-            ev2 = ( ((d * f) - (blb * e)) / ld ) ;
+              ev1 = ( ((e * f) - (clb * d)) / aabd ) ;
+
+              ev2 = ( ((d * f) - (blb * e)) / aabd ) ;
+
+             } // end if{} +
+
+
+            else
+             {
+
+              ev0 = 1 ;
+
+              ev1 = ev2 = 0 ;
+
+             }
+
 
            } // end if{} +
 
