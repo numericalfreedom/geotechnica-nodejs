@@ -1442,7 +1442,7 @@ function evl( x )
     iv21 = i21( x ) ;
     iv22 = i22( x ) ;
 
-    [ lda , ldb ] = srt( iv21 , iv22 ) ;
+    [ lda , i , ldb , i ] = srt( iv21 , iv22 ) ;
 
     this.v[ this.idx( 0 , 0 ) ] = lda ;
 
@@ -1487,7 +1487,7 @@ function evl( x )
     iv32 = i32( x ) ;
     iv33 = i33( x ) ;
 
-    [ lda , ldb , ldc ] = crt( (- iv31) , iv32 , (- iv33) ) ;
+    [ lda , i , ldb , i , ldc , i ] = crt( (- iv31) , iv32 , (- iv33) ) ;
 
     this.v[ this.idx( 0 , 0 ) ] = lda ;
 
