@@ -1585,7 +1585,7 @@ function evl( x )
         e = f = 0 ;
 
 
-      if( (Math.abs( lda - ldb ) > eps) && (Math.abs( ldb - ldc ) > eps) && (Math.abs( ldc - lda ) > eps) )
+      if( (Math.abs( lda - ldb ) < eps) && (Math.abs( ldb - ldc ) < eps) && (Math.abs( ldc - lda ) < eps) )
        {
 
 
@@ -1618,7 +1618,7 @@ function evl( x )
        } // end if{} +
 
 
-      else if( (Math.abs( lda - ldb ) > eps) || (Math.abs( ldb - ldc ) > eps) || (Math.abs( ldc - lda ) > eps) )
+      else if( (Math.abs( lda - ldb ) < eps) || (Math.abs( ldb - ldc ) < eps) || (Math.abs( ldc - lda ) < eps) )
        {
 
 
@@ -1702,6 +1702,9 @@ function evl( x )
 
  
        } ; // end else if{} -
+
+
+     } ; // end if{}  -
 
 
    } ; // end if{}  -
