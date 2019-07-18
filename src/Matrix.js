@@ -1437,6 +1437,14 @@ function evl( x )
 
   let eps  = 1.0e-6 ;
 
+  let ald  = undefined ;
+  let bld  = undefined ;
+  let cld  = undefined ;
+
+  let aald = undefined ;
+  let abld = undefined ;
+  let acld = undefined ;
+
   let abd  = undefined ;
   let ace  = undefined ;
   let bcf  = undefined ;
@@ -1587,14 +1595,23 @@ function evl( x )
        {
 
 
-        for( lbd = lds[ j = 0 ];  j < 3;  lbd = lds[ j++ ] )
+        for( j = 0;  j < 3;  ++j )
          {
 
-          aald = Math.abs( ald = (a - ld) ) ;
 
-          abld = Math.abs( bld = (b - ld) ) ;
+          lbd  = lds[ j ] ;
 
-          acld = Math.abs( cld = (c - ld) ) ;
+
+          aald = Math.abs( ald = (a - lbd) ) ;
+
+          abld = Math.abs( bld = (b - lbd) ) ;
+
+          acld = Math.abs( cld = (c - lbd) ) ;
+
+
+          console.log( "aald=" , aald ) ;
+          console.log( "abld=" , abld ) ;
+          console.log( "acld=" , acld ) ;
 
 
           if( (aald >= abld) && (aald >= acld) )
@@ -1653,8 +1670,11 @@ function evl( x )
        {
 
 
-        for( lbd = lds[ j = 0 ];  j < 3;  lbd = lds[ j++ ] )
+        for( j = 0;  j < 3;  ++j )
          {
+
+
+          lbd  = lds[ j ] ;
 
 
           aabd = Math.abs( abd = (((ald = (a - lbd)) * (b - lbd)) - (d * d)) ) ;
@@ -1662,6 +1682,12 @@ function evl( x )
           aace = Math.abs( ace = (((a - lbd) * (cld = (c - lbd))) - (e * e)) ) ;
 
           abcf = Math.abs( bcf = (((bld = (b - lbd)) * (c - lbd)) - (f * f)) ) ;
+
+          console.log( "lbd =" , lbd  ) ;
+
+          console.log( "aabd=" , aabd ) ;
+          console.log( "aace=" , aace ) ;
+          console.log( "abcf=" , abcf ) ;
 
 
           if( (aabd >= aace) && (aabd >= abcf) )
@@ -1729,7 +1755,7 @@ function evl( x )
          } ; // end for()
  
 
-       } ; // end else if{} -
+       } ; // end if{} -
 
 
      } ; // end if{}  -
