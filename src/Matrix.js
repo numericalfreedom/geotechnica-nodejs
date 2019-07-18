@@ -1990,7 +1990,7 @@ function evj( x , ne , en )
    } ; // end for()
 
 
-  return ;
+  return( n ) ;
 
 
  } ; // end function evj()
@@ -2334,9 +2334,24 @@ var x = new Matrix( 3 , 3 , 9, [ 4 , -14 , -12 , -14 , 10 , 13 ,  -12 , 13 , 1 ]
 
 console.log( 'x.v=' , x.v ) ;
 
-r.evj( x ) ;
+console.log( 'n=' , r.evj( x , 100 , 1.0e-6 ) ) ;
 
 console.log( r.v ) ;
+
+
+
+var r = new Matrix( 5 , 6 , undefined ) ;
+
+var x = new Matrix( 5 , 5 , undefined ) ;
+
+for( let i = 0; i < 25; ++i )  x.v[i] = Math.random() ;
+
+console.log( 'x.v=' , x.v ) ;
+
+console.log( 'n=' , r.evj( x , 100 , 1.0e-6 ) ) ;
+
+console.log( r.v ) ;
+
 
 
 var r = new Matrix( 2 , 3 , undefined ) ;
@@ -2345,7 +2360,7 @@ var x = new Matrix( 2 , 2 , 4 , [ 3 , 2 , 2 , 1 ] ) ;
 
 console.log( 'x.v=' , x.v ) ;
 
-r.evj( x ) ;
+console.log( 'n=' , r.evj( x , 100 , 1.0e-6 ) ) ;
 
 console.log( r.v ) ;
 
