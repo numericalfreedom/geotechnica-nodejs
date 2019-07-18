@@ -1815,19 +1815,6 @@ function evl( x )
        } ; // end if{} -
 
 
-      this.v[ this.idx( 0 , 0 ) ] = ( ev0 / evn ) ;
-
-      this.v[ this.idx( 1 , 0 ) ] = ( ev1 / evn ) ;
-
-      this.v[ this.idx( 2 , 0 ) ] = ( ev2 / evn ) ;
-
-      this.v[ this.idx( 0 , 1 ) ] = ( ev0 / evn ) ;
-
-      this.v[ this.idx( 1 , 1 ) ] = ( ev1 / evn ) ;
-
-      this.v[ this.idx( 2 , 1 ) ] = ( ev2 / evn ) ;
-
-
       [ this.v[ this.idx( 0 , 2 ) ] , this.v[ this.idx( 1 , 2 ) ] , this.v[ this.idx( 2 , 2 ) ] ] = xpr( this.v[ this.idx( 0 , 0 ) ] , this.v[ this.idx( 0 , 1 ) ] , this.v[ this.idx( 0 , 2 ) ] , this.v[ this.idx( 1 , 0 ) ] , this.v[ this.idx( 1 , 1 ) ] , this.v[ this.idx( 1 , 2 ) ] ) ;
 
 
