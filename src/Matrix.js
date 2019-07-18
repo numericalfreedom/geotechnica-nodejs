@@ -1609,6 +1609,8 @@ function evl( x )
           acld = Math.abs( cld = (c - lbd) ) ;
 
 
+          console.log( "lbd =" , lbd  ) ;
+
           console.log( "aald=" , aald ) ;
           console.log( "abld=" , abld ) ;
           console.log( "acld=" , acld ) ;
@@ -1682,6 +1684,7 @@ function evl( x )
           aace = Math.abs( ace = (((a - lbd) * (cld = (c - lbd))) - (e * e)) ) ;
 
           abcf = Math.abs( bcf = (((bld = (b - lbd)) * (c - lbd)) - (f * f)) ) ;
+
 
           console.log( "lbd =" , lbd  ) ;
 
