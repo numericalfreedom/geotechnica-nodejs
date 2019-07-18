@@ -1401,6 +1401,20 @@ function j33( x )
 
 
 
+/** Function xpr
+ * 
+ *  Flat cross product operator between two three element vectors
+ */
+
+function xpr( a , b , c , d , e , f )
+ {
+
+  return( [ ((b * f) - (c * e)) , ((c * d) - (a * f)) , ((a * e) - (b * d)) ] ) ;
+
+ } ; // end function xpr () -
+
+
+
 /** Function evl
  *
  *
@@ -1552,6 +1566,22 @@ function evl( x )
     lds = [ lda , ldb , ldc ] ;
 
     ivs = [ iv31 , iv32 , iv33 ] ;
+
+
+    for( i = 0; i < 3; ++i )
+ 
+      for( j = (i + 1); j < 3; ++j )
+
+        if( lds[i] < lds[j] )
+         {
+
+          ld = lds[i] ;
+
+          lds[i] = lds[j] ;
+
+          lds[j] = ld ; 
+
+         } ; // end if{} -
 
 
     for( i = 0;  i < 3; this.v[ this.idx( i , lbc ) ] = lds[i] , this.v[ this.idx( i , ivc ) ] = ivs[ i++ ] ) ;
