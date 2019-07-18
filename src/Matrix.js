@@ -1424,6 +1424,14 @@ function evl( x )
 
   let eps  = 1.0e-6 ;
 
+  let abd  = undefined ;
+  let ace  = undefined ;
+  let bcf  = undefined ;
+
+  let aabd = undefined ;
+  let aace = undefined ;
+  let abcf = undefined ;
+
 
   if( (this.nv == 4) || (this.nv == 8) )
    {
@@ -1539,6 +1547,7 @@ function evl( x )
 
         if( (ld = Math.abs( lds[ i ] - lds[ j % 3 ] )) < eps )  lm = 2 ;
 
+
       if( Math.abs( ls ) < eps )  lm = 3 ;
 
 
@@ -1625,14 +1634,17 @@ function evl( x )
         for( lbd = lds[ j = 0 ];  j < 3;  lbd = lds[ j++ ] )
          {
 
-          abd = ( ((a - lbd) * (b - lbd)) - (d * d) ) ;
-
-          acd = ( ((a - lbd) * (c - lbd)) - (e * e) ) ;
-
-          bcd = ( ((b - lbd) * (c - lbd)) - (f * f) ) ;
 
 
-          if( ((aabd = Math.abs( abd )) >= Math.abs( acd )) && (Math.abs( abd ) >= Math.abs( bcd )) )
+
+          aabd = Math.abs( abd = (((a - lbd) * (b - lbd)) - (d * d)) ) ;
+
+          aace = Math.abs( ace = (((a - lbd) * (c - lbd)) - (e * e)) ) ;
+
+          abcf = Math.abs( bcf = (((b - lbd) * (c - lbd)) - (f * f)) ) ;
+
+
+          if( (aabd >= aace) && (aabd >= abcf) )
            {
 
             if( aabd )
@@ -1640,9 +1652,9 @@ function evl( x )
 
               ev0 = 1 ;
 
-              ev1 = ( ((e * f) - (clb * d)) / aabd ) ;
+              ev1 = ( ((e * f) - (clb * d)) / abd ) ;
 
-              ev2 = ( ((d * f) - (blb * e)) / aabd ) ;
+              ev2 = ( ((d * f) - (blb * e)) / abd ) ;
 
              } // end if{} +
 
@@ -1660,24 +1672,24 @@ function evl( x )
            } // end if{} +
 
 
-          else if( (ld = (((alb = (a - lbd)) * (clb = (c - lbd))) - (e * e))) > eps )
+          if( (aace >= aabd) && (aace >= abcf) )
            {
 
-            ev0 = ( ((e * f) - (clb * d)) / ld ) ;
+            ev0 = ( ((e * f) - (clb * d)) / ace ) ;
 
             ev1 = 1 ;
 
-            ev2 = ( ((d * e) - (alb * f)) / ld ) ;
+            ev2 = ( ((d * e) - (alb * f)) / ace ) ;
 
            } // end if{} +
 
 
-          else if( (ld = (((alb = (a - lbd)) * (blb = (b - lbd))) - (d * d))) > eps )
+          if( (abcf >= aabd )) && (abcf >= aace) )
            {
 
-            ev0 = ( ((d * f) - (blb * e)) / ld ) ;
+            ev0 = ( ((d * f) - (blb * e)) / bcf ) ;
 
-            ev1 = ( ((d * e) - (alb * f)) / ld ) ;
+            ev1 = ( ((d * e) - (alb * f)) / bcf ) ;
 
             ev2 = 1 ;
 
