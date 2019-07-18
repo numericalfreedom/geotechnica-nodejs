@@ -1062,7 +1062,7 @@ function inv()
  *
  */
 
-function nrm( a , b , c ) ;
+function nrm( a , b , c )
  {
 
   return( Math.sqrt( (a * a) + (b * b) + (c * c) ) );
@@ -1657,11 +1657,11 @@ function evl( x )
          {
 
 
-          aabd = Math.abs( abd = (((a - lbd) * (b - lbd)) - (d * d)) ) ;
+          aabd = Math.abs( abd = (((ald = (a - lbd)) * (b - lbd)) - (d * d)) ) ;
 
-          aace = Math.abs( ace = (((a - lbd) * (c - lbd)) - (e * e)) ) ;
+          aace = Math.abs( ace = (((a - lbd) * (cld = (c - lbd))) - (e * e)) ) ;
 
-          abcf = Math.abs( bcf = (((b - lbd) * (c - lbd)) - (f * f)) ) ;
+          abcf = Math.abs( bcf = (((bld = (b - lbd)) * (c - lbd)) - (f * f)) ) ;
 
 
           if( (aabd >= aace) && (aabd >= abcf) )
@@ -1672,9 +1672,9 @@ function evl( x )
 
               ev0 = 1 ;
 
-              ev1 = ( ((e * f) - (clb * d)) / abd ) ;
+              ev1 = ( ((e * f) - (cld * d)) / abd ) ;
 
-              ev2 = ( ((d * f) - (blb * e)) / abd ) ;
+              ev2 = ( ((d * f) - (bld * e)) / abd ) ;
 
              } // end if{} +
 
@@ -1695,11 +1695,11 @@ function evl( x )
           if( (aace >= aabd) && (aace >= abcf) )
            {
 
-            ev0 = ( ((e * f) - (clb * d)) / ace ) ;
+            ev0 = ( ((e * f) - (cld * d)) / ace ) ;
 
             ev1 = 1 ;
 
-            ev2 = ( ((d * e) - (alb * f)) / ace ) ;
+            ev2 = ( ((d * e) - (ald * f)) / ace ) ;
 
            } // end if{} +
 
@@ -1707,9 +1707,9 @@ function evl( x )
           if( (abcf >= aabd ) && (abcf >= aace) )
            {
 
-            ev0 = ( ((d * f) - (blb * e)) / bcf ) ;
+            ev0 = ( ((d * f) - (bld * e)) / bcf ) ;
 
-            ev1 = ( ((d * e) - (alb * f)) / bcf ) ;
+            ev1 = ( ((d * e) - (ald * f)) / bcf ) ;
 
             ev2 = 1 ;
 
