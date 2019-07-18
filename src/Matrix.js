@@ -1058,6 +1058,19 @@ function inv()
 
 
 
+/** Function nrm()
+ *
+ */
+
+function nrm( a , b , c ) ;
+ {
+
+  return( Math.sqrt( (a * a) + (b * b) + (c * c) ) );
+
+ }
+
+
+
 /** Function srt
  *
  *  Root of a quadratic polynomial equation
@@ -1577,11 +1590,17 @@ function evl( x )
         for( lbd = lds[ j = 0 ];  j < 3;  lbd = lds[ j++ ] )
          {
 
+          aald = Math.abs( ald = (a - ld) ) ;
 
-          if( (ld = (a - lbd)) > eps )
+          abld = Math.abs( bld = (b - ld) ) ;
+
+          acld = Math.abs( cld = (c - ld) ) ;
+
+
+          if( (aald >= abld) && (aald >= acld) )
            {
 
-            ev0 = ( (- (d + e)) / ld ) ;
+            ev0 = ( (- (d + e)) / ald ) ;
 
             ev1 = 1 ;
 
@@ -1590,35 +1609,38 @@ function evl( x )
            } // end if{} +
 
 
-          else if( (ld = (b - lbd)) > eps )
+          else if( (abld >= aald) && (abld >= acld) )
            {
 
             ev0 = 1 ;
 
-            ev1 = ( (- (d + f)) / ld ) ;
+            ev1 = ( (- (d + f)) / bld ) ;
 
             ev2 = 1 ;
 
            } // end if{} +
 
 
-          else if( (ld = (c - lbd)) > eps )
+          else if( (acld >= aald) && (acld >= aald) )
            {
 
             ev0 = 1 ;
  
             ev1 = 1 ;
 
-            ev2 = ( (- (e + f)) / ld ) ;
+            ev2 = ( (- (e + f)) / cld ) ;
 
            } ; // end else -
 
 
-          this.v[ this.idx( 0 , (evc + j) ) ] = ev0 ;
+          evn = nrm( ev0 , ev1 , ev2 ) ;
 
-          this.v[ this.idx( 1 , (evc + j) ) ] = ev1 ;
 
-          this.v[ this.idx( 2 , (evc + j) ) ] = ev2 ;
+          this.v[ this.idx( 0 , (evc + j) ) ] = ( ev0 / evn ) ;
+
+          this.v[ this.idx( 1 , (evc + j) ) ] = ( ev1 / evn ) ;
+
+          this.v[ this.idx( 2 , (evc + j) ) ] = ( ev2 / evn ) ;
 
 
          } ; // end for() -
@@ -1633,8 +1655,6 @@ function evl( x )
 
         for( lbd = lds[ j = 0 ];  j < 3;  lbd = lds[ j++ ] )
          {
-
-
 
 
           aabd = Math.abs( abd = (((a - lbd) * (b - lbd)) - (d * d)) ) ;
@@ -1684,7 +1704,7 @@ function evl( x )
            } // end if{} +
 
 
-          if( (abcf >= aabd )) && (abcf >= aace) )
+          if( (abcf >= aabd ) && (abcf >= aace) )
            {
 
             ev0 = ( ((d * f) - (blb * e)) / bcf ) ;
@@ -1695,12 +1715,15 @@ function evl( x )
 
            } // end if{} +
 
+          
+          evn = nrm( ev0 , ev1 , ev2 ) ;
 
-          this.v[ this.idx( 0 , evc + j ) ] = ev0 ;
 
-          this.v[ this.idx( 1 , evc + j ) ] = ev1 ;
+          this.v[ this.idx( 0 , evc + j ) ] = ( ev0 / evn ) ;
 
-          this.v[ this.idx( 2 , evc + j ) ] = ev2 ;
+          this.v[ this.idx( 1 , evc + j ) ] = ( ev1 / evn ) ;
+
+          this.v[ this.idx( 2 , evc + j ) ] = ( ev2 / evn ) ;
 
 
          } ; // end for()
