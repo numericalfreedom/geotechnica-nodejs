@@ -1623,10 +1623,6 @@ function evl( x )
       if( Math.abs( ls ) < eps )  lm = 3 ;
 
 
-      console.log( "ls=" , ls ) ;
-      console.log( "lm=" , lm ) ;
-
-
       if( lm == 3 )
 
         for( i = 0;  i < 3; ++i )
@@ -1658,13 +1654,6 @@ function evl( x )
           abld = Math.abs( bld = (b - lbd) ) ;
 
           acld = Math.abs( cld = (c - lbd) ) ;
-
-
-          console.log( "lbd =" , lbd  ) ;
-
-          console.log( "aald=" , aald ) ;
-          console.log( "abld=" , abld ) ;
-          console.log( "acld=" , acld ) ;
 
 
           if( (aald >= abld) && (aald >= acld) )
@@ -1737,13 +1726,6 @@ function evl( x )
           aace = Math.abs( ace = (((a - lbd) * (cld = (c - lbd))) - (e * e)) ) ;
 
           abcf = Math.abs( bcf = (((bld = (b - lbd)) * (c - lbd)) - (f * f)) ) ;
-
-
-          console.log( "lbd =" , lbd  ) ;
-
-          console.log( "aabd=" , aabd ) ;
-          console.log( "aace=" , aace ) ;
-          console.log( "abcf=" , abcf ) ;
 
 
           if( (aabd >= aace) && (aabd >= abcf) )
