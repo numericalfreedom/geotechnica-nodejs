@@ -1486,18 +1486,20 @@ function evl( x )
   if( (this.nv == 4) || (this.nv == 8) )
    {
 
+    evc  = 2 ;
+
     iv21 = i21( x ) ;
     iv22 = i22( x ) ;
 
     [ lda , i , ldb , i ] = srt( iv21 , iv22 ) ;
 
-    this.v[ this.idx( 0 , 0 ) ] = lda ;
+    lds = [ lda  , ldb  ] ;
 
-    this.v[ this.idx( 1 , 0 ) ] = ldb ;
+    ivs = [ iv21 , iv22 ] ;
 
-    this.v[ this.idx( 0 , 1 ) ] = iv21 ;
 
-    this.v[ this.idx( 1 , 1 ) ] = iv22 ;
+    for( i = 0;  i < 2;  this.v[ this.idx( i , lbc = 2 ) ] = lds[i] , this.v[ this.idx( i , ivc = 3 ) ] = ivs[ i++ ] ) ;
+
 
     if( this.nv == 8 )
      {
@@ -1553,6 +1555,10 @@ function evl( x )
   if( (this.nv == 6) || (this.nv == 15) )
    {
 
+
+    evc  = 3 ;
+
+
     iv31 = i31( x ) ;
 
     iv32 = i32( x ) ;
@@ -1563,7 +1569,7 @@ function evl( x )
     [ lda , i , ldb , i , ldc , i ] = crt( (- iv31) , iv32 , (- iv33) ) ;
 
 
-    lds = [ lda , ldb , ldc ] ;
+    lds = [ lda  , ldb  , ldc  ] ;
 
     ivs = [ iv31 , iv32 , iv33 ] ;
 
@@ -1584,7 +1590,7 @@ function evl( x )
          } ; // end if{} -
 
 
-    for( i = 0;  i < 3; this.v[ this.idx( i , lbc ) ] = lds[i] , this.v[ this.idx( i , ivc ) ] = ivs[ i++ ] ) ;
+    for( i = 0;  i < 3;  this.v[ this.idx( i , lbc = 3 ) ] = lds[i] , this.v[ this.idx( i , ivc = 4 ) ] = ivs[ i++ ] ) ;
 
 
     if( this.nv == 15 )
@@ -1629,18 +1635,18 @@ function evl( x )
 
             if( i == j )
 
-              this.v[ this.idx( i , (evc + j) ) ] = 1 ;
+              this.v[ this.idx( i , j ) ] = 1 ;
 
             else
 
-              this.v[ this.idx( i , (evc + j) ) ] = 0 ;
+              this.v[ this.idx( i , j ) ] = 0 ;
 
 
       else if( lm == 2 )
        {
 
 
-        for( j = 0;  j < 3;  ++j )
+        for( j = 0;  j < 2;  ++j )
          {
 
 
@@ -1701,11 +1707,12 @@ function evl( x )
 
           evn = 1 ;
 
-          this.v[ this.idx( 0 , (evc + j) ) ] = ( ev0 / evn ) ;
 
-          this.v[ this.idx( 1 , (evc + j) ) ] = ( ev1 / evn ) ;
+          this.v[ this.idx( 0 , j ) ] = ( ev0 / evn ) ;
 
-          this.v[ this.idx( 2 , (evc + j) ) ] = ( ev2 / evn ) ;
+          this.v[ this.idx( 1 , j ) ] = ( ev1 / evn ) ;
+
+          this.v[ this.idx( 2 , j ) ] = ( ev2 / evn ) ;
 
 
          } ; // end for() -
@@ -1718,7 +1725,7 @@ function evl( x )
        {
 
 
-        for( j = 0;  j < 3;  ++j )
+        for( j = 0;  j < 2;  ++j )
          {
 
 
@@ -1795,17 +1802,33 @@ function evl( x )
 
           evn = 1 ;
 
-          this.v[ this.idx( 0 , evc + j ) ] = ( ev0 / evn ) ;
+          this.v[ this.idx( 0 , j ) ] = ( ev0 / evn ) ;
 
-          this.v[ this.idx( 1 , evc + j ) ] = ( ev1 / evn ) ;
+          this.v[ this.idx( 1 , j ) ] = ( ev1 / evn ) ;
 
-          this.v[ this.idx( 2 , evc + j ) ] = ( ev2 / evn ) ;
+          this.v[ this.idx( 2 , j ) ] = ( ev2 / evn ) ;
 
 
          } ; // end for()
  
 
        } ; // end if{} -
+
+
+      this.v[ this.idx( 0 , 0 ) ] = ( ev0 / evn ) ;
+
+      this.v[ this.idx( 1 , 0 ) ] = ( ev1 / evn ) ;
+
+      this.v[ this.idx( 2 , 0 ) ] = ( ev2 / evn ) ;
+
+      this.v[ this.idx( 0 , 1 ) ] = ( ev0 / evn ) ;
+
+      this.v[ this.idx( 1 , 1 ) ] = ( ev1 / evn ) ;
+
+      this.v[ this.idx( 2 , 1 ) ] = ( ev2 / evn ) ;
+
+
+      [ this.v[ this.idx( 0 , 2 ) ] , this.v[ this.idx( 1 , 2 ) ] , this.v[ this.idx( 2 , 2 ) ] ] = xpr( this.v[ this.idx( 0 , 0 ) ] , this.v[ this.idx( 0 , 1 ) ] , this.v[ this.idx( 0 , 2 ) ] , this.v[ this.idx( 1 , 0 ) ] , this.v[ this.idx( 1 , 1 ) ] , this.v[ this.idx( 1 , 2 ) ] ) ;
 
 
      } ; // end if{}  -
