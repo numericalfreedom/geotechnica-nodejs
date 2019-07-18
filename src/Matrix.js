@@ -1,3 +1,5 @@
+"use strict" ;
+
 
 /**
  * @fileOverview Matrix class definitions.
@@ -116,6 +118,7 @@ function Matrix( nr , nc , nv , v )
   this.mst = mst ;
   this.inv = inv ;
   this.evl = evl ;
+  this.evj = evj ;
 
   this.srt = srt ;
   this.crt = crt ;
@@ -1415,10 +1418,14 @@ function evl( x )
   let d    = undefined ;
   let e    = undefined ;
   let f    = undefined ;
+
+  let lbd  = undefined ;
   
   let lda  = undefined ; 
   let ldb  = undefined ; 
   let ldc  = undefined ; 
+
+  let lds  = null ;
 
   let iv21 = undefined ;
   let iv22 = undefined ;
@@ -1427,13 +1434,21 @@ function evl( x )
   let iv32 = undefined ;
   let iv33 = undefined ;
 
+  let ivs  = null ;
+
   let ev0  = undefined ;
   let ev1  = undefined ;
   let ev2  = undefined ;
 
+  let evn  = undefined ;
+
   let lbc  = 0 ;
   let ivc  = 1 ;
   let evc  = 2 ;
+
+  let lm   = undefined ;
+  let ld   = undefined ;
+  let ls   = undefined ;
 
   let eps  = 1.0e-6 ;
 
@@ -1654,6 +1669,7 @@ function evl( x )
 
           evn = nrm( ev0 , ev1 , ev2 ) ;
 
+          evn = 1 ;
 
           this.v[ this.idx( 0 , (evc + j) ) ] = ( ev0 / evn ) ;
 
@@ -1747,6 +1763,7 @@ function evl( x )
           
           evn = nrm( ev0 , ev1 , ev2 ) ;
 
+          evn = 1 ;
 
           this.v[ this.idx( 0 , evc + j ) ] = ( ev0 / evn ) ;
 
@@ -1774,6 +1791,172 @@ function evl( x )
 
 
  } ; // end function evl()
+
+
+
+/** Function evj()
+*
+*   Generalized eigenvalue and eigenvector calculation
+*/
+
+
+function evj( x )
+ {
+
+  const evc = ( this.nc - 1 ) ;
+
+  const eps = 1.0e-6 ;
+
+  const ni  = 10 ;
+
+  let i     = undefined ;
+  let j     = undefined ;
+  let k     = undefined ;
+  let n     = undefined ;
+
+  let lij   = undefined ;
+  let p     = undefined ;
+  let sp    = undefined ;
+  let ps    = undefined ;
+
+  let ip    = undefined ;
+  let jq    = undefined ;
+
+  let c     = undefined ;
+  let s     = undefined ;
+
+  let w     = undefined ;
+  let t     = undefined ;
+  let tt    = undefined ;
+
+  let vipk  = undefined ;
+  let vjqk  = undefined ;
+
+  let xipip = undefined ;
+  let xjqjq = undefined ;
+  let xipjq = undefined ;
+
+  let xipk  = undefined ;
+  let xjqk  = undefined ;
+
+  let evn   = new Array( x.nv ) ;
+
+
+  for( i = 0;  i < x.nv;  evn[ i ] = x.v[ i++ ] ) ;
+
+
+  if( ! this.d )
+
+    for( i = 0;  i < this.nr;  this.v[ this.idx( i , i++ ) ] = 1 )
+  
+      for( j = 0;  j < this.nr;  this.v[ this.idx( i , j++ ) ] = 0 ) ;
+
+
+  for( ps = 1 , sp = 0 , n = 0; (n < ni) && (Math.abs( ps - sp ) > eps); ++n )
+   {
+
+    for( ip = 0;  (ip < (x.nc - 1));  ++ip )
+
+      for( jq = (ip + 1);  (jq < x.nc);  ++jq )
+       {
+
+        xipip = evn[ x.idx( ip , ip ) ] ;
+        xjqjq = evn[ x.idx( jq , jq ) ] ;
+        xipjq = evn[ x.idx( ip , jq ) ] ;
+
+        if( xipjq )
+         {
+
+          w = ( (xjqjq - xipip) / (2 * xipjq) ) ;
+
+          [ t , w , tt , w ] = srt( (2 * w) , (- 1) ) ;
+
+          if( Math.abs( t ) > Math.abs( tt ) )  t = tt ;
+
+
+          tt = ( t * t );
+
+          s  = ( t / Math.sqrt( 1 + tt ) ) ;
+
+          c  = ( 1 / Math.sqrt( 1 + tt ) );
+
+          tt = ( s / (1 + c) ) ;
+
+
+          evn[ x.idx( ip , jq ) ] = 0 ;
+
+          evn[ x.idx( ip , ip ) ] = ( xipip - (t * xipjq) ) ;
+
+          evn[ x.idx( jq , jq ) ] = ( xjqjq + (t * xipjq) ) ;
+
+
+          for( k = ((ip < jq) ? ip : jq);  k < x.nc;  ++k )
+           {
+
+            if( (k != ip) && (k != jq) )
+             {
+
+              xipk = evn[ x.idx( ip , k ) ] ;
+
+              xjqk = evn[ x.idx( jq , k ) ] ;
+
+              evn[ x.idx( ip , k ) ] = ( xipk - (s * (xjqk + (tt * xipk))) ) ;
+
+              evn[ x.idx( jq , k ) ] = ( xjqk + (s * (xipk - (tt * xjqk))) ) ;
+
+             } ; // end if{} -
+
+           } ; // end for()
+
+
+          console.log( "ip= " , ip  ) ;
+          console.log( "jq= " , jq  ) ;
+          console.log( "evn=" , evn ) ;
+
+
+          if( ! this.d )
+
+            for( k = 0;  k < this.nr;  ++k )
+             {
+
+              vipk = this.v[ this.idx( ip , k ) ] ;
+
+              vjqk = this.v[ this.idx( jq , k ) ] ;
+
+              this.v[ this.idx( ip , k ) ] = ( (c * vipk) - (s * vjqk) ) ;
+
+              this.v[ this.idx( jq , k ) ] = ( (s * vipk) + (c * vjqk) ) ;
+
+             } ; // end fdor()
+
+
+         } ; // end if{} -
+
+
+       } ; // end for()
+
+
+    for( ps = sp , sp = 0 , i = 0;  i < x.nr;  ++i )
+
+      for( j = (i + 1);  j < x.nc;  sp += Math.abs( evn[ x.idx( i , j++ ) ] ) ) ;
+
+
+    for( i = 0;  i < this.nr;  ++i )
+
+      this.v[ this.idx( i , evc ) ] = evn[ x.idx( i , i ) ] ;
+
+
+    console.log( "evn=" , evn ) ;
+
+
+   } ; // end for()
+
+
+  return ;
+
+
+ } ; // end function evj()
+
 
 
 
@@ -2071,7 +2254,7 @@ y.tfm( r )
 console.log( 'y=' , y.v ) ;
 
 
-var x = new Matrix( 3 , 3 , 6 , [ 4 , 10 , 1 , -14 , -12 , 13 , 0 , 0 , 0 ] ) ;
+var x = new Matrix( 3 , 3 , 6 , [ 4 , 10 , 1 , -14 , -12 , 13 ] ) ;
 
 var r = new Matrix( 3 , 5 , undefined ) ;
 
@@ -2083,7 +2266,7 @@ r.evl( x ) ;
 console.log( r.v ) ;
 
 
-var x = new Matrix( 3 , 3 , 6 , [ 3 , 0 , 3 , 2 , 4 , 2 , 0 , 0 , 0 ] ) ;
+var x = new Matrix( 3 , 3 , 6 , [ 3 , 0 , 3 , 2 , 4 , 2 ] ) ;
 
 var r = new Matrix( 3 , 5 , undefined ) ;
 
@@ -2094,7 +2277,7 @@ r.evl( x )
 console.log( r.v ) ;
 
 
-var x = new Matrix( 3 , 3 , 6 , [ 1 , 1 , 2 , 0 , 0 , 0 , 0 , 0 , 0 ] ) ;
+var x = new Matrix( 3 , 3 , 6 , [ 1 , 1 , 2 , 0 , 0 , 0 ] ) ;
 
 var r = new Matrix( 3 , 5 , undefined ) ;
 
@@ -2105,4 +2288,25 @@ r.evl( x )
 console.log( r.v ) ;
 
 
+
+var r = new Matrix( 3 , 4 , undefined ) ;
+
+var x = new Matrix( 3 , 3 , 6 , [ 4 , 10 , 1 , -14 , -12 , 13 ] ) ;
+
+console.log( x.v ) ;
+
+r.evj( x ) ;
+
+console.log( r.v ) ;
+
+
+var r = new Matrix( 2 , 3 , undefined ) ;
+
+var x = new Matrix( 2 , 2 , 3 , [ 3 , 1 , 2 ] ) ;
+
+console.log( x.v ) ;
+
+r.evj( x ) ;
+
+console.log( r.v ) ;
 
