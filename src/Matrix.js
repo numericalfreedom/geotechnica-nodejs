@@ -1990,6 +1990,22 @@ function evj( x , ne , en )
    } ; // end for()
 
 
+  for( i = 0;  i < this.nr;  ++i )
+   {
+
+    for( en = 0 , j = 0;  j < this.nr;  ++j )
+
+      en += ( this.v[ this.idx( i , j ) ] * this.v[ this.idx( i , j ) ] ) ;
+
+    if( en = Math.sqrt( en ) )
+
+    for( j = 0;  j < this.nr;  ++j )
+
+      this.v[ this.idx( i , j ) ] /= en ;
+
+   } ; // end for()
+
+
   return( n ) ;
 
 
@@ -2019,11 +2035,9 @@ function cev( x )
 
   for( i = 0;  i < x.nr; r[ i++ ] = s )
 
-    for( s = 0 , j = 0;  j < x.nr;  ++j )
+      for( s = 0 , j = 0;  j < x.nr;  ++j )
 
-      for( k = 0;  k < x.nr;  ++k )
-
-        s += x.v[ x.idx( j , k ) ] * x.v[ x.idx( j , evc ) ] * x.v[ x.idx( k , j ) ] ;
+        s += x.v[ x.idx( i , j ) ] * x.v[ x.idx( i , evc ) ] * x.v[ x.idx( j , i ) ] ;
 
   return( r ) ;
 
