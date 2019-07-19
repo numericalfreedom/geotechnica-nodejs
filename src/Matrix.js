@@ -1868,7 +1868,7 @@ function evj( x , ne , en )
       for( j = 0;  j < this.nr;  this.v[ this.idx( i , j++ ) ] = 0 ) ;
 
 
-  for( s = 0 , n = 0; (n < ne) && (Math.abs( s ) > en); ++n )
+  for( s = 1 , n = 0; (n < ne) && (Math.abs( s ) > en); ++n )
    {
 
     for( ip = 0;  (ip < (x.nc - 1));  ++ip )
