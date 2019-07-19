@@ -1970,6 +1970,22 @@ function evj( x , ne , en )
              } ; // end fdor()
 
 
+          if( ! this.d )
+
+            for( k = 0;  k < this.nr;  ++k )
+             {
+
+              vipk = this.v[ this.idx( k , ip ) ] ;
+
+              vjqk = this.v[ this.idx( k , jq ) ] ;
+
+              this.v[ this.idx( k , ip ) ] = ( (c * vipk) - (s * vjqk) ) ;
+
+              this.v[ this.idx( k , jq ) ] = ( (s * vipk) + (c * vjqk) ) ;
+
+             } ; // end fdor()
+
+
          } ; // end if{} -
 
 
