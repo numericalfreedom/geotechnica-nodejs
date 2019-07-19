@@ -1825,7 +1825,7 @@ function evj( x , ne , en )
   if( ! en )  en = 1.0e-8 ;
   if( ! ne )  ne = 100 ;
 
-  let se     = undefined ;
+  let se    = undefined ;
 
   let i     = undefined ;
   let j     = undefined ;
@@ -1987,6 +1987,9 @@ function evj( x , ne , en )
     for( i = 0;  i < this.nr;  ++i )
 
       this.v[ this.idx( i , evc ) ] = evn[ x.idx( i , i ) ] ;
+
+
+    console.log( 'se=' , se , 'evn=' , evn ) ;
 
 
    } ; // end for()
