@@ -2023,7 +2023,7 @@ function cev( x )
 
       for( k = 0;  k < x.nr;  ++k )
 
-        s += x.v[ x.idx( j , k ) ] * x.v[ x.idx( k , evc ) ] * x.v[ x.idx( k , j ) ] ;
+        s += x.v[ x.idx( j , k ) ] * x.v[ x.idx( j , evc ) ] * x.v[ x.idx( k , j ) ] ;
 
   return( r ) ;
 
