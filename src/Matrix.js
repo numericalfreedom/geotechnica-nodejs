@@ -1996,6 +1996,38 @@ function evj( x , ne , en )
  } ; // end function evj()
 
 
+/** Function cev()
+ *
+ *  Eigenvalue and eigenvector check
+ *
+ *  Eigenvectors and eigenvalues are in columns of input matrix
+ *
+ */
+
+
+function cev( x )
+ {
+
+  let i   = undefined ;
+  let j   = undefined ;
+  let k   = undefined ;
+  let s   = undefined ;
+
+  let evc = x.nr ;
+
+  let r = new Array( x.nr ) ;
+
+  for( i = 0;  i < x.nr; r[ i++ ] = s )
+
+    for( s = 0 , j = 0;  j < x.nr;  ++j )
+
+      for( k = 0;  k < x.nr;  ++k )
+
+        s += x.v[ x.idx( j , k ) ] * x.v[ x.idx( k , evc ) ] * x.v[ x.idx( k , j ) ] ;
+
+  return( r ) ;
+
+ } 
 
 
 var a = new Matrix( 9 , 9 ) ;
@@ -2351,6 +2383,9 @@ console.log( 'x.v=' , x.v ) ;
 console.log( 'n=' , r.evj( x , 100 , 1.0e-6 ) ) ;
 
 console.log( r.v ) ;
+
+
+console.log( 'cev=' , cev( r ) ) ;
 
 
 
