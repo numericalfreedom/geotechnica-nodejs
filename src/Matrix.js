@@ -1990,22 +1990,6 @@ function evj( x , ne , en )
    } ; // end for()
 
 
-  for( j = 0;  j < this.nr;  ++j )
-   {
-
-    for( en = 0 , i = 0;  i < this.nr;  ++i )
-
-      en += ( this.v[ this.idx( i , j ) ] * this.v[ this.idx( i , j ) ] ) ;
-
-    if( en = Math.sqrt( en ) )
-
-    for( i = 0;  i < this.nr;  ++i ) ;
-
-//    this.v[ this.idx( i , j ) ] /= en ;
-
-   } ; // end for()
-
-
   return( n ) ;
 
 
@@ -2385,6 +2369,22 @@ var x = new Matrix( 3 , 3 , 9, [ 4 , -14 , -12 , -14 , 10 , 13 ,  -12 , 13 , 1 ]
 
 console.log( 'x.v=' , x.v ) ;
 
+console.log( 'n=' , r.evj( x , 100 , 1.0e-9 ) ) ;
+
+console.log( r.v ) ;
+
+
+console.log( 'cev=' , cev( r ) ) ;
+
+
+var r = new Matrix( 4 , 5 , undefined ) ;
+
+var x = new Matrix( 4 , 4 , undefined ) ;
+
+for( let i = 0; i < 16; ++i )  x.v[i] = ( (i + 1) * (i + 1) ) ;
+
+console.log( 'x.v=' , x.v ) ;
+
 console.log( 'n=' , r.evj( x , 100 , 1.0e-6 ) ) ;
 
 console.log( r.v ) ;
@@ -2398,7 +2398,7 @@ var r = new Matrix( 5 , 6 , undefined ) ;
 
 var x = new Matrix( 5 , 5 , undefined ) ;
 
-for( let i = 1; i < 26; ++i )  x.v[i] = ( i ) ;
+for( let i = 0; i < 25; ++i )  x.v[i] = ( i + 1 ) ;
 
 console.log( 'x.v=' , x.v ) ;
 
