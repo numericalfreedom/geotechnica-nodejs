@@ -1868,7 +1868,7 @@ function evj( x , ne , en )
       for( j = 0;  j < this.nr;  this.v[ this.idx( i , j++ ) ] = 0 ) ;
 
 
-  for( ps = 1 , sp = 0 , n = 0; (n < ne) && (Math.abs( ps - sp ) > en); ++n )
+  for( s = 0 , n = 0; (n < ne) && (Math.abs( s ) > en); ++n )
    {
 
     for( ip = 0;  (ip < (x.nc - 1));  ++ip )
@@ -1977,9 +1977,9 @@ function evj( x , ne , en )
        } ; // end for()
 
 
-    for( ps = sp , sp = 0 , i = 0;  i < x.nr;  ++i )
+    for( s = 0 , i = 0;  i < x.nr;  ++i )
 
-      for( j = (i + 1);  j < x.nc;  sp += Math.abs( evn[ x.idx( i , j++ ) ] ) ) ;
+      for( j = (i + 1);  j < x.nc;  s += Math.abs( evn[ x.idx( i , j++ ) ] ) ) ;
 
 
     for( i = 0;  i < this.nr;  ++i )
