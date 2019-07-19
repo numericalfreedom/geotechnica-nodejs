@@ -1825,6 +1825,8 @@ function evj( x , ne , en )
   if( ! en )  en = 1.0e-8 ;
   if( ! ne )  ne = 100 ;
 
+  let se     = undefined ;
+
   let i     = undefined ;
   let j     = undefined ;
   let k     = undefined ;
@@ -1868,7 +1870,7 @@ function evj( x , ne , en )
       for( j = 0;  j < this.nr;  this.v[ this.idx( i , j++ ) ] = 0 ) ;
 
 
-  for( s = 1 , n = 0; (n < ne) && (Math.abs( s ) > en); ++n )
+  for( se = 1 , n = 0; (n < ne) && (Math.abs( se ) > en); ++n )
    {
 
     for( ip = 0;  (ip < (x.nc - 1));  ++ip )
@@ -1977,9 +1979,9 @@ function evj( x , ne , en )
        } ; // end for()
 
 
-    for( s = 0 , i = 0;  i < x.nr;  ++i )
+    for( se = 0 , i = 0;  i < x.nr;  ++i )
 
-      for( j = (i + 1);  j < x.nc;  s += Math.abs( evn[ x.idx( i , j++ ) ] ) ) ;
+      for( j = (i + 1);  j < x.nc;  se += Math.abs( evn[ x.idx( i , j++ ) ] ) ) ;
 
 
     for( i = 0;  i < this.nr;  ++i )
