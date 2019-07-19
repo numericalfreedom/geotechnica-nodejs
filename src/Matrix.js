@@ -1990,16 +1990,16 @@ function evj( x , ne , en )
    } ; // end for()
 
 
-  for( i = 0;  i < this.nr;  ++i )
+  for( j = 0;  j < this.nr;  ++j )
    {
 
-    for( en = 0 , j = 0;  j < this.nr;  ++j )
+    for( en = 0 , i = 0;  i < this.nr;  ++i )
 
       en += ( this.v[ this.idx( i , j ) ] * this.v[ this.idx( i , j ) ] ) ;
 
     if( en = Math.sqrt( en ) )
 
-    for( j = 0;  j < this.nr;  ++j )
+    for( i = 0;  i < this.nr;  ++i )
 
       this.v[ this.idx( i , j ) ] /= en ;
 
@@ -2027,17 +2027,20 @@ function cev( x )
   let i   = undefined ;
   let j   = undefined ;
   let k   = undefined ;
+  
   let s   = undefined ;
 
   let evc = x.nr ;
 
-  let r = new Array( x.nr ) ;
+  let r = new Array( x.nr * x.nr ) ;
 
-  for( i = 0;  i < x.nr; r[ i++ ] = s )
+  for( i = 0;  i < x.nr; ++i )
+  
+    for( j = 0;  j < x.nr; ++j )
 
-      for( s = 0 , j = 0;  j < x.nr;  ++j )
+      for( s = 0 , k = 0;  k < x.nr; r[ x.idx( i , j ) ] = s , ++k )
 
-        s += x.v[ x.idx( i , j ) ] * x.v[ x.idx( i , evc ) ] * x.v[ x.idx( j , i ) ] ;
+        s += x.v[ x.idx( k , i ) ] * x.v[ x.idx( k , evc ) ] * x.v[ x.idx( k , j ) ] ;
 
   return( r ) ;
 
