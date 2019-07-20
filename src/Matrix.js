@@ -43,22 +43,32 @@ function Matrix( nr , nc , nv , v )
  * 
  *  @constant { number } */
 
-  let vv = undefined ;
 
   if( ! nv )  var nv = ( nr * nc ) ;
 
-  if( v && (ix = v.length) && (ix = ((ix < nv) ? ix : nv)) )
+  let vv = undefined ;
 
-    for( vv = new Array( nv ) , i = 0;  i < ix;  vv[i] = v[i++] ) ;
 
-  if( v && (v.length == 0) )
-  
-    vv = new Array( 0 ) ;
+  if( ! v )
+
+    for( vv = new Array( nv ) , i = 0;  i < nv;  vv[i++] = 0.0 ) ;
 
   else
+   {
   
-    for( vv = new Array( nv ) , i = 0;  i < nv;  vv[i++] = 0.0 ) ;
-         
+    if( v.length == 0 )
+  
+      vv = new Array( 0 ) ;
+
+    else
+
+      if( v && (ix = v.length) && (ix = ((ix < nv) ? ix : nv)) )
+
+        for( vv = new Array( nv ) , i = 0;  i < ix;  vv[i] = v[i++] ) ;
+
+   } ; // end else -
+
+
 /**
  *  Index difference value
  *  
@@ -2473,3 +2483,7 @@ console.log( 'cev=' , cev( r ) ) ;
 
 // console.log( xpr( 1 , 1 , 0 , -1 , -1 , 0 ) ) ;
 
+
+var m = new Matrix( 3 , 4 , 0 ) ;
+
+console.log( 'm=' , m ) ;
