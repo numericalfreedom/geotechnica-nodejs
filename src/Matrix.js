@@ -2083,6 +2083,13 @@ function cev( x )
 
         s += x.v[ x.idx( k , i ) ] * x.v[ x.idx( k , evc ) ] * x.v[ x.idx( k , j ) ] ;
 
+  for( i = 0;  i < x.nr; ++i )
+  
+    for( j = 0;  j < x.nr; ++j )
+
+       for( s = 0 , k = 0;  k < x.nr;  r[ x.idx( i , j ) ] = s , ++k )
+
+        s += x.v[ x.idx( k , i ) ] * x.v[ x.idx( k , j ) ] ;
 
   return( r ) ;
 
