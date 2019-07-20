@@ -2413,6 +2413,8 @@ r.evl( x )
 
 console.log( r.v ) ;
 
+console.log( 'cev=' , cev( r ) ) ;
+
 
 var r = new Matrix( 3 , 5 , undefined ) ;
 
