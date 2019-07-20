@@ -21,15 +21,15 @@ module.exports = { Matrix }
 /**
  *  @constructor
  *  @author: Numericalfreedom Foundation
- *  @param    { number }    nr      Number of rows
- *  @param    { number }    nc      Number of columns
- *  @property { number }    nr      Number of rows
- *  @property { number }    nc      Number of columns
- *  @property { number }    nv      Number of values
- *  @property { Array  }    v       Vector of values
- *  @property { number }    d       Index difference for sparse representation
- *  @property { function }  i       Index function
- *  @returns  { Object }            Matrix  object
+ *  @param    { number }    Matrix#nr      Number of rows
+ *  @param    { number }    Matrix#nc      Number of columns
+ *  @property { number }    Matrix#nr      Number of rows
+ *  @property { number }    Matrix#nc      Number of columns
+ *  @property { number }    Matrix#nv      Number of values
+ *  @property { Array  }    Matrix#v       Vector of values
+ *  @property { number }    Matrix#d       Index difference for sparse representation
+ *  @property { function }  Matrix#idx     Index function
+ *  @returns  { Object }                   Matrix  object
  */
 
 function Matrix( nr , nc , nv , v )
@@ -43,18 +43,22 @@ function Matrix( nr , nc , nv , v )
  * 
  *  @constant { number } */
 
+  let vv = undefined ;
+
   if( ! nv )  var nv = ( nr * nc ) ;
 
-  var vv  = new Array( nv ) ;
-
   if( v && (ix = v.length) && (ix = ((ix < nv) ? ix : nv)) )
- 
-    for( i = 0;  i < ix;  vv[i] = v[i++] ) ;
-    
+
+    for( vv = new Array( nv ) , i = 0;  i < ix;  vv[i] = v[i++] ) ;
+
+  if( v && (v.length == 0) )
+  
+    vv = new Array( 0 ) ;
+
   else
   
-    for( i = 0;  i < nv;  vv[i++] = 0.0 ) ;
-
+    for( vv = new Array( nv ) , i = 0;  i < nv;  vv[i++] = 0.0 ) ;
+         
 /**
  *  Index difference value
  *  
@@ -88,6 +92,8 @@ function Matrix( nr , nc , nv , v )
   this.idx = idx ;
   this.tfm = tfm ;
   this.val = val ;
+  this.pvv = pvv ;
+  this.gvv = gvv ;
   this.eqt = eqt ;
   this.unt = unt ;
   this.cst = cst ;
@@ -229,6 +235,42 @@ function eqt( x )
   return ;
 
  } ; // end function eqt()
+
+
+
+/** Function pvv
+ *
+ *
+ */
+
+function pvv( v )
+ {
+  
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; this.v[ i ] = v[ i++ ] ) ;
+
+  return ;
+
+ } ; // end function pvv()
+
+
+
+/** Function gvv
+ *
+ *
+ */
+
+function gvv( v )
+ {
+
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; v[ i ] = this.v[ i++ ] ) ;
+
+  return ;
+
+ } ; // end function gvv()
 
 
 
@@ -2022,7 +2064,6 @@ function cev( x )
   let evc = x.nr ;
 
   let r   = new Array( x.nv ) ;
-
 
   for( i = 0;  i < x.nr; ++i )
   
