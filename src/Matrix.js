@@ -1835,7 +1835,6 @@ function evl( x )
             if( abcf )
              {
 
-
               ev0 = ( ((d * f) - (bld * e)) / bcf ) ;
 
               ev1 = ( ((d * e) - (ald * f)) / bcf ) ;
@@ -1847,9 +1846,9 @@ function evl( x )
             else
              {
 
-              ev1 = 1 ;
+              ev2 = 1 ;
 
-              ev0 = ev2 = 0 ;
+              ev0 = ev1 = 0 ;
 
              } ; // end else
 
