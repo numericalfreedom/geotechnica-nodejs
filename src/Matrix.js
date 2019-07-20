@@ -2482,6 +2482,6 @@ console.log( 'cev=' , cev( r ) ) ;
 // console.log( xpr( 1 , 1 , 0 , -1 , -1 , 0 ) ) ;
 
 
-var m = new Matrix( 3 , 4 , 0 ) ;
+// var m = new Matrix( 3 , 4 , 0 ) ;
 
-console.log( 'm=' , m ) ;
+// console.log( 'm=' , m ) ;
