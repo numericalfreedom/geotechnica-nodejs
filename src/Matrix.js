@@ -1791,7 +1791,6 @@ function evl( x )
 
              } // end if{} +
 
-
             else
              {
 
@@ -1799,34 +1798,62 @@ function evl( x )
 
               ev1 = ev2 = 0 ;
 
-             }
+             } ; // end else
 
-
-           } // end if{} +
+           } ; // end if{} -
 
 
           if( (aace >= aabd) && (aace >= abcf) )
            {
 
-            ev0 = ( ((e * f) - (cld * d)) / ace ) ;
+            if( aace )
+             {
 
-            ev1 = 1 ;
+              ev0 = ( ((e * f) - (cld * d)) / ace ) ;
 
-            ev2 = ( ((d * e) - (ald * f)) / ace ) ;
+              ev1 = 1 ;
 
-           } // end if{} +
+              ev2 = ( ((d * e) - (ald * f)) / ace ) ;
+
+             } // end if{} +
+
+            else
+             {
+
+              ev1 = 1 ;
+
+              ev0 = ev2 = 0 ;
+
+             } ; // end else
+
+           } ; // end if{} -
 
 
           if( (abcf >= aabd ) && (abcf >= aace) )
            {
 
-            ev0 = ( ((d * f) - (bld * e)) / bcf ) ;
+            if( abcf )
+             {
 
-            ev1 = ( ((d * e) - (ald * f)) / bcf ) ;
 
-            ev2 = 1 ;
+              ev0 = ( ((d * f) - (bld * e)) / bcf ) ;
 
-           } // end if{} +
+              ev1 = ( ((d * e) - (ald * f)) / bcf ) ;
+
+              ev2 = 1 ;
+              
+             } // end if{} +
+
+            else
+             {
+
+              ev1 = 1 ;
+
+              ev0 = ev2 = 0 ;
+
+             } ; // end else
+
+           } ; // end if{} -
 
           
           evn = nrm( ev0 , ev1 , ev2 ) ;
