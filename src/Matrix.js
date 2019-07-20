@@ -1510,6 +1510,8 @@ function evl( x )
 
   let evn  = undefined ;
 
+  let cen  = undefined ;
+
   let lbc  = 0 ;
   let ivc  = 1 ;
   let evc  = 2 ;
@@ -1666,7 +1668,9 @@ function evl( x )
        {
 
 
-        lbd  = lds[ j ] ;
+        lbd = lds[ j ] ;
+
+        cen = true ;
 
 
         if( (aabd = Math.abs( abd = (((ald = (a - lbd)) * (b - lbd)) - (d * d)) ))  > eps )
@@ -1742,6 +1746,8 @@ function evl( x )
         else
          {
 
+          cen = false ;
+
           for( i = 0;  i < 3; ++i )
 
             for( j = 0;  j < 3; ++j )
@@ -1757,13 +1763,18 @@ function evl( x )
 	     }; // end else -
 
 
-        evn = nrm( ev0 , ev1 , ev2 ) ;
+        if( cen == true )
+         {
+
+          evn = nrm( ev0 , ev1 , ev2 ) ;
           
-        this.v[ this.idx( 0 , j ) ] = ( ev0 / evn ) ;
+          this.v[ this.idx( 0 , j ) ] = ( ev0 / evn ) ;
 
-        this.v[ this.idx( 1 , j ) ] = ( ev1 / evn ) ;
+          this.v[ this.idx( 1 , j ) ] = ( ev1 / evn ) ;
 
-        this.v[ this.idx( 2 , j ) ] = ( ev2 / evn ) ;
+          this.v[ this.idx( 2 , j ) ] = ( ev2 / evn ) ;
+
+         } ; // end if{} -
 
 
        } ; // end for()
