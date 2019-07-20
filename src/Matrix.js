@@ -2402,6 +2402,9 @@ r.evl( x ) ;
 
 console.log( r.v ) ;
 
+console.log( 'cev=' , cev( r ) ) ;
+
+
 
 var x = new Matrix( 3 , 3 , 6 , [ 3 , 0 , 3 , 2 , 4 , 2 ] ) ;
 
@@ -2414,6 +2417,7 @@ r.evl( x )
 console.log( r.v ) ;
 
 console.log( 'cev=' , cev( r ) ) ;
+
 
 
 var r = new Matrix( 3 , 5 , undefined ) ;
