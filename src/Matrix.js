@@ -1708,43 +1708,91 @@ function evl( x )
           acld = Math.abs( cld = (c - lbd) ) ;
 
 
-          if( (aald >= abld) && (aald >= acld) )
+//        if( (aald >= abld) && (aald >= acld) )
+  
+          if( j == 0 )
            {
+  
+            if( aald )        
+             {
 
-            ev0 = ( (- (d + e)) / ald ) ;
+              ev0 = ( (- (d + e)) / ald ) ;
 
-            ev1 = 1 ;
+              ev1 = 1 ;
 
-            ev2 = 1 ;
+              ev2 = 1 ;
 
-           } // end if{} +
+             } // end if{} +
+             
+            else
+             {
+				 
+			  ev0 = 0 ;
+			  
+			  ev1 = ev2 = 1 ;	 
+				 
+			 } ; // end else
 
+	       }
 
-          else if( (abld >= aald) && (abld >= acld) )
+//        else if( (abld >= aald) && (abld >= acld) )
+
+          else if( j == 1 )
            {
+          
+            if( abld )
+             {
 
-            ev0 = 1 ;
+              ev0 = 1 ;
 
-            ev1 = ( (- (d + f)) / bld ) ;
+              ev1 = ( (- (d + f)) / bld ) ;
 
-            ev2 = 1 ;
+              ev2 = 1 ;
 
-           } // end if{} +
+             } // end if{} +
 
+            else
+             {
+				 
+			  ev1 = 0 ;
+			  
+			  ev0 = ev2 = 1 ;	 
 
-          else if( (acld >= aald) && (acld >= aald) )
+		     } ; // else
+		     
+		   } // end if{}+
+
+//        else if( (acld >= aald) && (acld >= aald) )
+
+          else if( j == 2 )
            {
+			   
+            if( acld )
+             {
 
-            ev0 = 1 ;
+              ev0 = 1 ;
  
-            ev1 = 1 ;
+              ev1 = 1 ;
 
-            ev2 = ( (- (e + f)) / cld ) ;
+              ev2 = ( (- (e + f)) / cld ) ;
 
-           } ; // end else -
+		     }
+		     
+		    else
+		     {
+				 
+			  ev2 = 0 ;
+				 
+			  ev0 = ev1 = 1 ;
+
+			 } ; // end else -
+                    
+           } ; // end else if{} -
 
 
           evn = nrm( ev0 , ev1 , ev2 ) ;
+          
+          evn = 1 ;
 
           this.v[ this.idx( 0 , j ) ] = ( ev0 / evn ) ;
 
@@ -1777,7 +1825,9 @@ function evl( x )
           abcf = Math.abs( bcf = (((bld = (b - lbd)) * (c - lbd)) - (f * f)) ) ;
 
 
-          if( (aabd >= aace) && (aabd >= abcf) )
+//        if( (aabd >= aace) && (aabd >= abcf) )
+
+          if( j == 0 )
            {
 
             if( aabd )
@@ -1800,10 +1850,12 @@ function evl( x )
 
              } ; // end else
 
-           } ; // end if{} -
+           } // end if{} +
 
 
-          if( (aace >= aabd) && (aace >= abcf) )
+//        if( (aace >= aabd) && (aace >= abcf) )
+
+          else if( j == 1 )
            {
 
             if( aace )
@@ -1826,10 +1878,12 @@ function evl( x )
 
              } ; // end else
 
-           } ; // end if{} -
+           } // end if{} +
 
 
-          if( (abcf >= aabd ) && (abcf >= aace) )
+//        if( (abcf >= aabd ) && (abcf >= aace) )
+
+          else if( j == 2 )
            {
 
             if( abcf )
@@ -1856,7 +1910,7 @@ function evl( x )
 
           
           evn = nrm( ev0 , ev1 , ev2 ) ;
-
+          
           this.v[ this.idx( 0 , j ) ] = ( ev0 / evn ) ;
 
           this.v[ this.idx( 1 , j ) ] = ( ev1 / evn ) ;
@@ -2456,6 +2510,8 @@ console.log( 'x=' , x.v ) ;
 r.evl( x )
 
 console.log( r.v ) ;
+
+console.log( 'cev=' , cev( r ) ) ;
 
 
 
