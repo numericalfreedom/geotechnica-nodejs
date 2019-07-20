@@ -1672,8 +1672,15 @@ function evl( x )
 
         cen = true ;
 
+        
+        aabd = Math.abs( abd = (((ald = (a - lbd)) * (b - lbd)) - (d * d)) ) ;
 
-        if( (aabd = Math.abs( abd = (((ald = (a - lbd)) * (b - lbd)) - (d * d)) ))  > eps )
+        aace = Math.abs( ace = (((a - lbd) * (cld = (c - lbd))) - (e * e)) ) ;
+        
+        abcf = Math.abs( bcf = (((bld = (b - lbd)) * (c - lbd)) - (f * f)) ) ;
+
+
+        if( aabd > eps )
          {
 
           ev0 = 1 ;
@@ -1685,7 +1692,7 @@ function evl( x )
          } // end if{} +
 
 
-        else if( (aace = Math.abs( ace = (((a - lbd) * (cld = (c - lbd))) - (e * e)) )) > eps )
+        else if( aace > eps )
          {
 
           ev0 = ( ((e * f) - (cld * d)) / ace ) ;
@@ -1697,7 +1704,7 @@ function evl( x )
          } // end else if{} +
 
 
-        else if( (abcf = Math.abs( bcf = (((bld = (b - lbd)) * (c - lbd)) - (f * f)) )) > eps )
+        else if( abcf > eps )
          {
 
           ev0 = ( ((d * f) - (bld * e)) / bcf ) ;
@@ -1708,7 +1715,8 @@ function evl( x )
               
          } // end else if{} +
 
-        else if( (aald = Math.abs( ald )) > eps )
+
+        else if( Math.abs( ald ) > eps )
          {
 
           ev0 = ( (- (d + e)) / ald ) ;
@@ -1720,7 +1728,7 @@ function evl( x )
          } // end else if{} +
              
           
-        else if( (abld = Math.abs( bld )) > eps )
+        else if( Math.abs( bld ) > eps )
          {
 
           ev0 = 1 ;
@@ -1732,7 +1740,7 @@ function evl( x )
          } // end else if{} +
              
 			   
-        else if( (acld = Math.abs( cld )) > eps )
+        else if( Math.abs( cld ) > eps )
          {
 
           ev0 = 1 ;
