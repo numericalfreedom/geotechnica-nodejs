@@ -1925,9 +1925,9 @@ function evj( x , ne , en )
   for( se = 1 , n = 0; (n < ne) && (Math.abs( se ) > en); ++n )
    {
 
-    for( ip = 0;  (ip < (x.nc - 1));  ++ip )
+    for( ip = 0;  (ip < (x.nr - 1));  ++ip )
 
-      for( jq = (ip + 1);  (jq < x.nc);  ++jq )
+      for( jq = (ip + 1);  (jq < x.nr);  ++jq )
        {
 
         xipip = evn[ x.idx( ip , ip ) ] ;
@@ -2011,13 +2011,13 @@ function evj( x , ne , en )
             for( k = 0;  k < this.nr;  ++k )
              {
 
-              vipk = this.v[ this.idx( ip , k ) ] ;
+              vipk = this.v[ this.idx( k , ip ) ] ;
 
-              vjqk = this.v[ this.idx( jq , k ) ] ;
+              vjqk = this.v[ this.idx( k , jq ) ] ;
 
-              this.v[ this.idx( ip , k ) ] = ( (c * vipk) - (s * vjqk) ) ;
+              this.v[ this.idx( k , ip ) ] = ( (c * vipk) + (s * vjqk) ) ;
 
-              this.v[ this.idx( jq , k ) ] = ( (s * vipk) + (c * vjqk) ) ;
+              this.v[ this.idx( k , jq ) ] = ( (c * vjqk) - (s * vipk) ) ;
 
              } ; // end fdor()
 
@@ -2107,8 +2107,6 @@ console.log( a.v[ a.idx( 1 , 2 ) ] ) ;
 console.log( a.v[ a.idx( 2 , 0 ) ] ) ;
 console.log( a.v[ a.idx( 2 , 1 ) ] ) ;
 console.log( a.v[ a.idx( 2 , 2 ) ] ) ;
-
-
 
 
 var x = new Matrix( 3 , 3 , 4 ) ;
