@@ -1694,7 +1694,7 @@ function evl( x )
        {
 
 
-        for( j = 0;  j < 2;  ++j )
+        for( j = 0;  j < 3;  ++j )
          {
 
 
@@ -1763,7 +1763,7 @@ function evl( x )
        {
 
 
-        for( j = 0;  j < 2;  ++j )
+        for( j = 0;  j < 3;  ++j )
          {
 
 
@@ -1844,7 +1844,7 @@ function evl( x )
        } ; // end if{} -
 
 
-      [ this.v[ this.idx( 0 , 2 ) ] , this.v[ this.idx( 1 , 2 ) ] , this.v[ this.idx( 2 , 2 ) ] ] = xpr( this.v[ this.idx( 0 , 0 ) ] , this.v[ this.idx( 0 , 1 ) ] , this.v[ this.idx( 0 , 2 ) ] , this.v[ this.idx( 1 , 0 ) ] , this.v[ this.idx( 1 , 1 ) ] , this.v[ this.idx( 1 , 2 ) ] ) ;
+//    [ this.v[ this.idx( 0 , 2 ) ] , this.v[ this.idx( 1 , 2 ) ] , this.v[ this.idx( 2 , 2 ) ] ] = xpr( this.v[ this.idx( 0 , 0 ) ] , this.v[ this.idx( 0 , 1 ) ] , this.v[ this.idx( 0 , 2 ) ] , this.v[ this.idx( 1 , 0 ) ] , this.v[ this.idx( 1 , 1 ) ] , this.v[ this.idx( 1 , 2 ) ] ) ;
 
 
      } ; // end if{}  -
