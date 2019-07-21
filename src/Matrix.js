@@ -1712,7 +1712,7 @@ function evl( x )
 
           ev1 = ( ((e * f) - (cld * d)) / bcf ) ;
 
-          ev2 = ( ((d * f) - (bld * e) / bcf ) ;
+          ev2 = ( ((d * f) - (bld * e)) / bcf ) ;
 
          } // end else if{} +
 
