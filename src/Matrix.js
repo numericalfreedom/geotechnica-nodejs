@@ -1479,6 +1479,7 @@ function evl( x )
 
   let i    = undefined ;
   let j    = undefined ;
+  let k    = undefined ;
 
   let a    = undefined ;
   let b    = undefined ;
@@ -1665,7 +1666,7 @@ function evl( x )
         e = f = 0 ;
 
 
-      for( j = 0;  j < 3;  ++j )
+      for( j = 0 ;  j < 3;  ++j )
        {
 
 
@@ -1717,7 +1718,7 @@ function evl( x )
          } // end else if{} +
 
 
-        else if( Math.abs( ald ) > eps )
+        else if( (ald > eps) && (Math.abs( ldc - lda ) < eps) )
          {
 
           ev0 = ( (- (d + e)) / ald ) ;
@@ -1729,7 +1730,7 @@ function evl( x )
          } // end else if{} +
 
 
-        else if( Math.abs( bld ) > eps )
+        else if( (bld > eps) && (Math.abs( ldb - ldc ) < eps) )
          {
 
           ev0 = 1 ;
@@ -1741,7 +1742,7 @@ function evl( x )
          } // end else if{} +
 
 
-        else if( Math.abs( cld ) > eps )
+        else if( (cld > eps) && (Math.abs( lda - ldb ) < eps) )
          {
 
           ev0 = 1 ;
@@ -2022,18 +2023,18 @@ function cev( x )
 
   for( i = 0;  i < x.nr; ++i )
   
-    for( j = 0;  j < x.nr; ++j )
+    for( j = 0;  j < x.nr; r[ x.idx( i , j ) ] = s , ++j )
 
-       for( s = 0 , k = 0;  k < x.nr;  r[ x.idx( i , j ) ] = s , ++k )
+       for( s = 0 , k = 0;  k < x.nr; ++k )
 
          s += ( x.v[ x.idx( k , i ) ] * x.v[ x.idx( k , evc ) ] * x.v[ x.idx( k , j ) ] ) ;
 
 
   for( i = 0;  i < x.nr; ++i )
   
-    for( j = 0;  j < x.nr; ++j )
+    for( j = 0;  j < x.nr; r[ x.idx( i , j ) ] = s , ++j )
 
-       for( s = 0 , k = 0;  k < x.nr;  r[ x.idx( i , j ) ] = s , ++k )
+       for( s = 0 , k = 0;  k < x.nr; ++k )
 
          s += ( x.v[ x.idx( k , i ) ] * x.v[ x.idx( k , j ) ] ) ;
 
