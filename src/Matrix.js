@@ -1684,11 +1684,11 @@ function evl( x )
         if( aabd > eps )
          {
 
-          ev0 = 1 ;
+          ev0 = ( ((d * f) - (bld * e)) / abd ) ;
 
-          ev1 = ( ((e * f) - (cld * d)) / abd ) ;
+          ev1 = ( ((d * e) - (ald * f)) / abd ) ;
 
-          ev2 = ( ((d * f) - (bld * e)) / abd ) ;
+          ev2 = 1 ;
 
          } // end if{} +
 
@@ -1708,12 +1708,12 @@ function evl( x )
         else if( abcf > eps )
          {
 
-          ev0 = ( ((d * f) - (bld * e)) / bcf ) ;
+          ev0 = 1 ;
 
-          ev1 = ( ((d * e) - (ald * f)) / bcf ) ;
+          ev1 = ( ((e * f) - (cld * d)) / bcf ) ;
 
-          ev2 = 1 ;
-              
+          ev2 = ( ((d * f) - (bld * e) / bcf ) ;
+
          } // end else if{} +
 
 
