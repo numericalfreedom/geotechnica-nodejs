@@ -2045,14 +2045,7 @@ function cev( x )
 
          s += ( x.v[ x.idx( k , i ) ] * x.v[ x.idx( k , j ) ] ) ;
 
-
-  for( i = 0;  i < x.nr; ++i )
-  
-    for( j = 0;  j < x.nr; r[ x.idx( i , j ) ] = s , ++j )
-
-       for( s = 0 , k = 0;  k < x.nr; ++k )
-
-         s += ( x.v[ x.idx( k , i ) ] * x.v[ x.idx( k , evc ) ] * x.v[ x.idx( k , j ) ] ) ;
+//       s += ( x.v[ x.idx( k , i ) ] * x.v[ x.idx( k , evc ) ] * x.v[ x.idx( k , j ) ] ) ;
 
 
   return( r ) ;
@@ -2060,9 +2053,9 @@ function cev( x )
  } ; // end function cev() 
 
 
-var a = new Matrix( 9 , 9 ) ;
+let a = new Matrix( 9 , 9 ) ;
 
-var i = 0 ;
+let i = 0 ;
 
 for( i = 0; i < a.nv ; a.v[i] = (1 + i++) ) ;
 
@@ -2080,387 +2073,380 @@ console.log( a.v[ a.idx( 2 , 1 ) ] ) ;
 console.log( a.v[ a.idx( 2 , 2 ) ] ) ;
 
 
-var x = new Matrix( 3 , 3 , 4 ) ;
+let x1 = new Matrix( 3 , 3 , 4 ) ;
 
-for( i = 0; i < x.nv ; x.v[i] = (1 + i++) ) ;
-
-
-var y = new Matrix( 3 , 3 , 4 ) ;
-
-for( i = 0; i < y.nv ; y.v[i] = (1 + i++) ) ;
+for( i = 0; i < x1.nv ; x1.v[i] = (1 + i++) ) ;
 
 
-var r = new Matrix( 3 , 3 , 4 ) ;
+let y1 = new Matrix( 3 , 3 , 4 ) ;
+
+for( i = 0; i < y1.nv ; y1.v[i] = (1 + i++) ) ;
 
 
-r.mmd( x , y ) ;
+let r1 = new Matrix( 3 , 3 , 4 ) ;
 
 
-console.log( x ) ;
-
-console.log( y ) ;
-
-console.log( r ) ;
+r1.mmd( x1 , y1 ) ;
 
 
-var x = new Matrix( 3 , 3 ) ;
+console.log( x1 ) ;
+
+console.log( y1 ) ;
+
+console.log( r1 ) ;
 
 
+let x2 = new Matrix( 3 , 3 ) ;
 
-var y = new Matrix( 3 , 3 ) ;
+let y2 = new Matrix( 3 , 3 ) ;
+
+let r2 = new Matrix( 3 , 3 ) ;
 
 
-
-var r = new Matrix( 3 , 3 ) ;
-
-
-for( var ii = 0; ii < 1; ++ii , r.mmd( x , y ) )
+for( let ii = 0; ii < 1; ++ii , r2.mmd( x2 , y2 ) )
  {
 
-  for( i = 0; i < x.nv ; x.v[i] = Math.random() , i++ ) ;
+  for( i = 0; i < x2.nv ; x2.v[i] = Math.random() , i++ ) ;
 
-  for( i = 0; i < y.nv ; y.v[i] = Math.random() , i++ ) ;
+  for( i = 0; i < y2.nv ; y2.v[i] = Math.random() , i++ ) ;
 
   if( (ii % 1e6) == 0 )  console.log( ii ) ;
 
  }
 
 
-console.log( x ) ;
+console.log( x2 ) ;
 
-console.log( y ) ;
+console.log( y2 ) ;
 
-console.log( r ) ;
-
-
-
-var xx = new Matrix( 3 , 1 ) ;
-
-var yy = new Matrix( 3 , 1 ) ;
-
-var rr = new Matrix( 3 , 3 ) ;
-
-
-for( i = 0; i < xx.nv ; xx.v[i] = (1 + i++) ) ;
-
-for( i = 0; i < yy.nv ; yy.v[i] = (1 + i++) ) ;
-
-
-rr.vmm( xx , yy ) ;
-
-
-console.log( rr ) ;
+console.log( r2 ) ;
 
 
 
-xx.cmm( 2.0 , yy ) ;
+let xx1 = new Matrix( 3 , 1 ) ;
+
+let yy1 = new Matrix( 3 , 1 ) ;
+
+let rr1 = new Matrix( 3 , 3 ) ;
 
 
-console.log( xx ) ;
+for( i = 0; i < xx1.nv ; xx1.v[i] = (1 + i++) ) ;
+
+for( i = 0; i < yy1.nv ; yy1.v[i] = (1 + i++) ) ;
 
 
-
-xx.cmd( 2.0 , yy ) ;
-
-
-console.log( xx ) ;
+rr1.vmm( xx1 , yy1 ) ;
 
 
-let e = xx.enm() ;
-
-console.log( e ) ;
-
-
-var x = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 5 , 7 , 11 , 13 , 17 , 19 ] ) ;
-
-var y = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 5 , 7 , 11 , 13 , 17 , 19 ] ) ;
-
-var r = new Matrix( 3 , 3 ) ;
-
-y.eqt( x ) ;
-
-console.log( y ) ;
-
-console.log( x ) ;
-
-console.log( y.v ) ;
-
-console.log( x.v ) ;
-
-x.inv()
-
-console.log( x.v ) ;
-
-r.mmd( x , y ) ;
-
-console.log( r.v ) ;
-
-
-var x = new Matrix( 3 , 3 , undefined , [ 1 , 5 , 0 , 5 , 2 , 0 , 0 , 0 , 3 ] ) ;
-
-var y = new Matrix( 3 , 3 , undefined , [ 1 , 5 , 0 , 5 , 2 , 0 , 0 , 0 , 3 ] ) ;
-
-var r = new Matrix( 3 , 3 ) ;
-
-y.eqt( x ) ;
-
-// console.log( y ) ;
-
-// console.log( x ) ;
-
-console.log( y.v ) ;
-
-console.log( x.v ) ;
-
-x.inv()
-
-console.log( x.v ) ;
-
-r.mmd( x , y ) ;
-
-console.log( r.v ) ;
+console.log( rr1 ) ;
 
 
 
-var x = new Matrix( 3 , 3 , 4 , [ 1 , 2 , 3 , 5 ] ) ;
+xx1.cmm( 2.0 , yy1 ) ;
 
-var y = new Matrix( 3 , 3 , 4 , [ 1 , 2 , 3 , 5 ] ) ;
 
-var r = new Matrix( 3 , 3 , 4 ) ;
+console.log( xx1 ) ;
 
-y.eqt( x ) ;
+
+
+xx1.cmd( 2.0 , yy1 ) ;
+
+
+console.log( xx1 ) ;
+
+
+let e1 = xx1.enm() ;
+
+console.log( e1 ) ;
+
+
+let x3 = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 5 , 7 , 11 , 13 , 17 , 19 ] ) ;
+
+let y3 = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 5 , 7 , 11 , 13 , 17 , 19 ] ) ;
+
+let r3 = new Matrix( 3 , 3 ) ;
+
+y3.eqt( x3 ) ;
+
+console.log( y3 ) ;
+
+console.log( x3 ) ;
+
+console.log( y3.v ) ;
+
+console.log( x3.v ) ;
+
+x3.inv()
+
+console.log( x3.v ) ;
+
+r3.mmd( x3 , y3 ) ;
+
+console.log( r3.v ) ;
+
+
+let x4 = new Matrix( 3 , 3 , undefined , [ 1 , 5 , 0 , 5 , 2 , 0 , 0 , 0 , 3 ] ) ;
+
+let y4 = new Matrix( 3 , 3 , undefined , [ 1 , 5 , 0 , 5 , 2 , 0 , 0 , 0 , 3 ] ) ;
+
+let r4 = new Matrix( 3 , 3 ) ;
+
+y4.eqt( x4 ) ;
 
 // console.log( y ) ;
 
 // console.log( x ) ;
 
-console.log( y.v ) ;
+console.log( y4.v ) ;
 
-console.log( x.v ) ;
+console.log( x4.v ) ;
 
-x.inv()
+x4.inv()
 
-console.log( y.v ) ;
+console.log( x4.v ) ;
 
-console.log( x.v ) ;
+r4.mmd( x4 , y4 ) ;
 
-r.mmd( x , y ) ;
+console.log( r4.v ) ;
 
-console.log( r.v ) ;
 
 
-var x = new Matrix( 3 , 4 , undefined , [ 1 , 1 , 1 , 1 , 3 , 3 , 3 , 3 , 5 , 5 , 5 , 5 ] ) ;
+let x5 = new Matrix( 3 , 3 , 4 , [ 1 , 2 , 3 , 5 ] ) ;
 
-var y = new Matrix( 3 , 4 , undefined , [ 7 , 7 , 7 , 7 , 11 , 11 , 11 , 11 , 13 , 13 , 13 , 13 ] ) ;
+let y5 = new Matrix( 3 , 3 , 4 , [ 1 , 2 , 3 , 5 ] ) ;
 
-var r = new Matrix( 3 , 4 ) ;
+let r5 = new Matrix( 3 , 3 , 4 ) ;
 
-console.log( x.v ) ;
+y5.eqt( x5 ) ;
 
-console.log( y.v ) ;
+// console.log( y ) ;
 
-r.xmm( x , y ) ;
+// console.log( x ) ;
 
-console.log( r.v ) ;
+console.log( y5.v ) ;
 
+console.log( x5.v ) ;
 
-var x  = new Matrix( 2 , 2 , 3 , [ 1 , 2 , 3 ] ) ;
+x5.inv()
 
-var y  = new Matrix( 2 , 2 , 3 , [ 1 , 2 , 3 ] ) ;
+console.log( y5.v ) ;
 
-var r  = new Matrix( 2 , 2 , 3 ) ;
+console.log( x5.v ) ;
 
-var rr = undefined ;
+r5.mmd( x5 , y5 ) ;
 
-console.log( x.v ) ;
+console.log( r5.v ) ;
 
-console.log( y.v ) ;
 
-rr = r.mdt( x , y ) ;
+let x6 = new Matrix( 3 , 4 , undefined , [ 1 , 1 , 1 , 1 , 3 , 3 , 3 , 3 , 5 , 5 , 5 , 5 ] ) ;
 
-console.log( r.v ) ;
+let y6 = new Matrix( 3 , 4 , undefined , [ 7 , 7 , 7 , 7 , 11 , 11 , 11 , 11 , 13 , 13 , 13 , 13 ] ) ;
 
-console.log( rr );
+let r6 = new Matrix( 3 , 4 ) ;
 
+console.log( x6.v ) ;
 
-var x  = new Matrix( 3 , 4 , undefined , [ 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 11 , 12 ] ) ;
+console.log( y6.v ) ;
 
-var y  = new Matrix( 4 , 3 , undefined , [ 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 11 , 12 ] ) ;
+r6.xmm( x6 , y6 ) ;
 
-var rs = new Matrix( 3 , 3 , undefined ) ;
+console.log( r6.v ) ;
 
-var ra = new Matrix( 3 , 3 , undefined ) ;
 
-console.log( x.v ) ;
+let x7  = new Matrix( 2 , 2 , 3 , [ 1 , 2 , 3 ] ) ;
 
-console.log( y.v ) ;
+let y7  = new Matrix( 2 , 2 , 3 , [ 1 , 2 , 3 ] ) ;
 
+let r7  = new Matrix( 2 , 2 , 3 ) ;
 
-rs.mmd( x , y ) ;
+let rr7 = undefined ;
 
-console.log( rs.v ) ;
+console.log( x7.v ) ;
 
-rs.tms() ;
+console.log( y7.v ) ;
 
-console.log( rs.v ) ;
+rr7 = r7.mdt( x7 , y7 ) ;
 
+console.log( r7.v ) ;
 
-ra.mmd( x , y ) ;
+console.log( rr7 );
 
-console.log( ra.v ) ;
 
-ra.tma() ;
+let x8  = new Matrix( 3 , 4 , undefined , [ 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 11 , 12 ] ) ;
 
-console.log( ra.v ) ;
+let y8  = new Matrix( 4 , 3 , undefined , [ 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 11 , 12 ] ) ;
 
+let rs8 = new Matrix( 3 , 3 , undefined ) ;
 
-var x = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ] ) ;
+let ra8 = new Matrix( 3 , 3 , undefined ) ;
 
-var y = new Matrix( 3 , 3 , undefined ) ;
+console.log( x8.v ) ;
 
+console.log( y8.v ) ;
 
-var r = new Matrix( 2 , 2 , 3 ) ;
 
-r.tfm( x )
+rs8.mmd( x8 , y8 ) ;
 
-console.log( 'r223=' , r.v ) ;
+console.log( rs8.v ) ;
 
-y.tfm( r )
+rs8.tms() ;
 
-console.log( 'y=' , y.v ) ;
+console.log( rs8.v ) ;
 
 
-var r = new Matrix( 3 , 3 , 4 ) ;
+ra8.mmd( x8 , y8 ) ;
 
-r.tfm( x )
+console.log( ra8.v ) ;
 
-console.log( 'r334=' , r.v ) ;
+ra8.tma() ;
 
-y.tfm( r )
+console.log( ra8.v ) ;
 
-console.log( 'y=' , y.v ) ;
 
+let x9 = new Matrix( 3 , 3 , undefined , [ 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ] ) ;
 
-var r = new Matrix( 3 , 3 , 6 ) ;
+let y9 = new Matrix( 3 , 3 , undefined ) ;
 
-r.tfm( x )
 
-console.log( 'r334=' , r.v ) ;
+let r9 = new Matrix( 2 , 2 , 3 ) ;
 
-y.tfm( r )
+r9.tfm( x9 )
 
-console.log( 'y=' , y.v ) ;
+console.log( 'r223=' , r9.v ) ;
 
+y9.tfm( r9 )
 
-var x = new Matrix( 3 , 3 , 6 , [ 4 , 10 , 1 , -14 , -12 , 13 ] ) ;
+console.log( 'y=' , y9.v ) ;
 
-var r = new Matrix( 3 , 5 , undefined ) ;
 
+let r10 = new Matrix( 3 , 3 , 4 ) ;
 
-console.log( 'x=' , x.v ) ;
+r10.tfm( x9 )
 
-r.evl( x ) ;
+console.log( 'r334=' , r10.v ) ;
 
-console.log( r.v ) ;
+y9.tfm( r9 )
 
-console.log( 'cev=' , cev( r ) ) ;
+console.log( 'y=' , y9.v ) ;
 
 
+let r11 = new Matrix( 3 , 3 , 6 ) ;
 
-var x = new Matrix( 3 , 3 , 6 , [ 3 , 0 , 3 , 2 , 4 , 2 ] ) ;
+r11.tfm( x9 )
 
-var r = new Matrix( 3 , 5 , undefined ) ;
+console.log( 'r334=' , r9.v ) ;
 
-console.log( 'x=' , x.v ) ;
+y9.tfm( r9 )
 
-r.evl( x )
+console.log( 'y=' , y9.v ) ;
 
-console.log( r.v ) ;
 
-console.log( 'cev=' , cev( r ) ) ;
+let x20 = new Matrix( 3 , 3 , 6 , [ 4 , 10 , 1 , -14 , -12 , 13 ] ) ;
 
+let r20 = new Matrix( 3 , 5 , undefined ) ;
 
 
-var r = new Matrix( 3 , 5 , undefined ) ;
+console.log( 'x=' , x20.v ) ;
 
-var x = new Matrix( 3 , 3 , 6 , [ 1 , 1 , 2 , 0 , 0 , 0 ] ) ;
+r20.evl( x20 ) ;
 
+console.log( r20.v ) ;
 
-console.log( 'x=' , x.v ) ;
+console.log( 'cev=' , cev( r20 ) ) ;
 
-r.evl( x )
 
-console.log( r.v ) ;
 
-console.log( 'cev=' , cev( r ) ) ;
+let x21 = new Matrix( 3 , 3 , 6 , [ 3 , 0 , 3 , 2 , 4 , 2 ] ) ;
 
+let r21 = new Matrix( 3 , 5 , undefined ) ;
 
+console.log( 'x=' , x21.v ) ;
 
-var r = new Matrix( 3 , 4 , undefined ) ;
+r21.evl( x21 )
 
-var x = new Matrix( 3 , 3 , 9, [ 4 , -14 , -12 , -14 , 10 , 13 ,  -12 , 13 , 1 ] ) ;
+console.log( r21.v ) ;
 
-console.log( 'x.v=' , x.v ) ;
+console.log( 'cev=' , cev( r21 ) ) ;
 
-console.log( 'n=' , r.evj( x , 100 , 1.0e-9 ) ) ;
 
-console.log( r.v ) ;
 
+let r22 = new Matrix( 3 , 5 , undefined ) ;
 
-console.log( 'cev=' , cev( r ) ) ;
+let x22 = new Matrix( 3 , 3 , 6 , [ 1 , 1 , 2 , 0 , 0 , 0 ] ) ;
 
 
-var r = new Matrix( 4 , 5 , undefined ) ;
+console.log( 'x=' , x22.v ) ;
 
-var x = new Matrix( 4 , 4 , undefined ) ;
+r22.evl( x22 )
 
-for( let i = 0; i < 16; ++i )  x.v[i] = ( (i + 1) * (i + 1) ) ;
+console.log( r22.v22 ) ;
 
-console.log( 'x.v=' , x.v ) ;
+console.log( 'cev=' , cev( r22 ) ) ;
 
-console.log( 'n=' , r.evj( x , 100 , 1.0e-6 ) ) ;
 
-console.log( r.v ) ;
 
+let r23 = new Matrix( 3 , 4 , undefined ) ;
 
-console.log( 'cev=' , cev( r ) ) ;
+let x23 = new Matrix( 3 , 3 , 9, [ 4 , -14 , -12 , -14 , 10 , 13 ,  -12 , 13 , 1 ] ) ;
 
+console.log( 'x.v=' , x23.v ) ;
 
+console.log( 'n=' , r23.evj( x23 , 100 , 1.0e-9 ) ) ;
 
-var r = new Matrix( 5 , 6 , undefined ) ;
+console.log( r23.v ) ;
 
-var x = new Matrix( 5 , 5 , undefined ) ;
+console.log( 'cev=' , cev( r23 ) ) ;
 
-for( let i = 0; i < 25; ++i )  x.v[i] = ( i + 1 ) ;
 
-console.log( 'x.v=' , x.v ) ;
+let r24 = new Matrix( 4 , 5 , undefined ) ;
 
-console.log( 'n=' , r.evj( x , 100 , 1.0e-6 ) ) ;
+let x24 = new Matrix( 4 , 4 , undefined ) ;
 
-console.log( r.v ) ;
+for( let i = 0; i < 16; ++i )  x24.v[i] = ( (i + 1) * (i + 1) ) ;
 
+console.log( 'x.v=' , x24.v ) ;
 
-console.log( 'cev=' , cev( r ) ) ;
+console.log( 'n=' , r24.evj( x24 , 100 , 1.0e-6 ) ) ;
 
+console.log( r24.v ) ;
 
 
-var r = new Matrix( 2 , 3 , undefined ) ;
+console.log( 'cev=' , cev( r24 ) ) ;
 
-var x = new Matrix( 2 , 2 , 4 , [ 3 , 2 , 2 , 1 ] ) ;
 
-console.log( 'x.v=' , x.v ) ;
 
-console.log( 'n=' , r.evj( x , 100 , 1.0e-6 ) ) ;
+let r25 = new Matrix( 5 , 6 , undefined ) ;
 
-console.log( r.v ) ;
+let x25 = new Matrix( 5 , 5 , undefined ) ;
 
+for( let i = 0; i < 25; ++i )  x25.v[i] = ( i + 1 ) ;
 
-console.log( 'cev=' , cev( r ) ) ;
+console.log( 'x.v=' , x25.v ) ;
+
+console.log( 'n=' , r25.evj( x25 , 100 , 1.0e-6 ) ) ;
+
+console.log( r25.v ) ;
+
+console.log( 'cev=' , cev( r25 ) ) ;
+
+
+
+let r26 = new Matrix( 2 , 3 , undefined ) ;
+
+let x26 = new Matrix( 2 , 2 , 4 , [ 3 , 2 , 2 , 1 ] ) ;
+
+console.log( 'x.v=' , x26.v ) ;
+
+console.log( 'n=' , r26.evj( x26 , 100 , 1.0e-6 ) ) ;
+
+console.log( r26.v ) ;
+
+console.log( 'cev=' , cev( r26 ) ) ;
 
 
 // console.log( xpr( 1 , 1 , 0 , -1 , -1 , 0 ) ) ;
 
 
-// var m = new Matrix( 3 , 4 , 0 ) ;
+// let m = new Matrix( 3 , 4 , 0 ) ;
 
 // console.log( 'm=' , m ) ;
