@@ -2380,7 +2380,7 @@ console.log( 'x=' , x22.v ) ;
 
 r22.evl( x22 )
 
-console.log( r22.v22 ) ;
+console.log( r22.v ) ;
 
 console.log( 'cev=' , cev( r22 ) ) ;
 
