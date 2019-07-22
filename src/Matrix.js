@@ -1475,7 +1475,7 @@ function xpr( a , b , c , d , e , f )
 function evl( x )
  {
 
-  const eps = 1.0e-6 ;
+  const eps = 1.0e-3 ;
 
   let i    = undefined ;
   let j    = undefined ;
@@ -1489,7 +1489,8 @@ function evl( x )
   let f    = undefined ;
 
   let lbd  = undefined ;
-  
+  let ldm  = undefined ;
+
   let lda  = undefined ; 
   let ldb  = undefined ; 
   let ldc  = undefined ; 
@@ -1666,134 +1667,164 @@ function evl( x )
         e = f = 0 ;
 
 
-      for( j = 0 ;  j < 3;  ++j )
+      if( (Math.abs(lda - ldb) < eps) || (Math.abs(ldb - ldc) < eps) || (Math.abs(ldc - lda) < eps) )  ldm = 2 ;  else  ldm = 1 ;
+
+      if( ((Math.abs(lda - ldb) < eps) && (Math.abs(ldb - ldc) < eps) && (Math.abs(ldc - lda) < eps)) || ((Math.abs( d ) < eps) && (Math.abs( e ) < eps) && (Math.abs( f ) < eps)) )  ldm = 3 ;
+
+
+      debugger ;
+
+
+      if( ldm == 1 )
        {
-
-
-        lbd = lds[ j ] ;
-
-        cen = true ;
-
         
-        aabd = Math.abs( abd = (((ald = (a - lbd)) * (b - lbd)) - (d * d)) ) ;
-
-        aace = Math.abs( ace = (((a - lbd) * (cld = (c - lbd))) - (e * e)) ) ;
         
-        abcf = Math.abs( bcf = (((bld = (b - lbd)) * (c - lbd)) - (f * f)) ) ;
-
-
-        if( aabd > eps )
+        for( i = 0 ;  i < 3;  ++i )
          {
 
-          ev0 = ( ((d * f) - (bld * e)) / abd ) ;
 
-          ev1 = ( ((d * e) - (ald * f)) / abd ) ;
-
-          ev2 = 1 ;
-
-         } // end if{} +
+          lbd = lds[ i ] ;
 
 
-        else if( aace > eps )
-         {
+          aabd = Math.abs( abd = ((ald = (a - lbd)) * (bld = (b - lbd)) - (d * d)) ) ;
 
-          ev0 = ( ((e * f) - (cld * d)) / ace ) ;
-
-          ev1 = 1 ;
-
-          ev2 = ( ((d * e) - (ald * f)) / ace ) ;
-
-         } // end else if{} +
+          aace = Math.abs( ace = ((ald * (cld = (c - lbd))) - (e * e)) ) ;
+        
+          abcf = Math.abs( bcf = ((bld * cld) - (f * f)) ) ;
 
 
-        else if( abcf > eps )
-         {
+          if( aabd > eps )
+           {
 
-          ev0 = 1 ;
+            ev0 = ( ((d * f) - (bld * e)) / abd ) ;
 
-          ev1 = ( ((e * f) - (cld * d)) / bcf ) ;
+            ev1 = ( ((d * e) - (ald * f)) / abd ) ;
 
-          ev2 = ( ((d * f) - (bld * e)) / bcf ) ;
+            ev2 = 1 ;
 
-         } // end else if{} +
-
-
-        else if( (ald > eps) && (Math.abs( ldc - lda ) < eps) )
-         {
-
-          ev0 = ( (- (d + e)) / ald ) ;
-
-          ev1 = 1 ;
-
-          ev2 = 1 ;
-
-         } // end else if{} +
+           } // end if{} +
 
 
-        else if( (bld > eps) && (Math.abs( ldb - ldc ) < eps) )
-         {
+          else if( aace > eps )
+           {
 
-          ev0 = 1 ;
+            ev0 = ( ((e * f) - (cld * d)) / ace ) ;
 
-          ev1 = ( (- (d + f)) / bld ) ;
+            ev1 = 1 ;
 
-          ev2 = 1 ;
+            ev2 = ( ((d * e) - (ald * f)) / ace ) ;
 
-         } // end else if{} +
-
-
-        else if( (cld > eps) && (Math.abs( lda - ldb ) < eps) )
-         {
-
-          ev0 = 1 ;
- 
-          ev1 = 1 ;
-
-          ev2 = ( (- (e + f)) / cld ) ;
-
-         } // end else if{} +
-		    
-		     
-        else
-         {
-
-          cen = false ;
-
-          for( i = 0;  i < 3; ++i )
-
-            for( j = 0;  j < 3; ++j )
-
-              if( i == j )
-
-                this.v[ this.idx( i , j ) ] = 1 ;
-
-              else
-
-                this.v[ this.idx( i , j ) ] = 0 ;
-
-	     }; // end else -
+           } // end else if{} +
 
 
-        if( cen == true )
-         {
+          else if( abcf > eps )
+           {
+
+            ev0 = 1 ;
+
+            ev1 = ( ((e * f) - (cld * d)) / bcf ) ;
+
+            ev2 = ( ((d * f) - (bld * e)) / bcf ) ;
+
+           } ; // end else if{} -
 
           evn = nrm( ev0 , ev1 , ev2 ) ;
-          
-          this.v[ this.idx( 0 , j ) ] = ( ev0 / evn ) ;
 
-          this.v[ this.idx( 1 , j ) ] = ( ev1 / evn ) ;
+          this.v[ this.idx( 0 , i ) ] = ( ev0 / evn ) ;
 
-          this.v[ this.idx( 2 , j ) ] = ( ev2 / evn ) ;
+          this.v[ this.idx( 1 , i ) ] = ( ev1 / evn ) ;
 
-         } ; // end if{} -
+          this.v[ this.idx( 2 , i ) ] = ( ev2 / evn ) ;
+
+         } ; // end for()
 
 
-       } ; // end for()
+       } // end else if{} +
+
+
+      else if( ldm == 2 )
+       {
+
+        for( i = 0 ;  i < 3;  ++i )
+         {
+
+
+          lbd = lds[ i ] ;
+
+
+          aald = Math.abs( ald = (a - lbd) ) ;
+
+          abld = Math.abs( bld = (b - lbd) ) ;
+
+          acld = Math.abs( cld = (c - lbd) ) ;
+
+
+          if( aald > eps )
+           {
+
+            ev0 = ( (- (d + e)) / ald ) ;
+
+            ev1 = 1 ;
+
+            ev2 = 1 ;
+
+           } // end else if{} +
+
+
+          else if( abld > eps )
+           {
+
+            ev0 = 1 ;
+
+            ev1 = ( (- (d + f)) / bld ) ;
+
+            ev2 = 1 ;
+
+           } // end else if{} +
+
+
+          else if( acld > eps )
+           {
+
+            ev0 = 1 ;
  
+            ev1 = 1 ;
+
+            ev2 = ( (- (e + f)) / cld ) ;
+
+           } ; // end else if{} -
+         
+          evn = nrm( ev0 , ev1 , ev2 ) ;
+
+          this.v[ this.idx( 0 , i ) ] = ( ev0 / evn ) ;
+
+          this.v[ this.idx( 1 , i ) ] = ( ev1 / evn ) ;
+
+          this.v[ this.idx( 2 , i ) ] = ( ev2 / evn ) ;
+           
+         } ; // end for()
+         
+
+       } // end else if{} +
+
+
+      else if( ldm == 3 )
+
+        for( i = 0;  i < 3; ++i )
+
+          for( j = 0;  j < 3; ++j )
+
+            if( i == j )
+
+              this.v[ this.idx( i , j ) ] = 1 ;
+
+            else
+
+              this.v[ this.idx( i , j ) ] = 0 ;
+
 
      } ; // end if{} -
 
-//  [ this.v[ this.idx( 0 , 2 ) ] , this.v[ this.idx( 1 , 2 ) ] , this.v[ this.idx( 2 , 2 ) ] ] = xpr( this.v[ this.idx( 0 , 0 ) ] , this.v[ this.idx( 0 , 1 ) ] , this.v[ this.idx( 0 , 2 ) ] , this.v[ this.idx( 1 , 0 ) ] , this.v[ this.idx( 1 , 1 ) ] , this.v[ this.idx( 1 , 2 ) ] ) ;
 
    } ; // end if{}  -
 
