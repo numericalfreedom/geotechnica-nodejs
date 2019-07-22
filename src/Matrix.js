@@ -1791,6 +1791,7 @@ function evl( x )
 
             evn = nrm( ev0 , ev1 , ev2 ) ;
 
+            evn = 1 ;
 
             this.v[ this.idx( 0 , i ) ] = ( ev0 / evn ) ;
 
@@ -2043,9 +2044,9 @@ function cev( x )
 
        for( s = 0 , k = 0;  k < x.nr; ++k )
 
-         s += ( x.v[ x.idx( k , i ) ] * x.v[ x.idx( k , j ) ] ) ;
+//       s += ( x.v[ x.idx( k , i ) ] * x.v[ x.idx( k , j ) ] ) ;
 
-//       s += ( x.v[ x.idx( k , i ) ] * x.v[ x.idx( k , evc ) ] * x.v[ x.idx( k , j ) ] ) ;
+         s += ( x.v[ x.idx( k , i ) ] * x.v[ x.idx( k , evc ) ] * x.v[ x.idx( k , j ) ] ) ;
 
 
   return( r ) ;
@@ -2442,6 +2443,20 @@ console.log( 'n=' , r26.evj( x26 , 100 , 1.0e-6 ) ) ;
 console.log( r26.v ) ;
 
 console.log( 'cev=' , cev( r26 ) ) ;
+
+
+
+let r27 = new Matrix( 3 , 5 , undefined ) ;
+
+let x27 = new Matrix( 3 , 3 , 9 , [ 1 , 2 , 3 , 5 , 7 , 11 , 13 , 17 , 19 ] ) ;
+
+console.log( 'x.v=' , x27.v ) ;
+
+console.log( 'n=' , r27.evl( x27 ) ) ;
+
+console.log( r27.v ) ;
+
+console.log( 'cev=' , cev( r27 ) ) ;
 
 
 // console.log( xpr( 1 , 1 , 0 , -1 , -1 , 0 ) ) ;
