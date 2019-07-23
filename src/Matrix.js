@@ -1493,6 +1493,7 @@ function evl( x )
   let ldb  = undefined ; 
   let ldc  = undefined ; 
 
+  let ld   = undefined ;
   let lds  = null ;
 
   let iv21 = undefined ;
@@ -1628,7 +1629,7 @@ function evl( x )
  
       for( j = (i + 1); j < 3; ++j )
 
-        if( lds[i] < lds[j] )
+        if( lds[i] > lds[j] )
          {
 
           ld = lds[i] ;
@@ -1789,17 +1790,17 @@ function evl( x )
 
             evn = nrm( ev0 , ev1 , ev2 ) ;
 
-            this.v[ this.idx( 0 , i ) ] = ( ev0 / evn ) ;
+            this.v[ this.idx( i , 0 ) ] = ( ev0 / evn ) ;
 
-            this.v[ this.idx( 1 , i ) ] = ( ev1 / evn ) ;
+            this.v[ this.idx( i , 1 ) ] = ( ev1 / evn ) ;
 
-            this.v[ this.idx( 2 , i ) ] = ( ev2 / evn ) ;
+            this.v[ this.idx( i , 2 ) ] = ( ev2 / evn ) ;
 
 
            } ; // end for()
 
 
-          [ this.v[ this.idx( 0 , 2 ) ] , this.v[ this.idx( 1 , 2 ) ] , this.v[ this.idx( 2 , 2 ) ] ] = xpr( this.v[ this.idx( 0 , 0 ) ] , this.v[ this.idx( 1 , 0 ) ] , this.v[ this.idx( 2 , 0 ) ] , this.v[ this.idx( 0 , 1 ) ] , this.v[ this.idx( 1 , 1 ) ] , this.v[ this.idx( 2 , 1 ) ] ) ;
+          [ this.v[ this.idx( 2 , 0 ) ] , this.v[ this.idx( 2 , 1 ) ] , this.v[ this.idx( 2 , 2 ) ] ] = xpr( this.v[ this.idx( 0 , 0 ) ] , this.v[ this.idx( 0 , 1 ) ] , this.v[ this.idx( 0 , 2 ) ] , this.v[ this.idx( 1 , 0 ) ] , this.v[ this.idx( 1 , 1 ) ] , this.v[ this.idx( 1 , 2 ) ] ) ;
 
 
          break ;
@@ -2479,16 +2480,16 @@ let r28 = new Matrix( 3 , 4 , undefined ) ;
 
 let x28 = new Matrix( 3 , 3 , 9 , [ 1 , 5 , 7 , 5 , 2 , 11 , 7 , 11 , 3 ] ) ;
 
-console.log( 'n=' , r28.evj( x28 , 100 , 1.0e-6 ) ) ;
+console.log( 'n=' , r28.evj( x28 , 100 , 1.0e-9 ) ) ;
 
 console.log( 'evj=' , r28.v ) ;
 
 console.log( 'cev=' , cev( r28 ) ) ;
 
 
-console.log( xpr( 0.6866009632783459 , 0.9115577196184702 , 1 , -4.648624001026315 , 2.404400368570036 , 1 ) ) ;
+console.log( xpr( -0.18464536242324758 , -0.6598984478540825 , 0.7283132077996114 , 0.4524993370589411 , 0.6007554402437133 , 0.6590426776611666 ) ) ;
 
 
-// let m = new Matrix( 3 , 4 , 0 ) ;
+let m = new Matrix( 3 , 4 , null , [] ) ;
 
-// console.log( 'm=' , m ) ;
+console.log( 'm=' , m ) ;
