@@ -108,6 +108,7 @@ function Matrix( nr , nc , nv , v )
   this.sum = sum ;
   this.trc = trc ;
   this.enm = enm ;
+  this.tfm = tfm ;
   this.tsp = tsp ;
   this.tms = tms ;
   this.tma = tma ;
@@ -136,6 +137,8 @@ function Matrix( nr , nc , nv , v )
 
   this.srt = srt ;
   this.crt = crt ;
+  
+  return ;
 
  } ; // end function Matrix
 
@@ -176,7 +179,7 @@ function idx( i , j )
 
 /** Function tfm
  *
- *
+ *  @description function tfm
  */
 
 function tfm( x )
@@ -197,7 +200,7 @@ function tfm( x )
 
         else
 
-	  this.v[ this.idx( i , j ) ] = 0 ;
+          this.v[ this.idx( i , j ) ] = 0 ;
 
   return ;
 
@@ -207,7 +210,7 @@ function tfm( x )
 
 /** Function val
  *
- *  @description function put
+ *  @description function val
  */
 
 function val( i , j , v )
