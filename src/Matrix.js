@@ -47,14 +47,14 @@ function Matrix( nr , nc , nv , v )
   
   let vv = undefined ;
 
-  if( ! v )
+  if( v === undefined )
 
     for( vv = new Array( nv ) , i = 0;  i < nv;  vv[i++] = 0.0 ) ;
 
   else
    {
   
-    if( v.length == 0 )
+    if( v === null )
   
       vv = new Array( 0 ) ;
 
