@@ -105,6 +105,7 @@ function Matrix( nr , nc , nv , v )
   this.eqt = eqt ;
   this.unt = unt ;
   this.cst = cst ;
+  this.dvt = dvt ;
   this.sum = sum ;
   this.trc = trc ;
   this.enm = enm ;
@@ -313,7 +314,13 @@ function unt( s )
   
   let i = undefined ;
 
-  for( i = 0; i < 3; this.v[ i++ ] = s ) ;
+  if( this.d )
+
+    for( i = 0; i < this.nc; this.v[ i++ ] = s ) ;
+
+  else
+  
+    for( i = 0; i < 3; this.v[ this.idx( i , i++ ) ] = s ) ;
 
   return ;
 
@@ -351,11 +358,56 @@ function trc()
   let i = undefined ;
   let r = undefined ;
 
-  for( i = r = 0; i < this.nr; r += this.v[ i++ ] ) ;
+  if( this.d )
+
+    for( r = 0 , i = 0; i < this.nc; r += this.v[ i++ ] ) ;
+
+  else
+  
+    for( i = 0; i < this.nc; r += this.v[ this.idx( i , i++ ) ] ) ;
 
   return( r ) ;
 
  } ; // end function trc()
+
+
+
+/** Function dvt
+ *
+ *
+ */
+
+function dvt()
+ {
+
+  let i = undefined ;
+  let t = undefined ;
+
+  if( this.d )
+   {
+	   
+    for( t = 0 , i = 0;  i < this.nc;  t += this.v[ i++ ] ) ;
+
+    for( i = this.nc; i < this.nv; this.v[ i ] -= t , ++i ) ;
+
+   } // end if{} +
+
+  else
+   {
+	   
+    for( t = 0 , i = 0;  i < this.nc;  t += this.v[ this.idx( i , i++ ) ] ) ;
+	   	   
+    for( i = 0;  i < this.nr;  ++i )
+
+      for( j = 9;  j < this.nc;  ++j )
+
+        if( i != j )  this.v[ this.idx( i , j ) ] -= t ;
+
+   } // end else -
+
+  return( t ) ;
+
+ } ; // end function dvt()
 
 
 
