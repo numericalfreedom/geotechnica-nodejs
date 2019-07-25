@@ -97,540 +97,95 @@ function Matrix( nr , nc , nv , v )
  *
  * */
 
-  this.idx = idx ;
-  this.tfm = tfm ;
-  this.val = val ;
-  this.pvv = pvv ;
-  this.gvv = gvv ;
-  this.eqt = eqt ;
-  this.unt = unt ;
+  this.cmd = cmd ;
+  this.cmm = cmm ;
+  this.crt = crt ;
+  this.csd = csd ;
+  this.csm = csm ;
   this.cst = cst ;
+  this.dmm = dmm ;
   this.dvt = dvt ;
-  this.sum = sum ;
-  this.trc = trc ;
   this.enm = enm ;
+  this.eqt = eqt ;
+  this.evj = evj ;
+  this.evl = evl ;
+  this.gvv = gvv ;
+  this.i21 = i21 ;
+  this.i22 = i22 ;
+  this.i31 = i31 ;
+  this.i32 = i32 ;
+  this.i33 = i33 ;
+  this.idx = idx ;
+  this.inv = inv ;
+  this.j32 = j32 ;
+  this.j33 = j33 ;
+  this.mdt = mdt ;
+  this.mma = mma ;
+  this.mms = mms ;
+  this.mmd = mmd ;
+  this.mmt = mmt ;
+  this.msa = msa ;
+  this.msd = msd ;
+  this.mss = mss ;
+  this.mst = mst ;
+  this.pvv = pvv ;
+  this.smd = smd ;
+  this.smm = smm ;
+  this.srt = srt ;
+  this.sum = sum ;
   this.tfm = tfm ;
-  this.tsp = tsp ;
   this.tms = tms ;
   this.tma = tma ;
-  this.mma = mma ;
-  this.msa = msa ;
-  this.mms = mms ;
-  this.mss = mss ;
-  this.cmm = cmm ;
-  this.csm = csm ;
-  this.cmd = cmd ;
-  this.csd = csd ;
-  this.smm = smm ;
-  this.dmm = dmm ;
-  this.smd = smd ;
-  this.vmm = vmm ;
+  this.trc = trc ;
+  this.tsp = tsp ;
+  this.unt = unt ;
+  this.val = val ;
   this.vmd = vmd ;
+  this.vmm = vmm ;
   this.xmm = xmm ;
-  this.mmd = mmd ;
-  this.mdt = mdt ;
-  this.mmt = mmt ;
-  this.msd = msd ;
-  this.mst = mst ;
-  this.inv = inv ;
-  this.evl = evl ;
-  this.evj = evj ;
-
-  this.srt = srt ;
-  this.crt = crt ;
   
   return ;
 
  } ; // end function Matrix
 
 
-/**
- *  Index function
+/** Function cev()
  *
- *  @description function index
+ *  Eigenvalue and eigenvector check
  *
- *  @param    { number }    i      Number of rows
- *  @param    { number }    j      Number of columns
+ *  Eigenvectors and eigenvalues are in columns of input matrix
+ *
  */
 
-function idx( i , j )
- {
 
-  let r = i ;
-
-  if( this.d )
-   {
-
-    if( i - j )  r = ( i + j + this.d ) ;
-
-   } // end if
-
-  else
-   {
-
-    r = ( (i * this.nc) + j ) ;
-
-   } ; // end else
-
-  return( r ) ;
-
- } ; // end function idx()
-
-
-
-/** Function tfm
- *
- *  @description function tfm
- */
-
-function tfm( x )
+function cev( x )
  {
 
   let i   = undefined ;
   let j   = undefined ;
-
-  for( i = 0;  i < this.nr;  ++i )
-
-    for( j = 0;  j < this.nc;  ++j )
-
-      if( this.idx( i , j ) < this.nv )
-
-        if( (x.idx( i , j ) < x.nv) && (i < x.nr) && (j < x.nc) )
-
-          this.v[ this.idx( i , j ) ] = x.v[ x.idx( i , j ) ] ;
-
-        else
-
-          this.v[ this.idx( i , j ) ] = 0 ;
-
-  return ;
-
- } ; // end function tfm()
-
-
-
-/** Function val
- *
- *  @description function val
- */
-
-function val( i , j , v )
- {
-
-  var r = undefined ; 
-
-  if( ! v )
-   
-    r = this.v[ this.idx( i , j ) ] ;
+  let k   = undefined ;
   
-  else 
+  let s   = undefined ;
 
-    r = this.v[ this.idx( i , j ) ] = v
+  let evc = x.nr ;
+
+  let r   = new Array( x.nv ) ;
+
+
+  for( i = 0;  i < x.nr; ++i )
+  
+    for( j = 0;  j < x.nr; r[ x.idx( i , j ) ] = s , ++j )
+
+       for( s = 0 , k = 0;  k < x.nr; ++k )
+
+//       s += ( x.v[ x.idx( k , i ) ] * x.v[ x.idx( k , j ) ] ) ;
+
+         s += ( x.v[ x.idx( k , i ) ] * x.v[ x.idx( k , evc ) ] * x.v[ x.idx( k , j ) ] ) ;
+
 
   return( r ) ;
 
- } ; // end function val()
-
-
-/** Function eqt
- *
- *
- */
-
-function eqt( x )
- {
-  
-  let i = undefined ;
-
-  for( i = 0; i < this.nv; this.v[ i ] = x.v[ i++ ] ) ;
-
-  return ;
-
- } ; // end function eqt()
-
-
-
-/** Function pvv
- *
- *
- */
-
-function pvv( v )
- {
-  
-  let i = undefined ;
-
-  for( i = 0; i < this.nv; this.v[ i ] = v[ i++ ] ) ;
-
-  return ;
-
- } ; // end function pvv()
-
-
-
-/** Function gvv
- *
- *
- */
-
-function gvv( v )
- {
-
-  let i = undefined ;
-
-  for( i = 0; i < this.nv; v[ i ] = this.v[ i++ ] ) ;
-
-  return ;
-
- } ; // end function gvv()
-
-
-
-/** Function cst
- *
- *
- */
-
-function cst( s )
- {
-
-  let i = undefined ;
-
-  for( i = 0; i < this.nv; this.v[ i++ ] = s ) ;
-
-  return ;
-
- } ; // end function cst()
-
-
-
-/** Function unt
- *
- *
- */
-
-function unt( s )
- {
-  
-  let i = undefined ;
-
-  if( this.d )
-
-    for( i = 0; i < this.nc; this.v[ i++ ] = s ) ;
-
-  else
-  
-    for( i = 0; i < 3; this.v[ this.idx( i , i++ ) ] = s ) ;
-
-  return ;
-
- } ; // end function unt ()
-
-
-
-/** Function sum
- *
- *
- */
-
-function sum()
- {
-
-  let i = undefined ;
-  let r = undefined ;
-
-  for( i = r = 0; i < this.nv; r += this.v[ i++ ] ) ;
-
-  return( r ) ;
-
- } ; // end function sum()
-
-
-
-/** Function trc
- *
- *
- */
-
-function trc()
- {
-
-  let i = undefined ;
-  let r = undefined ;
-
-  if( this.d )
-
-    for( r = 0 , i = 0; i < this.nc; r += this.v[ i++ ] ) ;
-
-  else
-  
-    for( i = 0; i < this.nc; r += this.v[ this.idx( i , i++ ) ] ) ;
-
-  return( r ) ;
-
- } ; // end function trc()
-
-
-
-/** Function dvt
- *
- *
- */
-
-function dvt()
- {
-
-  let i = undefined ;
-  let t = undefined ;
-
-  if( this.d )
-   {
-	   
-    for( t = 0 , i = 0;  i < this.nc;  t += this.v[ i++ ] ) ;
-
-    for( i = this.nc; i < this.nv; this.v[ i ] -= t , ++i ) ;
-
-   } // end if{} +
-
-  else
-   {
-	   
-    for( t = 0 , i = 0;  i < this.nc;  t += this.v[ this.idx( i , i++ ) ] ) ;
-	   	   
-    for( i = 0;  i < this.nr;  ++i )
-
-      for( j = 9;  j < this.nc;  ++j )
-
-        if( i != j )  this.v[ this.idx( i , j ) ] -= t ;
-
-   } // end else -
-
-  return( t ) ;
-
- } ; // end function dvt()
-
-
-
-/** Function enm
- *
- *
- */
-
-function enm( x )
- {
-
-  let i = undefined ;
-  let r = undefined ;
-  let v = undefined ;
-
-  for( i = r = 0; i < this.nv; v = this.v[ i++ ] , r += (v * v)  ) ;
-
-  return( Math.sqrt( r ) ) ;
-
- } ; // end function enm()
-
-
-
-/** Function tsp
- *
- *
- */
-
-function tsp( x )
- {
-
-  let i = undefined ;
-  let j = undefined ;
-  
-  if( ! this.d )
-  
-    for( i = 0;  i < this.nr;  ++i )
-    
-      for( j = 0;  j < this.nc;  ++j )
-
-        this.v[ this.idx( j , i ) ] = x.v[ x.idx( i , j ) ] ;
-
-  return ;
-
- } ; // end function tsp()
-
-
-
-/** Function tms
- *
- *
- */
-
-function tms()
- {
-
-  let i   = undefined ;
-  let j   = undefined ;
-  let aij = undefined ;
-  let aji = undefined ;
-
-  if( ! this.d )
-
-    for( i = 0;  i < this.nr;  ++i )
-
-      for( j = (i + 1);  j < this.nr;  ++j )
-       {
-
-        aij = this.v[ this.idx( i , j ) ] ;
-
-	aji = this.v[ this.idx( j , i ) ] ;
-
-        this.v[ this.idx( j , i ) ] = this.v[ this.idx( i , j ) ] = ( (aij + aji) / 2 ) ;
-
-       } ; // end for()
-
-  return ;
-
- } ; // end function tms()
-
-
-
-/** Function tma
- *
- *
- */
-
-function tma()
- {
-
-  let i   = undefined ;
-  let j   = undefined ;
-  let aij = undefined ;
-  let aji = undefined ;
-
-  if( ! this.d )
-
-    for( i = 0;  i < this.nr;  ++i )
-
-      for( j = (i + 1);  j < this.nr;  ++j )
-       {
-
-        this.v[ this.idx( i , i ) ] = 0 ;
-
-        aij = this.v[ this.idx( i , j ) ] ; 
-
-        aji = this.v[ this.idx( j , i ) ] ;
-
-        this.v[ this.idx( j , i ) ] = this.v[ this.idx( i , j ) ] = ( (aij - aji) / 2 ) ;
-
-       } ; // end for()
-
-  return ;
-
- } ; // end function tma()
-
-
-
-/** Function mma
- *
- *
- */
-
-function mma( x , y )
- {
-  
-  let i = undefined ;
-
-  for( i = 0; i < this.nv; this.v[ i ] = ( x.v[ i ] + y.v[ i++ ] ) ) ;
-
-  return ;
-
- } ; // end function mma()
-
-
-
-/** Function msa
- *
- *
- */
-
-function msa( x )
- {
-
-  let i = undefined ;
-
-  for( i = 0; i < this.nv; this.v[ i ] += x.v[ i++ ] ) ;
-
-  return ;
-
- } ; // end function msa()
-
-
-
-/** Function mms
- *
- *
- */
-
-function mms( x , y )
- {
-  
-  let i = undefined ;
-
-  for( i = 0; i < this.nv; this.v[ i ] = ( x.v[ i ] - y.v[ i++ ] ) ) ;
-
-  return ;
-
- } ; // end function mms()
-
-
-
-/** Function mss
- *
- *
- */
-
-function mss( x )
- {
-
-  let i = undefined ;
-
-  for( i = 0; i < this.nv; this.v[ i ] -= x.v[ i++ ] ) ;
-
-  return ;
-
- } ; // end function mss()
-
-
-
-/** Function cmm
- *
- *
- */
-
-function cmm( c , x )
- {
-
-  let i = undefined ;
-
-  for( i = 0; i < this.nv; this.v[ i ] = ( c * x.v[ i++ ] ) ) ;
-
-  return ;
-
- } ; // end function cmm()
-
-
-
-/** Function csm
- *
- *
- */
-
-function csm( c )
- {
-
-  let i = undefined ;
-
-  for( i = 0; i < this.nv; this.v[ i ] *= c , ++i ) ;
-
-  return ;
-
- } ; // end function csm()
+ } ; // end function cev() 
 
 
 
@@ -660,574 +215,21 @@ function cmd( c , x )
 
 
 
-/** Function csd
+/** Function cmm
  *
  *
  */
 
-function csd( c )
+function cmm( c , x )
  {
 
   let i = undefined ;
 
-  for( i = 0; i < this.nv; ++i )
-
-    if( c )
-
-      this.v[ i ] /= c ;
-
-    else
-
-      this.v[ i ] = undefined ;
+  for( i = 0; i < this.nv; this.v[ i ] = ( c * x.v[ i++ ] ) ) ;
 
   return ;
 
- } ; // end function csd()
-
-
-
-/** Function smm
- *
- *
- */
-
-function smm( x , y )
- {
-
-  let i = undefined ;
-
-  for( i = 0; i < this.nv; ++i )
-
-    this.v[ i ] = ( x.v[ i ] * y.v[ i ] ) ;
-
-  return ;
-
- } ; // end function smm()
-
-
-
-/** Function dmm
- *
- *
- */
-
-function dmm( x , y )
- {
-
-  let i = undefined ;
-  let r = undefined ;
-
-  for( r = i = 0; i < this.nv; ++i )
-
-    r += this.v[ i ] = ( x.v[ i ] * y.v[ i ] ) ;
-
-  return( r ) ;
-
- } ; // end function dmm()
-
-
-
-/** Function smd
- *
- *
- */
-
-function smd( x , y )
- {
-
-  let i = undefined ;
-
-  for( i = 0; i < this.nv; ++i )
-
-    if( y.v[ i ] )
-
-      this.v[ i ] = ( x.v[ i ] / y.v[ i ] ) ;
-
-    else
-
-      this.v[ i ] = undefined ;
-
-  return ;
-
- } ; // end function smd()
-
-
-
-/** Function vmm
- *
- *
- */
-
-function vmm( x , y )
- {
-
-  let i = undefined ;
-  let j = undefined ;
-
-  for( i = 0; i < x.nv; ++i )
-  
-    for( j = 0; j < y.nv; ++j )
-
-      this.v[ this.idx( i , j ) ] = ( x.v[ i ] * y.v[ j ] ) ;
-
-  return ;
-
- } ; // end function vmm()
-
-
-
-/** Function vmd
- *
- *
- */
-
-function vmd( x , y )
- {
-
-  let i = undefined ;
-  let j = undefined ;
-
-  for( i = 0; i < x.nv; ++i )
-  
-    for( j = 0; j < y.nv; ++j )
-
-      if( y.v[ j ] )
-
-        this.v[ this.idx( i , j ) ] = ( x.v[ i ] / y.v[ j ] ) ;
-
-      else
-
-        this.v[ this.idx( i , j ) ] = 0.0 ;
-
-  return ;
-
- } ; // end function vmd()
-
-
-
-/** Function xmm
- *
- *
- */
-
-function xmm( x , y )
- {
-
-  let i = undefined ;
-  let j = undefined ;
-  let k = undefined ;
-  let a = undefined ;
-  let b = undefined ;
-  let c = undefined ;
-  let d = undefined ;
-
-  let e = [ 1 , 2 , 2 , 1 , 2 , 0 , 0 , 2 , 0 , 1 , 1 , 0 ] ;
-
-  for( j = 0; j < this.nc; ++j )
-
-    for( i = k = 0 , a = 0 , b = 1 , c = 2 , d = 3;  k < e.length; ++i , a += 4 , b += 4 , c += 4 , d += 4 , k += 4 )
-
-      if( (this.idx( i , j ) < this.nv) && (x.idx( e[a] , j ) < x.nv) && (y.idx( e[b] , j ) < y.nv) && (x.idx( e[c] , j ) < x.nv) && (y.idx( e[d] , j ) < y.nv) )
-       {
-
-        console.log( i , j , e[a] , e[b] , e[c] , e[d] ) ;
-
-        this.v[ this.idx( i , j ) ] = ( (x.v[ x.idx( e[a] , j ) ] * y.v[ y.idx( e[b] , j ) ]) - (x.v[ x.idx( e[c] , j ) ] * y.v[ y.idx( e[d] , j ) ]) );
-
-       }
-
-  return ;
-
- } ; // end function xmm()
-
-
-
-/** Function mmd
- *
- *
- */
-
-function mmd( x , y )
- {
-
-  let i  = undefined ;
-  let j  = undefined ;
-  let k  = undefined ;
-  let ik = undefined ;
-  let kj = undefined ;
-
-  if( this.d )
-   {
-
-    for( i = 0; i < this.nr; ++i )
-
-      for( j = i; j < this.nc; ++j )
-
-        if( this.idx( i , j ) < this.nv )
-
-          for( this.v[ this.idx( i , j ) ] = k = 0; k < x.nc; ++k )
-
-            if( ((ik = x.idx( i , k )) < x.nv) && ((kj = y.idx( k , j )) < y.nv) )
-
-              this.v[ this.idx( i , j ) ] += ( x.v[ ik ] * y.v[ kj ] );
-
-   }
-
-  else
-   {
-
-    for( i = 0; i < this.nr; ++i )
-
-      for( j = 0; j < this.nc; ++j )
-
-        for( this.v[ this.idx( i , j ) ] = k = 0; k < x.nc; ++k )
-
-          this.v[ this.idx( i , j ) ] += ( x.v[ x.idx( i , k ) ] * y.v[ y.idx( k , j ) ] );
-
-   }
-
-  return ;
-
- } ; // end function mmd()
-
-
-
-/** Function mdt
- *
- *
- */
-
-function mdt( x , y )
- {
-
-  let i  = undefined ;
-  let k  = undefined ;
-  let ik = undefined ;
-  let ki = undefined ;
-  let r  = undefined ;
-  let rr = undefined ;
-
-  for( r = 0 , i = 0; i < this.nr; r += rr , ++i )
-
-    if( this.idx( i , i ) < this.nv )
-
-      for( this.v[ this.idx( i , i ) ] = k = 0; k < x.nc; ++k )
-
-        if( ((ik = x.idx( i , k )) < x.nv) && ((ki = y.idx( k , i )) < y.nv) )
-
-          rr = ( this.v[ this.idx( i , i ) ] += (x.v[ ik ] * y.v[ ki ]) );
-
-  return( r ) ;
-
- } ; // end function mdt()
-
-
-
-/** Function mmt
- *
- *
- */
-
-function mmt( x , y , z )
- {
-
-  let i  = undefined ;
-  let j  = undefined ;
-  let m  = undefined ;
-  let n  = undefined ;
-  let im = undefined ;
-  let mn = undefined ;
-  let nj = undefined ;
-
-  if( this.d )
-   {
-
-    for( i = 0; i < this.nr; ++i )
-
-      for( j = i; j < this.nc; ++j )
-
-        if( this.idx( i , j ) < this.nv )
-
-          for( this.v[ this.idx( i , j ) ] = m = 0; m < y.nr; ++m )
-
-            for( n = 0; n < y.nc; ++n )
-
-              if( ((im = x.idx( i , m )) < x.nv) && ((mn = y.idx( m , n )) < y.nv) && ((nj = z.idx( n , j )) < z.nv) )
-
-                this.v[ this.idx( i , j ) ] += ( x.v[ im ] * y.v[ mn ] * z.v[ nj ] );
-
-   }
-
-  else
-   {
-
-    for( i = 0; i < this.nr; ++i )
-
-      for( j = 0; j < this.nc; ++j )
-
-        for( m = this.v[ this.idx( i , j ) ] = 0; m < y.nr; ++m )
-
-          for( n = 0; n < y.nc; ++n )
-
-            this.v[ this.idx( i , j ) ] += ( x.v[ x.idx( i , m ) ] * y.v[ y.idx( m , n ) ] * z.v[ z.idx( n , j ) ] );
-
-   }
-  
-  return( this.trc() ) ;
-
- } ; // end function mmt()
-
-
-
-/** Function msd
- *
- *
- */
-
-function msd( x )
- {
-
-  let i  = undefined ;
-  let j  = undefined ;
-  let k  = undefined ;
-  let ik = undefined ;
-  let kj = undefined ;
-  
-  if( this.d )
-   {
-
-    for( i = 0; i < this.nr; ++i )
-
-      for( j = i; j < this.nc; ++j )
-
-        if( this.idx( i , j ) < this.nv )
-
-          for( k = this.v[ this.idx( i , j ) ] = 0; k < x.nc; ++k )
-
-            if( ((ik = x.idx( i , k )) < x.nv) && ((kj = x.idx( k , j )) < x.nv) )
-
-              this.v[ this.idx( i , j ) ] += ( x.v[ ik ] * x.v[ kj ] );
-
-   }
-  
-  else
-   {
-
-    for( i = 0; i < this.nr; ++i )
-
-      for( j = 0; j < this.nc; ++j )
-
-        for( k = this.v[ this.idx( i , j ) ] = 0; k < x.nc; ++k )
-
-          this.v[ this.idx( i , j ) ] += ( x.v[ x.idx( i , k ) ] * x.v[ x.idx( k , j ) ] );
-
-   }
-  
-  return( this.trc() ) ;
- 
- } ; // end function msd()
-
-
-
-/** Function mst
- *
- *
- */
-
-function mst( x )
- {
-
-  let i  = undefined ;
-  let j  = undefined ;
-  let m  = undefined ;
-  let n  = undefined ;
-  let im = undefined ;
-  let mn = undefined ;
-  let nj = undefined ;
-
-  if( this.d )
-   {
-
-    for( i = 0; i < this.nr; ++i )
-
-      for( j = i; j < this.nc; ++j )
-
-        if( this.idx( i , j ) < this.nv )
-
-          for( m = this.v[ this.idx( i , j ) ] = 0; m < x.nr; ++m )
-
-            for( n = 0; n < x.nc; ++n )
-
-              if( ((im = x.idx( i , m )) < x.nv) && ((mn = x.idx( m , n )) < x.nv) && ((nj = x.idx( n , j )) < x.nv)  )
-
-                this.v[ this.idx( i , j ) ] += ( x.v[ im ] * x.v[ mn ] * x.v[ nj ] );
-
-   }
-
-  else
-   {
-
-    for( i = 0; i < this.nr; ++i )
-
-      for( j = 0; j < this.nc; ++j )
-
-        for( m = this.v[ this.idx( i , j ) ] = 0; m < x.nr; ++m )
-
-          for( n = 0; n < x.nc; ++n )
-
-            this.v[ this.idx( i , j ) ] += ( x.v[ x.idx( i , m ) ] * x.v[ x.idx( m , n ) ] * x.v[ x.idx( n , j ) ] );
-
-   }
-  
-  return( this.trc() ) ;
-
- } ; // end function mst()
-
-
-
-/** Function inv
- *
- *
- */
-
-function inv()
- {
-
-  let i   = undefined ;
-  let j   = undefined ;
-  let k   = undefined ;
-  let akk = undefined ;
-  let akj = undefined ;
-  let aik = undefined ;
-
-  let r = new Matrix( this.nr , this.nc ) ;
-
-  console.log( 'r=' , r ) ;
-
-  for( i = 0;  i < this.nr;  ++i )
-
-    for( j = 0;  j < this.nc;  ++j )
-      
-      if( this.idx( i ,  j ) < this.nv )
-        
-        r.v[ r.idx( i , j ) ] = this.v[ this.idx( i , j ) ] ;
-
-  for( k = 0;  k < r.nr;  ++k )
-
-    if( akk = r.v[ r.idx( k , k ) ] )
-     {
-
-      for( i = 0;  i < r.nc;  ++i )
-
-        for( j = 0;  j < r.nr;  ++j )
-
-          if( (i != k) && (j != k) )
-           {
-
-            akj = r.v[ r.idx( k , j ) ] ;
-
-            aik = r.v[ r.idx( i , k ) ] ;
-
-            r.v[ r.idx( i , j ) ] -= ( (akj * aik) / akk ) ;
-
-           } ;
-
-      for( i = 0;  i < r.nc;  ++i )
-
-        if( i != k )
-
-          r.v[ r.idx( i , k ) ] /= (- akk ) ;
-
-      for( j = 0;  j < r.nr;  ++j )
-
-        if( k != j )
-
-          r.v[ r.idx( k , j ) ] /= akk ;
-
-      r.v[ r.idx( k , k ) ] = ( 1.0 / akk ) ;
-
-     } // end if{} +
-
-    else
-
-      r.v[ r.idx( k , k ) ] = undefined ;
-
-  for( i = 0;  i < this.nr;  ++i )
-
-    for( j = 0;  j < this.nc;  ++j )
-      
-      if( this.idx( i ,  j ) < this.nv )
-        
-        this.v[ this.idx( i , j ) ] = r.v[ r.idx( i , j ) ];
-
-  return ;
-
- } ; // end function inv()
-
-
-
-/** Function nrm()
- *
- */
-
-function nrm( a , b , c )
- {
-
-  return( Math.sqrt( (a * a) + (b * b) + (c * c) ) );
-
- }
-
-
-
-/** Function srt
- *
- *  Root of a quadratic polynomial equation
- *
- *  x*x* + a*x + b = 0
- */
-
-function srt( a , b )
- {
-
-  const p  = a ;
-  const q  = b ;
-  const d  = ( (p * p) - (4 * q) ) ;
-  const dd = Math.sqrt( Math.abs( d ) ) ;
-
-  let   r1 = undefined ;
-  let   r2 = undefined ;
-  let   r3 = undefined ;
-  let   r4 = undefined ;
-
-
-  if( d >= 0 )
-   {
-
-    r1 = ( ((- p) + dd) / 2 ) ;
-    r2 = 0.0 ;
-
-    r3 = ( ((- p) - dd) / 2 ) ;
-    r4 = 0.0 ;
-
-   }
-
-
-  else
-   {
-
-    r1 = ( (- p) / 2 ) ;
-    r2 = (- dd ) ;
-
-    r3 = ( (- p) / 2 ) ;
-    r4 = (  dd ) ;
-
-   } ;
-
-
-  return( [ r1 , r2 , r3 , r4 ] ) ;
-
-
- } ; // end function srt()
+ } ; // end function cmm()
 
 
 
@@ -1346,177 +348,360 @@ function crt( a , b , c )
   return( [ r1 , r2 , r3 , r4 , r5 , r6 ] ) ;
 
 
- } ; // end function evs()
+ } ; // end function crt()
 
 
 
-/** Function i21
+/** Function csd
+ *
  *
  */
 
-function i21( x )
+function csd( c )
  {
 
-  let a = x.v[ 0 ] ;
-  let b = x.v[ 1 ] ;
+  let i = undefined ;
 
-  let r = ( a + b )
+  for( i = 0; i < this.nv; ++i )
 
-  return( r ) ;
+    if( c )
 
- } ; // end function i31() -
+      this.v[ i ] /= c ;
+
+    else
+
+      this.v[ i ] = undefined ;
+
+  return ;
+
+ } ; // end function csd()
 
 
 
-/** Function i22
+/** Function csm
+ *
  *
  */
 
-function i22( x )
+function csm( c )
  {
 
-  let a = x.v[ 0 ] ;
-  let b = x.v[ 1 ] ;
-  let c = x.v[ 2 ] ;
+  let i = undefined ;
 
-  let r = ( (a * b) - (c * c) ) ;
+  for( i = 0; i < this.nv; this.v[ i ] *= c , ++i ) ;
 
-  return( r ) ;
+  return ;
 
- }
+ } ; // end function csm()
 
 
 
-/** Function i31
+/** Function cst
+ *
  *
  */
 
-function i31( x )
+function cst( s )
  {
 
-  let a = x.v[ 0 ] ;
-  let b = x.v[ 1 ] ;
-  let c = x.v[ 2 ] ;
+  let i = undefined ;
 
-  let r = ( a + b + c )
+  for( i = 0; i < this.nv; this.v[ i++ ] = s ) ;
 
-  return( r ) ;
+  return ;
 
- } ; // end function i31() -
+ } ; // end function cst()
 
 
 
-/** Function i32
+/** Function dmm
+ *
  *
  */
 
-function i32( x )
+function dmm( x , y )
  {
 
-  let a = x.v[ 0 ] ;
-  let b = x.v[ 1 ] ;
-  let c = x.v[ 2 ] ;
-
-  let d = x.v[ 3 ] ;
-  let e = 0 ;
-  let f = 0 ;
-
-  if( x.nv == 6 )
-   {
-
-    e = x.v[ 4 ] ;
-    f = x.v[ 5 ] ;
-
-   } ; // end if{} -
-
-  let r = ( (a * b) + (b * c) + (a * c) - (d * d) - (e * e) - (f * f) ) ;
-
-  return( r ) ;
-
- }
-
-
-/** Function j32
- *
- */
-
-function j32( x )
- {
-
+  let i = undefined ;
   let r = undefined ;
 
-  let i1 = i31( x )
-  let i2 = i32( x )
+  for( r = i = 0; i < this.nv; ++i )
 
-  r = ( i2 - ((i1 * i1) / 3) ) ;
+    r += this.v[ i ] = ( x.v[ i ] * y.v[ i ] ) ;
 
   return( r ) ;
 
- }
+ } ; // end function dmm()
 
 
-/** Function i33
+
+/** Function dvt
+ *
  *
  */
 
-function i33( x )
+function dvt()
  {
 
-  let a = x.v[ 0 ] ;
-  let b = x.v[ 1 ] ;
-  let c = x.v[ 2 ] ;
+  let i = undefined ;
+  let t = undefined ;
 
-  let d = x.v[ 3 ] ;
-  let e = 0 ;
-  let f = 0 ;
+  if( this.d )
+   {
+	   
+    for( t = 0 , i = 0;  i < this.nc;  t += this.v[ i++ ] ) ;
+
+    for( i = this.nc; i < this.nv; this.v[ i ] -= t , ++i ) ;
+
+   } // end if{} +
+
+  else
+   {
+	   
+    for( t = 0 , i = 0;  i < this.nc;  t += this.v[ this.idx( i , i++ ) ] ) ;
+	   	   
+    for( i = 0;  i < this.nr;  ++i )
+
+      for( j = 9;  j < this.nc;  ++j )
+
+        if( i != j )  this.v[ this.idx( i , j ) ] -= t ;
+
+   } // end else -
+
+  return( t ) ;
+
+ } ; // end function dvt()
+
+
+
+/** Function enm
+ *
+ *
+ */
+
+function enm( x )
+ {
+
+  let i = undefined ;
+  let r = undefined ;
+  let v = undefined ;
+
+  for( i = r = 0; i < this.nv; v = this.v[ i++ ] , r += (v * v)  ) ;
+
+  return( Math.sqrt( r ) ) ;
+
+ } ; // end function enm()
+
+
+
+/** Function eqt
+ *
+ *
+ */
+
+function eqt( x )
+ {
   
-  if( x.nv == 6 )
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; this.v[ i ] = x.v[ i++ ] ) ;
+
+  return ;
+
+ } ; // end function eqt()
+
+
+
+/** Function evj()
+*
+*   Generalized eigenvalue and eigenvector calculation
+*/
+
+
+function evj( x , ne , en )
+ {
+
+  const evc = ( this.nc - 1 ) ;
+
+  if( ! en )  en = 1.0e-8 ;
+  if( ! ne )  ne = 100 ;
+
+  let se    = undefined ;
+
+  let i     = undefined ;
+  let j     = undefined ;
+  let k     = undefined ;
+  let n     = undefined ;
+
+  let lij   = undefined ;
+  let p     = undefined ;
+  let sp    = undefined ;
+  let ps    = undefined ;
+
+  let ip    = undefined ;
+  let jq    = undefined ;
+
+  let c     = undefined ;
+  let s     = undefined ;
+
+  let w     = undefined ;
+  let t     = undefined ;
+  let tt    = undefined ;
+
+  let vipk  = undefined ;
+  let vjqk  = undefined ;
+
+  let xipip = undefined ;
+  let xjqjq = undefined ;
+  let xipjq = undefined ;
+
+  let xipk  = undefined ;
+  let xjqk  = undefined ;
+  
+  let evn   = undefined ;
+  
+  let evv   = new Array( x.nv ) ;
+
+
+  for( i = 0;  i < x.nv;  evv[ i ] = x.v[ i++ ] ) ;
+
+
+  if( ! this.d )
+
+    for( i = 0;  i < this.nr;  this.v[ this.idx( i , i++ ) ] = 1 )
+  
+      for( j = 0;  j < this.nr;  this.v[ this.idx( i , j++ ) ] = 0 ) ;
+
+
+  for( se = 1 , n = 0; (n < ne) && (Math.abs( se ) > en); ++n )
    {
-    
-    e = x.v[ 4 ] ;
-    f = x.v[ 5 ] ;
 
-   } ; // end if{} -
+    for( ip = 0;  (ip < (x.nr - 1));  ++ip )
 
-  let r = ( (a * b * c) + (2 * d * e * f) - (a * f * f) - (b * e * e) - (c * d * d) ) ;
+      for( jq = (ip + 1);  (jq < x.nr);  ++jq )
+       {
 
-  return( r ) ;
+        xipip = evv[ x.idx( ip , ip ) ] ;
+        xjqjq = evv[ x.idx( jq , jq ) ] ;
+        xipjq = evv[ x.idx( ip , jq ) ] ;
 
- }
+        if( xipjq )
+         {
 
+          w = ( (xjqjq - xipip) / (2 * xipjq) ) ;
 
-/** Function j32
- *
- */
+          [ t , s , tt , c ] = srt( (2 * w) , (- 1) ) ;
 
-function j33( x )
- {
-
-  let r = undefined ;
-
-  let i1 = i31( x )
-  let i2 = i32( x )
-  let i3 = i33( x )
-
-  r = ( ((2 * i1 * i1 * i1) / 27) - ((i1 * i2) / 3) + i3 ) ;
-
-  return( r ) ;
-
- }
+          if( Math.abs( t ) > Math.abs( tt ) )  t = tt ;
 
 
+          tt = ( t * t );
 
-/** Function xpr
- * 
- *  Flat cross product operator between two three element vectors
- */
+          s  = ( t / Math.sqrt( 1 + tt ) ) ;
 
-function xpr( a , b , c , d , e , f )
- {
+          c  = ( 1 / Math.sqrt( 1 + tt ) );
 
-  return( [ ((b * f) - (c * e)) , ((c * d) - (a * f)) , ((a * e) - (b * d)) ] ) ;
+          tt = ( s / (1 + c) ) ;
 
- } ; // end function xpr () -
+
+          evv[ x.idx( ip , ip ) ] = ( xipip - (t * xipjq) ) ;
+
+          evv[ x.idx( jq , jq ) ] = ( xjqjq + (t * xipjq) ) ;
+
+          evv[ x.idx( ip , jq ) ] = 0 ;
+
+          evv[ x.idx( jq , ip ) ] = 0 ;
+
+
+          if( ! x.d )
+           {
+
+            
+            for( k = 0;  k < x.nc;  ++k )
+             {
+
+              if( (k != ip) && (k != jq) )
+               {
+
+                xipk = evv[ x.idx( ip , k ) ] ;
+
+                xjqk = evv[ x.idx( jq , k ) ] ;
+
+                evv[ x.idx( ip , k ) ] = ( xipk - (s * (xjqk + (tt * xipk))) ) ;
+
+                evv[ x.idx( jq , k ) ] = ( xjqk + (s * (xipk - (tt * xjqk))) ) ;
+
+               } ; // end if{} -
+
+
+             } ; // end for()
+
+
+            for( k = 0;  k < x.nr;  ++k )
+             {
+
+              if( (k != ip) && (k != jq) )
+               {
+
+                xipk = evv[ x.idx( k , ip ) ] ;
+
+                xjqk = evv[ x.idx( k , jq ) ] ;
+
+                evv[ x.idx( k , ip ) ] = ( xipk - (s * (xjqk + (tt * xipk))) ) ;
+
+                evv[ x.idx( k , jq ) ] = ( xjqk + (s * (xipk - (tt * xjqk))) ) ;
+
+               } ; // end if{} -
+
+
+             } ; // end for()
+
+
+           } ; // end if{} -
+
+
+          if( ! this.d )
+
+            for( k = 0;  k < this.nr;  ++k )
+             {             
+
+              vipk = this.v[ this.idx( ip , k ) ] ;
+
+              vjqk = this.v[ this.idx( jq , k ) ] ;
+
+              this.v[ this.idx( ip , k ) ] = ( (c * vipk) - (s * vjqk) ) ;
+
+              this.v[ this.idx( jq , k ) ] = ( (s * vipk) + (c * vjqk) ) ;
+
+             } ; // end if{}-
+
+
+         } ; // end if{} -
+
+
+        // console.log( 'n=' , n , 'ip=' , ip , 'jq=' , jq , 'evv=' , evv ) ;
+
+
+       } ; // end for()
+
+
+    for( se = 0 , i = 0;  i < x.nr;  ++i )
+
+      for( j = (i + 1);  j < x.nc;  se += Math.abs( evv[ x.idx( i , j++ ) ] ) ) ;
+
+
+    for( i = 0;  i < this.nr;  ++i )
+
+      this.v[ this.idx( i , evc ) ] = evv[ x.idx( i , i ) ] ;
+
+
+   } ; // end for()
+
+
+  return( n ) ;
+
+
+ } ; // end function evj()
 
 
 
@@ -1877,252 +1062,1116 @@ function evl( x )
 
 
 
-/** Function evj()
-*
-*   Generalized eigenvalue and eigenvector calculation
-*/
-
-
-function evj( x , ne , en )
- {
-
-  const evc = ( this.nc - 1 ) ;
-
-  if( ! en )  en = 1.0e-8 ;
-  if( ! ne )  ne = 100 ;
-
-  let se    = undefined ;
-
-  let i     = undefined ;
-  let j     = undefined ;
-  let k     = undefined ;
-  let n     = undefined ;
-
-  let lij   = undefined ;
-  let p     = undefined ;
-  let sp    = undefined ;
-  let ps    = undefined ;
-
-  let ip    = undefined ;
-  let jq    = undefined ;
-
-  let c     = undefined ;
-  let s     = undefined ;
-
-  let w     = undefined ;
-  let t     = undefined ;
-  let tt    = undefined ;
-
-  let vipk  = undefined ;
-  let vjqk  = undefined ;
-
-  let xipip = undefined ;
-  let xjqjq = undefined ;
-  let xipjq = undefined ;
-
-  let xipk  = undefined ;
-  let xjqk  = undefined ;
-  
-  let evn   = undefined ;
-  
-  let evv   = new Array( x.nv ) ;
-
-
-  for( i = 0;  i < x.nv;  evv[ i ] = x.v[ i++ ] ) ;
-
-
-  if( ! this.d )
-
-    for( i = 0;  i < this.nr;  this.v[ this.idx( i , i++ ) ] = 1 )
-  
-      for( j = 0;  j < this.nr;  this.v[ this.idx( i , j++ ) ] = 0 ) ;
-
-
-  for( se = 1 , n = 0; (n < ne) && (Math.abs( se ) > en); ++n )
-   {
-
-    for( ip = 0;  (ip < (x.nr - 1));  ++ip )
-
-      for( jq = (ip + 1);  (jq < x.nr);  ++jq )
-       {
-
-        xipip = evv[ x.idx( ip , ip ) ] ;
-        xjqjq = evv[ x.idx( jq , jq ) ] ;
-        xipjq = evv[ x.idx( ip , jq ) ] ;
-
-        if( xipjq )
-         {
-
-          w = ( (xjqjq - xipip) / (2 * xipjq) ) ;
-
-          [ t , s , tt , c ] = srt( (2 * w) , (- 1) ) ;
-
-          if( Math.abs( t ) > Math.abs( tt ) )  t = tt ;
-
-
-          tt = ( t * t );
-
-          s  = ( t / Math.sqrt( 1 + tt ) ) ;
-
-          c  = ( 1 / Math.sqrt( 1 + tt ) );
-
-          tt = ( s / (1 + c) ) ;
-
-
-          evv[ x.idx( ip , ip ) ] = ( xipip - (t * xipjq) ) ;
-
-          evv[ x.idx( jq , jq ) ] = ( xjqjq + (t * xipjq) ) ;
-
-          evv[ x.idx( ip , jq ) ] = 0 ;
-
-          evv[ x.idx( jq , ip ) ] = 0 ;
-
-
-          if( ! x.d )
-           {
-
-            
-            for( k = 0;  k < x.nc;  ++k )
-             {
-
-              if( (k != ip) && (k != jq) )
-               {
-
-                xipk = evv[ x.idx( ip , k ) ] ;
-
-                xjqk = evv[ x.idx( jq , k ) ] ;
-
-                evv[ x.idx( ip , k ) ] = ( xipk - (s * (xjqk + (tt * xipk))) ) ;
-
-                evv[ x.idx( jq , k ) ] = ( xjqk + (s * (xipk - (tt * xjqk))) ) ;
-
-               } ; // end if{} -
-
-
-             } ; // end for()
-
-
-            for( k = 0;  k < x.nr;  ++k )
-             {
-
-              if( (k != ip) && (k != jq) )
-               {
-
-                xipk = evv[ x.idx( k , ip ) ] ;
-
-                xjqk = evv[ x.idx( k , jq ) ] ;
-
-                evv[ x.idx( k , ip ) ] = ( xipk - (s * (xjqk + (tt * xipk))) ) ;
-
-                evv[ x.idx( k , jq ) ] = ( xjqk + (s * (xipk - (tt * xjqk))) ) ;
-
-               } ; // end if{} -
-
-
-             } ; // end for()
-
-
-           } ; // end if{} -
-
-
-          if( ! this.d )
-
-            for( k = 0;  k < this.nr;  ++k )
-             {             
-
-              vipk = this.v[ this.idx( ip , k ) ] ;
-
-              vjqk = this.v[ this.idx( jq , k ) ] ;
-
-              this.v[ this.idx( ip , k ) ] = ( (c * vipk) - (s * vjqk) ) ;
-
-              this.v[ this.idx( jq , k ) ] = ( (s * vipk) + (c * vjqk) ) ;
-
-             } ; // end if{}-
-
-
-         } ; // end if{} -
-
-
-        // console.log( 'n=' , n , 'ip=' , ip , 'jq=' , jq , 'evv=' , evv ) ;
-
-
-       } ; // end for()
-
-
-    for( se = 0 , i = 0;  i < x.nr;  ++i )
-
-      for( j = (i + 1);  j < x.nc;  se += Math.abs( evv[ x.idx( i , j++ ) ] ) ) ;
-
-
-    for( i = 0;  i < this.nr;  ++i )
-
-      this.v[ this.idx( i , evc ) ] = evv[ x.idx( i , i ) ] ;
-
-
-//    for( j = 0;  j < this.nr;  ++j )
-//     {
-
-//      for( evn = 0 , i = 0;  i < this.nr;  ++i )
-      
-//        evn += ( this.v[ this.idx( i , j ) ] * this.v[ this.idx( i , j ) ] );
-      
-//      for( evn = Math.sqrt( evn ) , i = 0;  i < this.nr;  ++i )
-      
-//        this.v[ this.idx( i , j ) ] /= evn ;
-
-//     } ; // end for() -
-
-
-    console.log( 'se=' , se , 'evv=' , evv ) ;
-
-
-   } ; // end for()
-
-
-  return( n ) ;
-
-
- } ; // end function evj()
-
-
-/** Function cev()
+/** Function gvv
  *
- *  Eigenvalue and eigenvector check
- *
- *  Eigenvectors and eigenvalues are in columns of input matrix
  *
  */
 
+function gvv( v )
+ {
 
-function cev( x )
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; v[ i ] = this.v[ i++ ] ) ;
+
+  return ;
+
+ } ; // end function gvv()
+
+
+
+/** Function i21
+ *
+ */
+
+function i21( x )
+ {
+
+  let a = x.v[ 0 ] ;
+  let b = x.v[ 1 ] ;
+
+  let r = ( a + b )
+
+  return( r ) ;
+
+ } ; // end function i31() -
+
+
+
+/** Function i22
+ *
+ */
+
+function i22( x )
+ {
+
+  let a = x.v[ 0 ] ;
+  let b = x.v[ 1 ] ;
+  let c = x.v[ 2 ] ;
+
+  let r = ( (a * b) - (c * c) ) ;
+
+  return( r ) ;
+
+ } ; // end function
+
+
+
+/** Function i31
+ *
+ */
+
+function i31( x )
+ {
+
+  let a = x.v[ 0 ] ;
+  let b = x.v[ 1 ] ;
+  let c = x.v[ 2 ] ;
+
+  let r = ( a + b + c )
+
+  return( r ) ;
+
+ } ; // end function i31() -
+
+
+
+/** Function i32
+ *
+ */
+
+function i32( x )
+ {
+
+  let a = x.v[ 0 ] ;
+  let b = x.v[ 1 ] ;
+  let c = x.v[ 2 ] ;
+
+  let d = x.v[ 3 ] ;
+  let e = 0 ;
+  let f = 0 ;
+
+  if( x.nv == 6 )
+   {
+
+    e = x.v[ 4 ] ;
+    f = x.v[ 5 ] ;
+
+   } ; // end if{} -
+
+  let r = ( (a * b) + (b * c) + (a * c) - (d * d) - (e * e) - (f * f) ) ;
+
+  return( r ) ;
+
+ } ; // end function
+
+
+
+/** Function i33
+ *
+ */
+
+function i33( x )
+ {
+
+  let a = x.v[ 0 ] ;
+  let b = x.v[ 1 ] ;
+  let c = x.v[ 2 ] ;
+
+  let d = x.v[ 3 ] ;
+  let e = 0 ;
+  let f = 0 ;
+  
+  if( x.nv == 6 )
+   {
+    
+    e = x.v[ 4 ] ;
+    f = x.v[ 5 ] ;
+
+   } ; // end if{} -
+
+  let r = ( (a * b * c) + (2 * d * e * f) - (a * f * f) - (b * e * e) - (c * d * d) ) ;
+
+  return( r ) ;
+
+ } ; // end function
+
+
+
+/**
+ *  Index function
+ *
+ *  @description function index
+ *
+ *  @param    { number }    i      Number of rows
+ *  @param    { number }    j      Number of columns
+ */
+
+function idx( i , j )
+ {
+
+  let r = i ;
+
+  if( this.d )
+   {
+
+    if( i - j )  r = ( i + j + this.d ) ;
+
+   } // end if
+
+  else
+   {
+
+    r = ( (i * this.nc) + j ) ;
+
+   } ; // end else
+
+  return( r ) ;
+
+ } ; // end function idx()
+
+
+
+/** Function inv
+ *
+ *
+ */
+
+function inv()
  {
 
   let i   = undefined ;
   let j   = undefined ;
   let k   = undefined ;
-  
-  let s   = undefined ;
+  let akk = undefined ;
+  let akj = undefined ;
+  let aik = undefined ;
 
-  let evc = x.nr ;
+  let r = new Matrix( this.nr , this.nc ) ;
 
-  let r   = new Array( x.nv ) ;
+  console.log( 'r=' , r ) ;
+
+  for( i = 0;  i < this.nr;  ++i )
+
+    for( j = 0;  j < this.nc;  ++j )
+      
+      if( this.idx( i ,  j ) < this.nv )
+        
+        r.v[ r.idx( i , j ) ] = this.v[ this.idx( i , j ) ] ;
+
+  for( k = 0;  k < r.nr;  ++k )
+
+    if( akk = r.v[ r.idx( k , k ) ] )
+     {
+
+      for( i = 0;  i < r.nc;  ++i )
+
+        for( j = 0;  j < r.nr;  ++j )
+
+          if( (i != k) && (j != k) )
+           {
+
+            akj = r.v[ r.idx( k , j ) ] ;
+
+            aik = r.v[ r.idx( i , k ) ] ;
+
+            r.v[ r.idx( i , j ) ] -= ( (akj * aik) / akk ) ;
+
+           } ;
+
+      for( i = 0;  i < r.nc;  ++i )
+
+        if( i != k )
+
+          r.v[ r.idx( i , k ) ] /= (- akk ) ;
+
+      for( j = 0;  j < r.nr;  ++j )
+
+        if( k != j )
+
+          r.v[ r.idx( k , j ) ] /= akk ;
+
+      r.v[ r.idx( k , k ) ] = ( 1.0 / akk ) ;
+
+     } // end if{} +
+
+    else
+
+      r.v[ r.idx( k , k ) ] = undefined ;
+
+  for( i = 0;  i < this.nr;  ++i )
+
+    for( j = 0;  j < this.nc;  ++j )
+      
+      if( this.idx( i ,  j ) < this.nv )
+        
+        this.v[ this.idx( i , j ) ] = r.v[ r.idx( i , j ) ];
+
+  return ;
+
+ } ; // end function inv()
 
 
-  for( i = 0;  i < x.nr; ++i )
-  
-    for( j = 0;  j < x.nr; r[ x.idx( i , j ) ] = s , ++j )
 
-       for( s = 0 , k = 0;  k < x.nr; ++k )
+/** Function j32
+ *
+ */
 
-//       s += ( x.v[ x.idx( k , i ) ] * x.v[ x.idx( k , j ) ] ) ;
+function j32( x )
+ {
 
-         s += ( x.v[ x.idx( k , i ) ] * x.v[ x.idx( k , evc ) ] * x.v[ x.idx( k , j ) ] ) ;
+  let r = undefined ;
 
+  let i1 = i31( x )
+  let i2 = i32( x )
+
+  r = ( i2 - ((i1 * i1) / 3) ) ;
 
   return( r ) ;
 
- } ; // end function cev() 
+ } ; // end function j32()
+
+
+
+/** Function j33
+ *
+ */
+
+function j33( x )
+ {
+
+  let r = undefined ;
+
+  let i1 = i31( x )
+  let i2 = i32( x )
+  let i3 = i33( x )
+
+  r = ( ((2 * i1 * i1 * i1) / 27) - ((i1 * i2) / 3) + i3 ) ;
+
+  return( r ) ;
+
+ } ; // end function j33()
+
+
+
+/** Function mdt
+ *
+ *
+ */
+
+function mdt( x , y )
+ {
+
+  let i  = undefined ;
+  let k  = undefined ;
+  let ik = undefined ;
+  let ki = undefined ;
+  let r  = undefined ;
+  let rr = undefined ;
+
+  for( r = 0 , i = 0; i < this.nr; r += rr , ++i )
+
+    if( this.idx( i , i ) < this.nv )
+
+      for( this.v[ this.idx( i , i ) ] = k = 0; k < x.nc; ++k )
+
+        if( ((ik = x.idx( i , k )) < x.nv) && ((ki = y.idx( k , i )) < y.nv) )
+
+          rr = ( this.v[ this.idx( i , i ) ] += (x.v[ ik ] * y.v[ ki ]) );
+
+  return( r ) ;
+
+ } ; // end function mdt()
+
+
+
+/** Function mma
+ *
+ *
+ */
+
+function mma( x , y )
+ {
+  
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; this.v[ i ] = ( x.v[ i ] + y.v[ i++ ] ) ) ;
+
+  return ;
+
+ } ; // end function mma()
+
+
+
+/** Function mmd
+ *
+ *
+ */
+
+function mmd( x , y )
+ {
+
+  let i  = undefined ;
+  let j  = undefined ;
+  let k  = undefined ;
+  let ik = undefined ;
+  let kj = undefined ;
+
+  if( this.d )
+   {
+
+    for( i = 0; i < this.nr; ++i )
+
+      for( j = i; j < this.nc; ++j )
+
+        if( this.idx( i , j ) < this.nv )
+
+          for( this.v[ this.idx( i , j ) ] = k = 0; k < x.nc; ++k )
+
+            if( ((ik = x.idx( i , k )) < x.nv) && ((kj = y.idx( k , j )) < y.nv) )
+
+              this.v[ this.idx( i , j ) ] += ( x.v[ ik ] * y.v[ kj ] );
+
+   }
+
+  else
+   {
+
+    for( i = 0; i < this.nr; ++i )
+
+      for( j = 0; j < this.nc; ++j )
+
+        for( this.v[ this.idx( i , j ) ] = k = 0; k < x.nc; ++k )
+
+          this.v[ this.idx( i , j ) ] += ( x.v[ x.idx( i , k ) ] * y.v[ y.idx( k , j ) ] );
+
+   }
+
+  return ;
+
+ } ; // end function mmd()
+
+
+
+/** Function mms
+ *
+ *
+ */
+
+function mms( x , y )
+ {
+  
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; this.v[ i ] = ( x.v[ i ] - y.v[ i++ ] ) ) ;
+
+  return ;
+
+ } ; // end function mms()
+ 
+ 
+ 
+/** Function mmt
+ *
+ *
+ */
+
+function mmt( x , y , z )
+ {
+
+  let i  = undefined ;
+  let j  = undefined ;
+  let m  = undefined ;
+  let n  = undefined ;
+  let im = undefined ;
+  let mn = undefined ;
+  let nj = undefined ;
+
+  if( this.d )
+   {
+
+    for( i = 0; i < this.nr; ++i )
+
+      for( j = i; j < this.nc; ++j )
+
+        if( this.idx( i , j ) < this.nv )
+
+          for( this.v[ this.idx( i , j ) ] = m = 0; m < y.nr; ++m )
+
+            for( n = 0; n < y.nc; ++n )
+
+              if( ((im = x.idx( i , m )) < x.nv) && ((mn = y.idx( m , n )) < y.nv) && ((nj = z.idx( n , j )) < z.nv) )
+
+                this.v[ this.idx( i , j ) ] += ( x.v[ im ] * y.v[ mn ] * z.v[ nj ] );
+
+   }
+
+  else
+   {
+
+    for( i = 0; i < this.nr; ++i )
+
+      for( j = 0; j < this.nc; ++j )
+
+        for( m = this.v[ this.idx( i , j ) ] = 0; m < y.nr; ++m )
+
+          for( n = 0; n < y.nc; ++n )
+
+            this.v[ this.idx( i , j ) ] += ( x.v[ x.idx( i , m ) ] * y.v[ y.idx( m , n ) ] * z.v[ z.idx( n , j ) ] );
+
+   }
+  
+  return( this.trc() ) ;
+
+ } ; // end function mmt()
+
+
+
+/** Function msa
+ *
+ *
+ */
+
+function msa( x )
+ {
+
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; this.v[ i ] += x.v[ i++ ] ) ;
+
+  return ;
+
+ } ; // end function msa()
+ 
+ 
+ 
+/** Function msd
+ *
+ *
+ */
+
+function msd( x )
+ {
+
+  let i  = undefined ;
+  let j  = undefined ;
+  let k  = undefined ;
+  let ik = undefined ;
+  let kj = undefined ;
+  
+  if( this.d )
+   {
+
+    for( i = 0; i < this.nr; ++i )
+
+      for( j = i; j < this.nc; ++j )
+
+        if( this.idx( i , j ) < this.nv )
+
+          for( k = this.v[ this.idx( i , j ) ] = 0; k < x.nc; ++k )
+
+            if( ((ik = x.idx( i , k )) < x.nv) && ((kj = x.idx( k , j )) < x.nv) )
+
+              this.v[ this.idx( i , j ) ] += ( x.v[ ik ] * x.v[ kj ] );
+
+   }
+  
+  else
+   {
+
+    for( i = 0; i < this.nr; ++i )
+
+      for( j = 0; j < this.nc; ++j )
+
+        for( k = this.v[ this.idx( i , j ) ] = 0; k < x.nc; ++k )
+
+          this.v[ this.idx( i , j ) ] += ( x.v[ x.idx( i , k ) ] * x.v[ x.idx( k , j ) ] );
+
+   }
+  
+  return( this.trc() ) ;
+ 
+ } ; // end function msd()
+
+
+
+/** Function mss
+ *
+ *
+ */
+
+function mss( x )
+ {
+
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; this.v[ i ] -= x.v[ i++ ] ) ;
+
+  return ;
+
+ } ; // end function mss()
+
+
+
+/** Function mst
+ *
+ *
+ */
+
+function mst( x )
+ {
+
+  let i  = undefined ;
+  let j  = undefined ;
+  let m  = undefined ;
+  let n  = undefined ;
+  let im = undefined ;
+  let mn = undefined ;
+  let nj = undefined ;
+
+  if( this.d )
+   {
+
+    for( i = 0; i < this.nr; ++i )
+
+      for( j = i; j < this.nc; ++j )
+
+        if( this.idx( i , j ) < this.nv )
+
+          for( m = this.v[ this.idx( i , j ) ] = 0; m < x.nr; ++m )
+
+            for( n = 0; n < x.nc; ++n )
+
+              if( ((im = x.idx( i , m )) < x.nv) && ((mn = x.idx( m , n )) < x.nv) && ((nj = x.idx( n , j )) < x.nv)  )
+
+                this.v[ this.idx( i , j ) ] += ( x.v[ im ] * x.v[ mn ] * x.v[ nj ] );
+
+   }
+
+  else
+   {
+
+    for( i = 0; i < this.nr; ++i )
+
+      for( j = 0; j < this.nc; ++j )
+
+        for( m = this.v[ this.idx( i , j ) ] = 0; m < x.nr; ++m )
+
+          for( n = 0; n < x.nc; ++n )
+
+            this.v[ this.idx( i , j ) ] += ( x.v[ x.idx( i , m ) ] * x.v[ x.idx( m , n ) ] * x.v[ x.idx( n , j ) ] );
+
+   }
+  
+  return( this.trc() ) ;
+
+ } ; // end function mst()
+
+
+
+/** Function nrm()
+ *
+ */
+
+function nrm( a , b , c )
+ {
+
+  return( Math.sqrt( (a * a) + (b * b) + (c * c) ) );
+
+ }
+ 
+ 
+
+ /** Function pvv
+ *
+ *
+ */
+
+function pvv( v )
+ {
+  
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; this.v[ i ] = v[ i++ ] ) ;
+
+  return ;
+
+ } ; // end function pvv()
+
+
+
+
+
+
+
+
+
+/** Function tfm
+ *
+ *  @description function tfm
+ */
+
+function tfm( x )
+ {
+
+  let i   = undefined ;
+  let j   = undefined ;
+
+  for( i = 0;  i < this.nr;  ++i )
+
+    for( j = 0;  j < this.nc;  ++j )
+
+      if( this.idx( i , j ) < this.nv )
+
+        if( (x.idx( i , j ) < x.nv) && (i < x.nr) && (j < x.nc) )
+
+          this.v[ this.idx( i , j ) ] = x.v[ x.idx( i , j ) ] ;
+
+        else
+
+          this.v[ this.idx( i , j ) ] = 0 ;
+
+  return ;
+
+ } ; // end function tfm()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/** Function smd
+ *
+ *
+ */
+
+function smd( x , y )
+ {
+
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; ++i )
+
+    if( y.v[ i ] )
+
+      this.v[ i ] = ( x.v[ i ] / y.v[ i ] ) ;
+
+    else
+
+      this.v[ i ] = undefined ;
+
+  return ;
+
+ } ; // end function smd()
+
+
+
+/** Function smm
+ *
+ *
+ */
+
+function smm( x , y )
+ {
+
+  let i = undefined ;
+
+  for( i = 0; i < this.nv; ++i )
+
+    this.v[ i ] = ( x.v[ i ] * y.v[ i ] ) ;
+
+  return ;
+
+ } ; // end function smm()
+
+
+
+/** Function srt
+ *
+ *  Root of a quadratic polynomial equation
+ *
+ *  x*x* + a*x + b = 0
+ */
+
+function srt( a , b )
+ {
+
+  const p  = a ;
+  const q  = b ;
+  const d  = ( (p * p) - (4 * q) ) ;
+  const dd = Math.sqrt( Math.abs( d ) ) ;
+
+  let   r1 = undefined ;
+  let   r2 = undefined ;
+  let   r3 = undefined ;
+  let   r4 = undefined ;
+
+
+  if( d >= 0 )
+   {
+
+    r1 = ( ((- p) + dd) / 2 ) ;
+    r2 = 0.0 ;
+
+    r3 = ( ((- p) - dd) / 2 ) ;
+    r4 = 0.0 ;
+
+   }
+
+
+  else
+   {
+
+    r1 = ( (- p) / 2 ) ;
+    r2 = (- dd ) ;
+
+    r3 = ( (- p) / 2 ) ;
+    r4 = (  dd ) ;
+
+   } ;
+
+
+  return( [ r1 , r2 , r3 , r4 ] ) ;
+
+
+ } ; // end function srt()
+
+
+
+/** Function sum
+ *
+ *
+ */
+
+function sum()
+ {
+
+  let i = undefined ;
+  let r = undefined ;
+
+  for( i = r = 0; i < this.nv; r += this.v[ i++ ] ) ;
+
+  return( r ) ;
+
+ } ; // end function sum()
+
+
+
+/** Function tma
+ *
+ *
+ */
+
+function tma()
+ {
+
+  let i   = undefined ;
+  let j   = undefined ;
+  let aij = undefined ;
+  let aji = undefined ;
+
+  if( ! this.d )
+
+    for( i = 0;  i < this.nr;  ++i )
+
+      for( j = (i + 1);  j < this.nr;  ++j )
+       {
+
+        this.v[ this.idx( i , i ) ] = 0 ;
+
+        aij = this.v[ this.idx( i , j ) ] ; 
+
+        aji = this.v[ this.idx( j , i ) ] ;
+
+        this.v[ this.idx( j , i ) ] = this.v[ this.idx( i , j ) ] = ( (aij - aji) / 2 ) ;
+
+       } ; // end for()
+
+  return ;
+
+ } ; // end function tma()
+
+
+
+/** Function tms
+ *
+ *
+ */
+
+function tms()
+ {
+
+  let i   = undefined ;
+  let j   = undefined ;
+  let aij = undefined ;
+  let aji = undefined ;
+
+  if( ! this.d )
+
+    for( i = 0;  i < this.nr;  ++i )
+
+      for( j = (i + 1);  j < this.nr;  ++j )
+       {
+
+        aij = this.v[ this.idx( i , j ) ] ;
+
+	aji = this.v[ this.idx( j , i ) ] ;
+
+        this.v[ this.idx( j , i ) ] = this.v[ this.idx( i , j ) ] = ( (aij + aji) / 2 ) ;
+
+       } ; // end for()
+
+  return ;
+
+ } ; // end function tms()
+
+
+
+/** Function trc
+ *
+ *
+ */
+
+function trc()
+ {
+
+  let i = undefined ;
+  let r = undefined ;
+
+  if( this.d )
+
+    for( r = 0 , i = 0; i < this.nc; r += this.v[ i++ ] ) ;
+
+  else
+  
+    for( i = 0; i < this.nc; r += this.v[ this.idx( i , i++ ) ] ) ;
+
+  return( r ) ;
+
+ } ; // end function trc()
+
+
+
+/** Function tsp
+ *
+ *
+ */
+
+function tsp( x )
+ {
+
+  let i = undefined ;
+  let j = undefined ;
+  
+  if( ! this.d )
+  
+    for( i = 0;  i < this.nr;  ++i )
+    
+      for( j = 0;  j < this.nc;  ++j )
+
+        this.v[ this.idx( j , i ) ] = x.v[ x.idx( i , j ) ] ;
+
+  return ;
+
+ } ; // end function tsp()
+
+
+
+/** Function unt
+ *
+ *
+ */
+
+function unt( s )
+ {
+  
+  let i = undefined ;
+
+  if( this.d )
+
+    for( i = 0; i < this.nc; this.v[ i++ ] = s ) ;
+
+  else
+  
+    for( i = 0; i < 3; this.v[ this.idx( i , i++ ) ] = s ) ;
+
+  return ;
+
+ } ; // end function unt ()
+
+
+
+/** Function val
+ *
+ *  @description function val
+ */
+
+function val( i , j , v )
+ {
+
+  var r = undefined ; 
+
+  if( ! v )
+   
+    r = this.v[ this.idx( i , j ) ] ;
+  
+  else 
+
+    r = this.v[ this.idx( i , j ) ] = v
+
+  return( r ) ;
+
+ } ; // end function val()
+
+
+
+/** Function vmd
+ *
+ *
+ */
+
+function vmd( x , y )
+ {
+
+  let i = undefined ;
+  let j = undefined ;
+
+  for( i = 0; i < x.nv; ++i )
+  
+    for( j = 0; j < y.nv; ++j )
+
+      if( y.v[ j ] )
+
+        this.v[ this.idx( i , j ) ] = ( x.v[ i ] / y.v[ j ] ) ;
+
+      else
+
+        this.v[ this.idx( i , j ) ] = 0.0 ;
+
+  return ;
+
+ } ; // end function vmd()
+
+
+
+/** Function vmm
+ *
+ *
+ */
+
+function vmm( x , y )
+ {
+
+  let i = undefined ;
+  let j = undefined ;
+
+  for( i = 0; i < x.nv; ++i )
+  
+    for( j = 0; j < y.nv; ++j )
+
+      this.v[ this.idx( i , j ) ] = ( x.v[ i ] * y.v[ j ] ) ;
+
+  return ;
+
+ } ; // end function vmm()
+
+
+
+/** Function xpr
+ * 
+ *  Flat cross product operator between two three element vectors
+ */
+
+function xpr( a , b , c , d , e , f )
+ {
+
+  return( [ ((b * f) - (c * e)) , ((c * d) - (a * f)) , ((a * e) - (b * d)) ] ) ;
+
+ } ; // end function xpr() -
+
+
+
+/** Function xmm
+ *
+ *
+ */
+
+function xmm( x , y )
+ {
+
+  let i = undefined ;
+  let j = undefined ;
+  let k = undefined ;
+  let a = undefined ;
+  let b = undefined ;
+  let c = undefined ;
+  let d = undefined ;
+
+  let e = [ 1 , 2 , 2 , 1 , 2 , 0 , 0 , 2 , 0 , 1 , 1 , 0 ] ;
+
+  for( j = 0; j < this.nc; ++j )
+
+    for( i = k = 0 , a = 0 , b = 1 , c = 2 , d = 3;  k < e.length; ++i , a += 4 , b += 4 , c += 4 , d += 4 , k += 4 )
+
+      if( (this.idx( i , j ) < this.nv) && (x.idx( e[a] , j ) < x.nv) && (y.idx( e[b] , j ) < y.nv) && (x.idx( e[c] , j ) < x.nv) && (y.idx( e[d] , j ) < y.nv) )
+       {
+
+        console.log( i , j , e[a] , e[b] , e[c] , e[d] ) ;
+
+        this.v[ this.idx( i , j ) ] = ( (x.v[ x.idx( e[a] , j ) ] * y.v[ y.idx( e[b] , j ) ]) - (x.v[ x.idx( e[c] , j ) ] * y.v[ y.idx( e[d] , j ) ]) );
+
+       }
+
+  return ;
+
+ } ; // end function xmm()
+
 
 
 let a = new Matrix( 9 , 9 ) ;
