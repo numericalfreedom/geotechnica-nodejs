@@ -1,3 +1,5 @@
+// @flow
+
 "use strict" ;
 
 
@@ -32,7 +34,7 @@ module.exports = { Matrix }
  *  @returns  { Object }                   Matrix  object
  */
 
-function Matrix( nr , nc , nv , v )
+function Matrix( nr /*: number*/ , nc /*: number*/ , nv /*: ?number | void*/ , v /*: Array<number> | null */ )
  {
 
   let i  = undefined ;
@@ -1207,7 +1209,7 @@ function i33( x )
  *  @param    { number }    j      Number of columns
  */
 
-function idx( i , j )
+function idx( i /*: number*/ , j /*: number*/ ) /*: number*/
  {
 
   let r = i ;
