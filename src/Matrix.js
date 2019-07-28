@@ -6,6 +6,8 @@
  * @author       Numericalfreedom Foundation <numericalfreedom@googlemail.com>
  *
  * @version      0.0.1
+ *
+ * @module       Matrix
  */
 
 
@@ -14,80 +16,83 @@
 
 module.exports = { Matrix }
 
+
  
-/**
- *  @constructor
- *  
- *  @author   Numericalfreedom Foundation <numericalfreedom@googlemail.com>
+/** @classdesc  Matrix operations
+ *  @class
  *
- *  @param    { number }    Matrix#nr      Number of rows
- *  @param    { number }    Matrix#nc      Number of columns
- *  @property { number }    Matrix#nr      Number of rows
- *  @property { number }    Matrix#nc      Number of columns
- *  @property { number }    Matrix#nv      Number of values
- *  @property { Array  }    Matrix#v       Vector of values
- *  @property { number }    Matrix#d       Index difference for sparse representation
- *  @property { function }  Matrix#idx     Index function
- *  @property { function }  Matrix#cmd     function
- *  @property { function }  Matrix#cmm     function
- *  @property { function }  Matrix#crt     function
- *  @property { function }  Matrix#csd     function
- *  @property { function }  Matrix#csm     function
- *  @property { function }  Matrix#cst     function
- *  @property { function }  Matrix#dmm     function
- *  @property { function }  Matrix#dvt     function
- *  @property { function }  Matrix#enm     function
- *  @property { function }  Matrix#eqt     function
- *  @property { function }  Matrix#evj     function
- *  @property { function }  Matrix#evl     function
- *  @property { function }  Matrix#gvv     function
- *  @property { function }  Matrix#i21     function
- *  @property { function }  Matrix#i22     function
- *  @property { function }  Matrix#i31     function
- *  @property { function }  Matrix#i32     function
- *  @property { function }  Matrix#i33     function
- *  @property { function }  Matrix#idx     function
- *  @property { function }  Matrix#inv     function
- *  @property { function }  Matrix#j32     function
- *  @property { function }  Matrix#j33     function
- *  @property { function }  Matrix#mdt     function
- *  @property { function }  Matrix#mma     function
- *  @property { function }  Matrix#mms     function
- *  @property { function }  Matrix#mmd     function
- *  @property { function }  Matrix#mmt     function
- *  @property { function }  Matrix#msa     function
- *  @property { function }  Matrix#msd     function
- *  @property { function }  Matrix#mss     function
- *  @property { function }  Matrix#mst     function
- *  @property { function }  Matrix#pvv     function
- *  @property { function }  Matrix#smd     function
- *  @property { function }  Matrix#smm     function
- *  @property { function }  Matrix#srt     function
- *  @property { function }  Matrix#sum     function
- *  @property { function }  Matrix#tfm     function
- *  @property { function }  Matrix#tms     function
- *  @property { function }  Matrix#tma     function
- *  @property { function }  Matrix#trc     function
- *  @property { function }  Matrix#tsp     function
- *  @property { function }  Matrix#unt     function
- *  @property { function }  Matrix#val     function
- *  @property { function }  Matrix#vmd     function
- *  @property { function }  Matrix#vmm     function
- *  @property { function }  Matrix#xmm     function
+ *  @author     Numericalfreedom Foundation <numericalfreedom@googlemail.com>
+ *  
+ *  @param    { number }    nr               Number of rows
+ *  @param    { number }    nc               Number of columns
+ *  @param    { number }    nv               Number of values
+ *  @param    { Array }     v                Value vector
+ *
+ *  @property { number }    {Matrix}.nr      Number of rows
+ *  @property { number }    {Matrix}.nc      Number of columns
+ *  @property { number }    {Matrix}.nv      Number of values
+ *  @property { Array  }    {Matrix}.v       Vector of values
+ *  @property { number }    {Matrix}.d       Index difference for sparse representation
+ *  @property { function }  {Matrix}.idx     Index function
+ *  @property { function }  {Matrix}.cmd     cmd function
+ *  @property { function }  {Matrix}.cmm     function
+ *  @property { function }  {Matrix}.crt     function
+ *  @property { function }  {Matrix}.csd     function
+ *  @property { function }  {Matrix}.csm     function
+ *  @property { function }  {Matrix}.cst     function
+ *  @property { function }  {Matrix}.dmm     function
+ *  @property { function }  {Matrix}.dvt     function
+ *  @property { function }  {Matrix}.enm     function
+ *  @property { function }  {Matrix}.eqt     function
+ *  @property { function }  {Matrix}.evj     function
+ *  @property { function }  {Matrix}.evl     function
+ *  @property { function }  {Matrix}.gvv     function
+ *  @property { function }  {Matrix}.i21     function
+ *  @property { function }  {Matrix}.i22     function
+ *  @property { function }  {Matrix}.i31     function
+ *  @property { function }  {Matrix}.i32     function
+ *  @property { function }  {Matrix}.i33     function
+ *  @property { function }  {Matrix}.idx     function
+ *  @property { function }  {Matrix}.inv     function
+ *  @property { function }  {Matrix}.j32     function
+ *  @property { function }  {Matrix}.j33     function
+ *  @property { function }  {Matrix}.mdt     function
+ *  @property { function }  {Matrix}.mma     function
+ *  @property { function }  {Matrix}.mms     function
+ *  @property { function }  {Matrix}.mmd     function
+ *  @property { function }  {Matrix}.mmt     function
+ *  @property { function }  {Matrix}.msa     function
+ *  @property { function }  {Matrix}.msd     function
+ *  @property { function }  {Matrix}.mss     function
+ *  @property { function }  {Matrix}.mst     function
+ *  @property { function }  {Matrix}.pvv     function
+ *  @property { function }  {Matrix}.smd     function
+ *  @property { function }  {Matrix}.smm     function
+ *  @property { function }  {Matrix}.srt     function
+ *  @property { function }  {Matrix}.sum     function
+ *  @property { function }  {Matrix}.tfm     function
+ *  @property { function }  {Matrix}.tms     function
+ *  @property { function }  {Matrix}.tma     function
+ *  @property { function }  {Matrix}.trc     function
+ *  @property { function }  {Matrix}.tsp     function
+ *  @property { function }  {Matrix}.unt     function
+ *  @property { function }  {Matrix}.val     function
+ *  @property { function }  {Matrix}.vmd     function
+ *  @property { function }  {Matrix}.vmm     function
+ *  @property { function }  {Matrix}.xmm     function
  *
  *  @returns  { Object }                   Matrix  object
+ *
+ *
  */
+
+
 
 function Matrix( nr , nc , nv , v )
  {
 
   let i  = undefined ;
   let ix = undefined ;
-
-/**
- *  Number of values
- * 
- *  @constant { number } */
 
   if( ! nv )  nv = ( nr * nc ) ;
   
@@ -112,23 +117,12 @@ function Matrix( nr , nc , nv , v )
 
    } ; // end else -
 
-
-/**
- *  Index difference value
- *  
- *  @type { number } */
-
   let d = 0 ;
 
   if(  (nr == 2) && (nc == 2)  && (nv == 3) )  d = 1 ;
 
   if( ((nr == 3) && (nc == 3)) && ((nv == 4) || (nv == 6)) )  d = 2 ;
 
-/** 
- *
- * @properpty {number} nr
- *
- * */
 
   this.nr  = nr ;
   this.nc  = nc ;
@@ -156,13 +150,6 @@ function Matrix( nr , nc , nv , v )
   this.i32 = i32 ;
   this.i33 = i33 ;
 
-
-/** 
- *
- * @properpty {Function} idx
- * @returns {number}
- *
- */
 
   this.idx = idx ;
   this.inv = inv ;
