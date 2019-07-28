@@ -1,28 +1,25 @@
-// @flow
-
-"use strict" ;
-
-
 /**
  * @fileOverview Matrix class definitions.
  *
  * This is the FleX project.
  *
+ * @author       Numericalfreedom Foundation <numericalfreedom@googlemail.com>
  *
- *
- * @author       Numericalfreedom Foundation
  * @version      0.0.1
  */
 
 
+"use strict" ;
+
 
 module.exports = { Matrix }
-
 
  
 /**
  *  @constructor
- *  @author: Numericalfreedom Foundation
+ *  
+ *  @author   Numericalfreedom Foundation <numericalfreedom@googlemail.com>
+ *
  *  @param    { number }    Matrix#nr      Number of rows
  *  @param    { number }    Matrix#nc      Number of columns
  *  @property { number }    Matrix#nr      Number of rows
@@ -31,10 +28,57 @@ module.exports = { Matrix }
  *  @property { Array  }    Matrix#v       Vector of values
  *  @property { number }    Matrix#d       Index difference for sparse representation
  *  @property { function }  Matrix#idx     Index function
+ *  @property { function }  Matrix#cmd     function
+ *  @property { function }  Matrix#cmm     function
+ *  @property { function }  Matrix#crt     function
+ *  @property { function }  Matrix#csd     function
+ *  @property { function }  Matrix#csm     function
+ *  @property { function }  Matrix#cst     function
+ *  @property { function }  Matrix#dmm     function
+ *  @property { function }  Matrix#dvt     function
+ *  @property { function }  Matrix#enm     function
+ *  @property { function }  Matrix#eqt     function
+ *  @property { function }  Matrix#evj     function
+ *  @property { function }  Matrix#evl     function
+ *  @property { function }  Matrix#gvv     function
+ *  @property { function }  Matrix#i21     function
+ *  @property { function }  Matrix#i22     function
+ *  @property { function }  Matrix#i31     function
+ *  @property { function }  Matrix#i32     function
+ *  @property { function }  Matrix#i33     function
+ *  @property { function }  Matrix#idx     function
+ *  @property { function }  Matrix#inv     function
+ *  @property { function }  Matrix#j32     function
+ *  @property { function }  Matrix#j33     function
+ *  @property { function }  Matrix#mdt     function
+ *  @property { function }  Matrix#mma     function
+ *  @property { function }  Matrix#mms     function
+ *  @property { function }  Matrix#mmd     function
+ *  @property { function }  Matrix#mmt     function
+ *  @property { function }  Matrix#msa     function
+ *  @property { function }  Matrix#msd     function
+ *  @property { function }  Matrix#mss     function
+ *  @property { function }  Matrix#mst     function
+ *  @property { function }  Matrix#pvv     function
+ *  @property { function }  Matrix#smd     function
+ *  @property { function }  Matrix#smm     function
+ *  @property { function }  Matrix#srt     function
+ *  @property { function }  Matrix#sum     function
+ *  @property { function }  Matrix#tfm     function
+ *  @property { function }  Matrix#tms     function
+ *  @property { function }  Matrix#tma     function
+ *  @property { function }  Matrix#trc     function
+ *  @property { function }  Matrix#tsp     function
+ *  @property { function }  Matrix#unt     function
+ *  @property { function }  Matrix#val     function
+ *  @property { function }  Matrix#vmd     function
+ *  @property { function }  Matrix#vmm     function
+ *  @property { function }  Matrix#xmm     function
+ *
  *  @returns  { Object }                   Matrix  object
  */
 
-function Matrix( nr /*: number*/ , nc /*: number*/ , nv /*: ?number | void*/ , v /*: Array<number> | null */ )
+function Matrix( nr , nc , nv , v )
  {
 
   let i  = undefined ;
@@ -92,12 +136,6 @@ function Matrix( nr /*: number*/ , nc /*: number*/ , nv /*: ?number | void*/ , v
   this.v   = vv ;
   this.d   = d ;
 
-/** 
- *
- * @properpty {Function} idx
- * @returns {number}
- *
- * */
 
   this.cmd = cmd ;
   this.cmm = cmm ;
@@ -117,6 +155,15 @@ function Matrix( nr /*: number*/ , nc /*: number*/ , nv /*: ?number | void*/ , v
   this.i31 = i31 ;
   this.i32 = i32 ;
   this.i33 = i33 ;
+
+
+/** 
+ *
+ * @properpty {Function} idx
+ * @returns {number}
+ *
+ */
+
   this.idx = idx ;
   this.inv = inv ;
   this.j32 = j32 ;
