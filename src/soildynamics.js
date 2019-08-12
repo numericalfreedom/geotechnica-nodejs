@@ -1,4 +1,8 @@
 
+/** @module Soildynamics
+ *
+ */
+
 
 function deg( r )
  {
@@ -281,7 +285,8 @@ function Frequencydomain( x )
 } // end function Frequencydomain
 
 
-function duffing( dt , ap , bt , dt , x )
+
+function duffing( dt , ap , bt , dl , x )
  {
 
   const nt = 10;
@@ -295,7 +300,9 @@ function duffing( dt , ap , bt , dt , x )
   return( ddt );
   
  };
- 
+
+
+
  const r_a = 0;
  const r_v = 1;
  const r_u = 2;

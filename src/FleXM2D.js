@@ -36,6 +36,6 @@ function FleXM2D()
   this.nodes = undefined ;
   this.zones = undefined ;
 
-  return();
+  return ;
 
  }; // end function FleXM2D() : FleX mechanical modelling in 2D
