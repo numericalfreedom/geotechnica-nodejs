@@ -16,16 +16,21 @@ function TaylorD( pi , bt , ph )
   const jx   = 3 ;
   const rx   = 4 ;
 
-  var   i   = undefined ;
-  var   j   = undefined ;
-  var   d   = undefined ;
-  var   c   = undefined ;
+  const n    = 0.25 ;
 
-  var   sd  = undefined ;
-  var   xd  = undefined ;
-  var   jd  = undefined ;
+  var   i    = undefined ;
+  var   j    = undefined ;
+  var   c    = undefined ;
+  var   d    = undefined ;
+  var   dc   = undefined ;
+  var   ds   = undefined ;
+  var   dx   = undefined ;
+  var   dj   = undefined ;
+  var   dn   = undefined ;
+  var   dr   = undefined ;
 
-  var   r   = new Array( ix ) ;
+  var   dv   = [ pi , bt , ph ] ;
+  var   r    = new Array( ix ) ;
 
 
   for( i = 0; i < ix; ++i )
@@ -219,26 +224,27 @@ function TaylorD( pi , bt , ph )
    ] ;
 
 
+  if( pi == 0 )  dc = c_pi ;
+
+  if( bt == 0 )  dc = c_bt ;
+
+  if( ph == 0 )  dc = c_ph ;
+
+
+
   for( i = 0; i < taylord.length; ++i )
    {
 
 
-    if( pi == 0 )
- 
-      d = ( Math.abs( bt - taylord[i][c_bt] ) + Math.abs( ph - taylord[i][c_ph] ) ) ;
+    for( d = 0 , j = 0; j < jx; d += (dr * dr) , ++j )
+
+      if( j != dc )  dr = ( dv[j] - taylord[i][j] ) ;
 
 
-    if( ph == 0 )
-
-      d = ( Math.abs( pi - taylord[i][c_pi] ) + Math.abs( bt - taylord[i][c_bt] ) ) ;
+    d = Math.sqrt( d ) ;
 
 
-    if( bt == 0 )
-
-      d = ( Math.abs( pi - taylord[i][c_pi] ) + Math.abs( ph - taylord[i][c_ph] ) ) ;
-
-
-    for( c = true , xd = 0 , jd = 0 , j = 0; (c && (j < jx)); ++j )
+    for( c = true , dx = 0 , dj = 0 , j = 0; (c && (j < jx)); ++j )
 
       if( r[j][c_d] == undefined )
        {
@@ -249,32 +255,32 @@ function TaylorD( pi , bt , ph )
         r[j][c_bt] = taylord[i][c_bt] ;
         r[j][c_ph] = taylord[i][c_ph] ;
 
-        xd = 0 ;
+        dx = 0 ;
 
-        jd = j ;
+        dj = j ;
 
         c = false ;
 
        } // end if{} +
 
-      else if( r[j][c_d] > xd )
+      else if( r[j][c_d] > dx )
        {
 
-        xd = r[j][c_d] ;
+        dx = r[j][c_d] ;
 
-        jd = j ;
+        dj = j ;
 
        } ; // end if{} -
 
 
-    if( d < xd )
+    if( d < dx )
      {
 
-      r[jd][c_d]  = d ;
+      r[dj][c_d]  = d ;
 
-      r[jd][c_pi] = taylord[i][c_pi] ;
-      r[jd][c_bt] = taylord[i][c_bt] ;
-      r[jd][c_ph] = taylord[i][c_ph] ;
+      r[dj][c_pi] = taylord[i][c_pi] ;
+      r[dj][c_bt] = taylord[i][c_bt] ;
+      r[dj][c_ph] = taylord[i][c_ph] ;
 
      } ; // end if{} -
 
@@ -282,88 +288,36 @@ function TaylorD( pi , bt , ph )
    } ; // end for()
 
 
-  if( pi == 0 ) 
-   {
-
-    for( c = true , pi = 0 , sd = 0 , j = 0; (c && (j < jx)); ++j )
+  for( c = true , dr = 0 , ds = 0 , j = 0; (c && (j < jx)); ++j )
   
-      if( r[j][c_d] == 0 )
-       {
+    if( r[j][c_d] == 0 )
+     {
  
-        pi = r[j][c_pi] ;
+      dr = r[j][dc] ;
 
-        c  = false ;
+      c  = false ;
 
-       } // end if{} +
+     } // end if{} +
 
-      else
-       {
+    else
+     {
 
-        pi += ( r[j][c_pi] / r[j][c_d] ) ;
+      dn = Math.pow( r[j][c_d] , n ) ;
 
-        sd += ( 1.0 / r[j][c_d] ) ;
+      dr += ( r[j][dc] / dn ) ;
 
-       } ; // end else
+      ds += ( 1.0 / dn ) ;
 
-    pi /= sd ;
+     } ; // end else
 
-   } ; // end if() -
-
-
-  if( bt == 0 )
-   {
-
-    for( c = true , bt = 0 , sd = 0 , j = 0; (c && (j < jx)); ++j )
-
-      if( r[j][c_d] == 0 )
-       {
-
-        bt = r[j][c_bt] ;
-
-        c  = false ;
-
-       } // end if{} +
-
-      else
-       {
-
-        bt += ( r[j][c_bt] / r[j][c_d] ) ;
-
-        sd += ( 1.0 / r[j][c_d] ) ;
-
-       } ; // end else
-
-    bt /= sd ;
-
-   } ; // end if() -
+  dr /= ds ;
 
 
-  if( ph == 0 )
-   {
+  if( pi == 0 )  pi = dr ;
 
-    for( c = true , ph = 0 , sd = 0 , j = 0; (c && (j < jx)); ++j )
+  if( bt == 0 )  bt = dr ;
 
-      if( r[j][c_d] == 0 )
-       {
-
-        ph = r[j][c_ph] ;
-
-        c  = false ;
-
-       } // end if{} +
-
-      else
-       {
-
-        ph += ( r[j][c_ph] / r[j][c_d] ) ;
-
-        sd += ( 1.0 / r[j][c_d] ) ;
-
-       } ; // end else
-
-    ph /= sd ;
-
-   } ; // end if() -
+  if( ph == 0 )  ph = dr ;
 
 
   return( [ r , [ pi , bt , ph ] ] ) ;
