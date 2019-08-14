@@ -12,7 +12,7 @@ function TaylorD( pi , bt , ph )
   const c_ph = 2 ;
   const c_d  = 3 ; 
 
-  const ix   = 10 ;
+  const ix   = undefined ;
   const jx   = 10 ;
   const kx   = 3  ;
   const rx   = 4  ;
@@ -35,9 +35,9 @@ function TaylorD( pi , bt , ph )
   var   r    = new Array( ix ) ;
 
 
-  for( i = 0; i < ix; ++i )
+  for( j = 0; j < jx; ++j )
 
-    for( r[i] = new Array( rx ) , j = 0; j < rx; r[i][j++] = undefined ) ;
+    for( r[j] = new Array( rx ) , k = 0; k < rx; r[j][k++] = undefined ) ;
 
 
   const taylord =
@@ -233,7 +233,9 @@ function TaylorD( pi , bt , ph )
   if( pi == 0 )  dc = c_pi ;
 
 
-  for( i = 0; i < taylord.length; ++i )
+  ix = taylord.length ;
+
+  for( i = 0; i < ix; ++i )
    {
 
 
@@ -329,7 +331,7 @@ function TaylorU( pi , bt , kh )
   const c_kh = 2 ;
   const c_d  = 3 ; 
 
-  const ix   = 10 ;
+  const ix   = undefined ;
   const jx   = 10 ;
   const kx   = 3  ;
   const rx   = 4  ;
@@ -352,9 +354,9 @@ function TaylorU( pi , bt , kh )
   var   r    = new Array( ix ) ;
 
 
-  for( i = 0; i < ix; ++i )
+  for( j = 0; j < jx; ++j )
 
-    for( r[i] = new Array( rx ) , j = 0; j < rx; r[i][j++] = undefined ) ;
+    for( r[j] = new Array( rx ) , k = 0; k < rx; r[j][k++] = undefined ) ;
 
 
   const tayloru =
@@ -550,7 +552,9 @@ function TaylorU( pi , bt , kh )
   if( kh == 0 )  dc = c_kh ;
 
 
-  for( i = 0; i < tayloru.length; ++i )
+  ix = tayloru.length ;
+
+  for( i = 0; i < ix; ++i )
    {
 
 
