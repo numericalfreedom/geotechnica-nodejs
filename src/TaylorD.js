@@ -12,12 +12,13 @@ function TaylorD( pi , bt , ph )
   const c_ph = 2 ;
   const c_d  = 3 ; 
 
-  const ix   = undefined ;
   const jx   = 10 ;
   const kx   = 3  ;
   const rx   = 4  ;
 
   const n    = 0.20 ;
+
+  var   ix   = undefined ;
 
   var   i    = undefined ;
   var   j    = undefined ;
@@ -331,12 +332,13 @@ function TaylorU( pi , bt , kh )
   const c_kh = 2 ;
   const c_d  = 3 ; 
 
-  const ix   = undefined ;
   const jx   = 5 ;
   const kx   = 3 ;
   const rx   = 4 ;
 
   const n    = 0.20 ;
+
+  var   ix   = undefined ;
 
   var   i    = undefined ;
   var   j    = undefined ;
