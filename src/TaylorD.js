@@ -240,9 +240,16 @@ function TaylorD( pi , bt , ph )
    {
 
 
-    for( d = 0 , k = 0; k < kx; d += (dr * dr) , ++k )
+    for( d = 0 , k = 0; k < kx; ++k )
 
-      if( k != dc )  dr = ( dv[k] - taylord[i][k] ) ;
+      if( k != dc )
+       {
+
+        dr = ( dv[k] - taylord[i][k] ) ;
+
+        d  += ( dr * dr ) ;
+
+       } ; // end if{} -
 
 
     d = Math.sqrt( d ) ;
@@ -417,9 +424,17 @@ function TaylorU( pi , bt , kh )
    {
 
 
-    for( d = 0 , k = 0; k < kx; d += (dr * dr) , ++k )
+    for( d = 0 , k = 0; k < kx; ++k )
 
-      if( k != dc )  dr = ( dv[k] - tayloru[i][k] ) ;
+      if( k != dc )
+       {
+
+        dr = ( dv[k] - tayloru[i][k] ) ;
+
+        d  += ( dr * dr ) ;
+
+       } ; // end if{} -
+
 
 
     d = Math.sqrt( d ) ;
