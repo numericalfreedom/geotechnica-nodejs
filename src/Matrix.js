@@ -117,6 +117,7 @@ function Matrix( nr , nc , nv , v )
 
    } ; // end else -
 
+
   let d = 0 ;
 
   if(  (nr == 2) && (nc == 2)  && (nv == 3) )  d = 1 ;
@@ -1736,12 +1737,6 @@ function pvv( v )
 
 
 
-
-
-
-
-
-
 /** Function tfm
  *
  *  @description function tfm
@@ -1770,55 +1765,6 @@ function tfm( x )
   return ;
 
  } ; // end function tfm()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
