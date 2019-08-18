@@ -1,7 +1,7 @@
 
 const cluster      = require( 'cluster' ) ;
 const sleep        = require( '/usr/share/node/head/lib/node_modules/sleep' );
-const EventEmitter = reuqire( 'events' ) ;
+const EventEmitter = require( 'events' ) ;
 
 
 let i  = undefined ;
