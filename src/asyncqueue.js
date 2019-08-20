@@ -48,20 +48,21 @@ function promisedisplayitems (item, callback) {
 }
 
 
-async function asyncdisplayitems (item, key, callback) {
+async function asyncdisplayitems (data , callback) {
 //console.log(callback)
   var promise = new Promise((resolve, reject) => {
     var timeout = (3000 + (500 * Math.random()))
     setTimeout(() => {
-      console.log('timeout=', timeout)
-      console.log('key : ' + key + '')
-      console.log('item : ' + item + '')
-      resolve(timeout)
-    }, timeout)
+      console.log( 'timeout=', timeout)
+      console.log( 'key : ' + data.key + '' )
+      console.log( 'item : ' + data.item + '' )
+      resolve( timeout )
+    }, timeout )
   })
   await promise
   return (promise)
 }
+
 
 function finalcallback (err) {
   if (err) {
@@ -70,6 +71,7 @@ function finalcallback (err) {
   console.log('all done')
 }
 
+
 // Async.eachOf(proxies, asyncdisplayitems, finalcallback)
 
 // Async.eachOfSeries(proxies, asyncdisplayitems, finalcallback)
@@ -77,17 +79,26 @@ function finalcallback (err) {
 // Async.eachOfLimit(proxies, 3, asyncdisplayitems, finalcallback)
 
 
-var q = Async.queue(queuedisplayitems, 3)
+// var q = Async.queue(queuedisplayitems, 3)
 
-q.drain = () => { console.log( 'Alli items have been processed.' ) }
+
+var q = Async.queue( asyncdisplayitems, 3 )
+
+q.drain( function() { console.log( 'All items have been processed.' ) ; } ) ;
 
 
 let i = undefined
 
+// for( i = 0; i<10; ++i ) {
+
+//  q.push( i , function( err ) { console.log( 'A done' ) } )
+
+// }
+
+
 for( i = 0; i<10; ++i ) {
 
-  q.push( i , (err) => { console.log( 'A done' ) } )
+  q.push( { "key": i , "item": (i+1) } , function( err ) { console.log( 'A done' ) } )
 
 }
-
 

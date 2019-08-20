@@ -12,12 +12,13 @@ function TaylorD( pi , bt , ph )
   const c_ph = 2 ;
   const c_d  = 3 ; 
 
-  const ix   = undefined ;
   const jx   = 10 ;
   const kx   = 3  ;
   const rx   = 4  ;
 
   const n    = 0.20 ;
+
+  var   ix   = undefined ;
 
   var   i    = undefined ;
   var   j    = undefined ;
@@ -239,9 +240,16 @@ function TaylorD( pi , bt , ph )
    {
 
 
-    for( d = 0 , k = 0; k < kx; d += (dr * dr) , ++k )
+    for( d = 0 , k = 0; k < kx; ++k )
 
-      if( k != dc )  dr = ( dv[k] - taylord[i][k] ) ;
+      if( k != dc )
+       {
+
+        dr = ( dv[k] - taylord[i][k] ) ;
+
+        d  += ( dr * dr ) ;
+
+       } ; // end if{} -
 
 
     d = Math.sqrt( d ) ;
@@ -331,12 +339,13 @@ function TaylorU( pi , bt , kh )
   const c_kh = 2 ;
   const c_d  = 3 ; 
 
-  const ix   = undefined ;
   const jx   = 5 ;
   const kx   = 3 ;
   const rx   = 4 ;
 
   const n    = 0.20 ;
+
+  var   ix   = undefined ;
 
   var   i    = undefined ;
   var   j    = undefined ;
@@ -415,9 +424,17 @@ function TaylorU( pi , bt , kh )
    {
 
 
-    for( d = 0 , k = 0; k < kx; d += (dr * dr) , ++k )
+    for( d = 0 , k = 0; k < kx; ++k )
 
-      if( k != dc )  dr = ( dv[k] - tayloru[i][k] ) ;
+      if( k != dc )
+       {
+
+        dr = ( dv[k] - tayloru[i][k] ) ;
+
+        d  += ( dr * dr ) ;
+
+       } ; // end if{} -
+
 
 
     d = Math.sqrt( d ) ;
