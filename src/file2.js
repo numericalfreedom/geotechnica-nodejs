@@ -18,103 +18,120 @@ var i            = undefined ;
 var keylist      = null ;
 
 
-function readmesh()
+async function readmesh()
  {
 
 
   let model = {} ;
 
 
-  const rl = readline.createInterface ( {
-    input: fs.createReadStream('test.msh'),
-    crlfDelay: Infinity
-   } );
+  let promise = new Promise
+   (
 
-
-  rl.on
-   ( 'line' ,
-
-
-    function( line )
+    function( resolve , reject )
      {
 
+      const rl = readline.createInterface
+       (
 
-      ++ln ;
+         {
+          input: fs.createReadStream('test.msh'),
+          crlfDelay: Infinity
+         }
 
+       );
 
-      line = line.trim() ;
-
-      let fields = line.split( ' ' ) ;
-
-
-      if( fields[0] === '$Elements' )  { state = c_zones ; ln = 0 ; } ;
-
-      if( fields[0] === '$EndElements' )  { state = undefined ; ln = 0 ; } ;
-
-
-      if( (state == c_zones) && (ln == 1) )
-       {
-
-        numzones = parseInt( fields[0] ) ;      
-
-       }
+      rl.on
+       ( 'line' ,
 
 
-      if( (state == c_zones) && (ln > 1) )
-       {
+        function( line )
+         {
 
 
-        if( fields[1] === '2' )
-
-          keylist = [ fields[5] , fields[6] , fields[7] ] ;
+          ++ln ;
 
 
-        else if( fields[1] === '4' )
+          line = line.trim() ;
 
-          keylist = [ fields[5] , fields[6] , fields[7] , fields[8] ] ;
-
-
-        keylist = keylist.sort() ;
+          let fields = line.split( ' ' ) ;
 
 
-        for( key = '' , i = 0; i < keylist.length; i++ )
+          if( fields[0] === '$Elements' )  { state = c_zones ; ln = 0 ; } ;
 
-          if( i )  key += ( '-' + keylist[i] ) ;
-
-          else  key += keylist[i] ;
+          if( fields[0] === '$EndElements' )  { state = undefined ; ln = 0 ; } ;
 
 
-        model[key] = fields[0] ;
+          if( (state == c_zones) && (ln == 1) )
+           {
+
+            numzones = parseInt( fields[0] ) ;      
+
+           }
 
 
-       } ; // end if{}
+          if( (state == c_zones) && (ln > 1) )
+           {
 
 
-      //  console.log( fields ) ;
+            if( fields[1] === '2' )
+
+              keylist = [ fields[5] , fields[6] , fields[7] ] ;
+
+
+            else if( fields[1] === '4' )
+
+              keylist = [ fields[5] , fields[6] , fields[7] , fields[8] ] ;
+
+
+            keylist = keylist.sort() ;
+
+
+            for( key = '' , i = 0; i < keylist.length; i++ )
+
+              if( i )  key += ( '-' + keylist[i] ) ;
+
+              else  key += keylist[i] ;
+
+
+            model[key] = fields[0] ;
+
+
+           } ; // end if{}
+
+
+          //  console.log( fields ) ;
  
+         }
+
+       ) ;
+
+
+      rl.on
+       ( 'close' ,
+
+        function( line )
+         { 
+
+//        console.log( model ) ;
+
+//        key = '1044-1097-853-985' ;
+
+//        if( key in model )  console.log( model[key] ) ;
+
+          resolve( model ) ;
+
+         }
+
+       ) ;
+
+
      }
 
    ) ;
 
 
-  rl.on
-   ( 'close' ,
-
-    function( line )
-     { 
-
-//    console.log( model ) ;
-
-//    key = '1044-1097-853-985' ;
-
-//    if( key in model )  console.log( model[key] ) ;
-
-     }
-
-   ) ;
-
-
-  return( model ) ;
+  return( await promise ) ;
 
 
  } ;
