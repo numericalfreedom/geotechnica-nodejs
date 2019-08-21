@@ -4,7 +4,7 @@ const fs = require('fs');
 const readline = require('readline');
 
 var key          = undefined ;
-var model        = {} ;
+var thismodel    = null ;
 
 var ln           = 0 ;
 var numnodes     = undefined ;
@@ -18,92 +18,111 @@ var i            = undefined ;
 var keylist      = null ;
 
 
-const rl = readline.createInterface ( {
-  input: fs.createReadStream('test.msh'),
-  crlfDelay: Infinity
- } );
+function readmesh()
+ {
 
 
-rl.on
- ( 'line' ,
+  let model = {} ;
 
 
-  function( line )
-   {
+  const rl = readline.createInterface ( {
+    input: fs.createReadStream('test.msh'),
+    crlfDelay: Infinity
+   } );
 
 
-    ++ln ;
+  rl.on
+   ( 'line' ,
 
 
-    line = line.trim() ;
-
-    let fields = line.split( ' ' ) ;
-
-
-    if( fields[0] === '$Elements' )  { state = c_zones ; ln = 0 ; } ;
-
-    if( fields[0] === '$EndElements' )  { state = undefined ; ln = 0 ; } ;
-
-
-    if( (state == c_zones) && (ln == 1) )
+    function( line )
      {
 
-      numzones = parseInt( fields[0] ) ;      
+
+      ++ln ;
+
+
+      line = line.trim() ;
+
+      let fields = line.split( ' ' ) ;
+
+
+      if( fields[0] === '$Elements' )  { state = c_zones ; ln = 0 ; } ;
+
+      if( fields[0] === '$EndElements' )  { state = undefined ; ln = 0 ; } ;
+
+
+      if( (state == c_zones) && (ln == 1) )
+       {
+
+        numzones = parseInt( fields[0] ) ;      
+
+       }
+
+
+      if( (state == c_zones) && (ln > 1) )
+       {
+
+
+        if( fields[1] === '2' )
+
+          keylist = [ fields[5] , fields[6] , fields[7] ] ;
+
+
+        else if( fields[1] === '4' )
+
+          keylist = [ fields[5] , fields[6] , fields[7] , fields[8] ] ;
+
+
+        keylist = keylist.sort() ;
+
+
+        for( key = '' , i = 0; i < keylist.length; i++ )
+
+          if( i )  key += ( '-' + keylist[i] ) ;
+
+          else  key += keylist[i] ;
+
+
+        model[key] = fields[0] ;
+
+
+       } ; // end if{}
+
+
+      //  console.log( fields ) ;
+ 
+     }
+
+   ) ;
+
+
+  rl.on
+   ( 'close' ,
+
+    function( line )
+     { 
+
+//    console.log( model ) ;
+
+//    key = '1044-1097-853-985' ;
+
+//    if( key in model )  console.log( model[key] ) ;
 
      }
 
-
-    if( (state == c_zones) && (ln > 1) )
-     {
+   ) ;
 
 
-      if( fields[1] === '2' )
-
-        keylist = [ fields[5] , fields[6] , fields[7] ] ;
+  return( model ) ;
 
 
-      else if( fields[1] === '4' )
-
-        keylist = [ fields[5] , fields[6] , fields[7] , fields[8] ] ;
+ } ;
 
 
-      keylist = keylist.sort() ;
+thismodel = readmesh() ;
 
 
-      for( key = '' , i = 0; i < keylist.length; i++ )
-
-        if( i )  key += ( '-' + keylist[i] ) ;
-
-        else  key += keylist[i] ;
-
-
-      model[key] = fields[0] ;
-
-
-     } ; // end if{}
-
-
-  //  console.log( fields ) ;
- 
-   }
-
- ) ;
-
-
-rl.on
- ( 'close' ,
-
-  function( line )
-   { 
-
-    console.log( model ) ;
-
-    key = '1044-1097-853-985' ;
-
-    if( key in model )  console.log( model[key] ) ;
-
-   }
-
- ) ;
+console.log( thismodel ) ;
 
 
