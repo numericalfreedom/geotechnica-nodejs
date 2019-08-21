@@ -19,7 +19,7 @@ var i            = undefined ;
 var keylist      = null ;
 
 
-async function readmesh()
+function readmeshfile()
  {
 
 
@@ -132,13 +132,63 @@ async function readmesh()
    ) ;
 
 
-  return( await promise ) ;
+  return( promise ) ;
 
 
  } ;
 
 
-readmesh().then( (thismodel) => { console.log( thismodel ) } ) ;
+async function readmesh()
+ {
+
+  console.log( 'Calling ...' ) ;
+
+  let model = await readmeshfile() ;
+
+  console.log( '... finished.' ) ;
+ 
+  this.model = model ;
+
+  return( model ) ;
+
+ }
 
 
-console.log( thismodel ) ;
+// readmeshfile().then( (thismodel) => { console.log( thismodel ) } ) ;
+
+
+// readmesh() ;
+
+
+// console.log( model ) ;
+
+
+function printmesh()
+ {
+
+  console.log( this.model ) ;
+
+ }
+
+
+
+function Mesh()
+ {
+
+  this.model     = null ;
+  this.readmesh  = readmesh ;
+  this.printmesh = printmesh ;
+
+ }
+
+
+var mymesh = new Mesh() ;
+
+
+mymesh.readmesh() ;
+
+
+mymesh.printmesh() ;
+
+
+
