@@ -1,5 +1,6 @@
 'use strict' ;
 
+
 const fs = require('fs');
 const readline = require('readline');
 
@@ -137,9 +138,7 @@ async function readmesh()
  } ;
 
 
-thismodel = readmesh() ;
+readmesh().then( (thismodel) => { console.log( thismodel ) } ) ;
 
 
 console.log( thismodel ) ;
-
-
