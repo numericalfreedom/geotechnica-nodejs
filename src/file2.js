@@ -146,17 +146,27 @@ function readmeshfile( filename )
 async function readmesh( filename )
  {
 
-  console.log( 'Calling ...' ) ;
+  console.log( 'First call ...' ) ;
 
   this.model = await readmeshfile( filename ) ;
 
+  console.log( this.model ) ;
+
   console.log( '... finished.' ) ;
+ 
+
+  console.log( 'Second call ...' ) ;
+
+  this.model = await readmeshfile( filename ) ;
  
   console.log( this.model ) ;
 
+  console.log( '... finished.' ) ;
+
+ 
   return( true ) ;
 
- }
+ } ;
 
 
 // readmeshfile().then( (thismodel) => { console.log( thismodel ) } ) ;
@@ -194,7 +204,6 @@ var mymesh = new Mesh() ;
 mymesh.readmesh( filename ) ;
 
 
-mymesh.printmesh() ;
-
+// mymesh.printmesh() ;
 
 
