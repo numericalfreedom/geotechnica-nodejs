@@ -146,25 +146,40 @@ function readmeshfile( filename )
 async function readmesh( filename )
  {
 
-  console.log( 'First call ...' ) ;
 
-  this.model = await readmeshfile( filename ) ;
+  try
+   { 
 
-  console.log( this.model ) ;
+    console.log( 'First call ...' ) ;
 
-  console.log( '... finished.' ) ;
+    this.model = await readmeshfile( filename ) ;
+
+    console.log( this.model ) ;
+
+    console.log( '... finished.' ) ;
  
 
-  console.log( 'Second call ...' ) ;
+    console.log( 'Second call ...' ) ;
 
-  this.model = await readmeshfile( filename ) ;
+    this.model = await readmeshfile( filename ) ;
  
-  console.log( this.model ) ;
+    console.log( this.model ) ;
 
-  console.log( '... finished.' ) ;
+    console.log( '... finished.' ) ;
 
+   }
+
+
+  catch( error )
+   {
+
+    console.log( error ) ;
+
+   }
  
+
   return( true ) ;
+
 
  } ;
 
