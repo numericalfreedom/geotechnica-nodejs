@@ -19,7 +19,7 @@ var i            = undefined ;
 var keylist      = null ;
 
 
-function readmeshfile()
+function readmeshfile( filename )
  {
 
 
@@ -36,7 +36,7 @@ function readmeshfile()
        (
 
          {
-          input: fs.createReadStream('test.msh'),
+          input: fs.createReadStream( filename ),
           crlfDelay: Infinity
          }
 
@@ -75,7 +75,12 @@ function readmeshfile()
            {
 
 
-            if( fields[1] === '2' )
+            if( fields[1] === '1' )
+
+              keylist = [ fields[5] , fields[6] ] ;
+
+
+            else if( fields[1] === '2' )
 
               keylist = [ fields[5] , fields[6] , fields[7] ] ;
 
@@ -138,18 +143,18 @@ function readmeshfile()
  } ;
 
 
-async function readmesh()
+async function readmesh( filename )
  {
 
   console.log( 'Calling ...' ) ;
 
-  let model = await readmeshfile() ;
+  this.model = await readmeshfile( filename ) ;
 
   console.log( '... finished.' ) ;
  
-  this.model = model ;
+  console.log( this.model ) ;
 
-  return( model ) ;
+  return( true ) ;
 
  }
 
@@ -182,10 +187,11 @@ function Mesh()
  }
 
 
+var filename = 'test.msh' ;
 var mymesh = new Mesh() ;
 
 
-mymesh.readmesh() ;
+mymesh.readmesh( filename ) ;
 
 
 mymesh.printmesh() ;
