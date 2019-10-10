@@ -48,3 +48,14 @@ fm2d.step( 100 ) ;
 // fm2d.write( 'model-100.msh' ) ;
 
 
+fm2djson = JSON.stringify( fm2d , null , 2 ) ;
+
+
+console.log( fm2djson ) ;
+
+
+fm2ddata = JSON.parse( fm2djson ) ;
+
+
+console.log( fm2ddata ) ;
+
