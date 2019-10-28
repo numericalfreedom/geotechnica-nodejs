@@ -8,14 +8,38 @@
  * @version      0.0.1
  *
  * @module       Matrix
+ * 
+ * @exports      c_asm
+ * @exports      c_smt
+ * 
  */
 
 
 "use strict" ;
 
 
-module.exports = { Matrix }
+/** @const  {number}  c_asm  Asymmetric matrix storage */
 
+const c_asm = 0 ;
+
+/** @const  {number}  c_smt  Symmetric matrix storage */
+
+const c_smt = 1 ;
+
+/** @const  {number}  c_cca  Compressed column asymmetric matrix storage */
+
+const c_cca = 2 ;
+
+/** @const  {number}  c_ccs  Compressed column symmetric matrix storage */
+
+const c_ccs = 3 ;
+const c_cra = 4 ;
+const c_crs = 5 ;
+const c_sla = 6 ;
+const c_sls = 7 ;
+
+
+module.exports = { Matrix , c_cca , c_ccs , c_cra , c_crs }
 
  
 /** @classdesc  Matrix operations
