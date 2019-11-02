@@ -3,7 +3,8 @@ var net = require('net');
 
 
 var PIPE_NAME = "mypipe";
-var PIPE_PATH = "\\\\.\\pipe\\" + PIPE_NAME;
+// var PIPE_PATH = "\\\\.\\pipe\\" + PIPE_NAME;
+var PIPE_PATH = "./" + PIPE_NAME;
 
 
 var L = console.log;
