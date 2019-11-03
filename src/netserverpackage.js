@@ -19,6 +19,8 @@ function Server( streampath )
 
     datafields = data.toString().split( '.' ) ;
 
+    L( datafields ) ;
+
     for( var datafield of datafields )
      {
  
@@ -27,19 +29,19 @@ function Server( streampath )
 
         case( 'Client ready!' ):
 
-          stream.write( 'Client ready!' ) ;
+          stream.write( 'Client ready!.' ) ;
 
           break ;
 
         case( 'Operation from Client!' ):
 
-          stream.write( 'Operation client!' ) ;
+          stream.write( 'Operation client!.' ) ;
 
           break ;
 
         case( 'Byebye from Client!' ):
 
-          stream.write( 'Take it easy client!' ) ;
+          stream.write( 'Take it easy client!.' ) ;
 
           break ;
        } ;
@@ -84,16 +86,25 @@ function Client( streampath )
   client.on('data', function(data) {
 
     L('Client: on data:', data.toString()) ;
-	  
-    if( data.toString() == 'Operation client!' )
+	 
+    datafields = data.toString().split( '.' ) ;
+
+    L( datafields ) ;
+
+    for( var datafield of datafields )
      {
-      L( 'Operation client!' ) ;
-      client.write( 'Byebye from Client!.' ) ;
+
+      if( datafield == 'Operation client!' )
+       {
+        L( 'Operation client!' ) ;
+        client.write( 'Byebye from Client!.' ) ;
+       }
+
+      if( datafield == 'Take it easy client!' )
+
+        client.end('Thanks!') ;
+
      }
-
-    if( data.toString() == 'Take it easy client!' )
-
-      client.end('Thanks!') ;
 
    }) ;
 
