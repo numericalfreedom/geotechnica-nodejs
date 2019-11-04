@@ -1,116 +1,96 @@
 
-const Cluster = require('cluster')
-const Event   = require('events')
+const Cluster = require('cluster') ;
+const Event = require('events') ;
 
-var i = undefined
-var j = undefined
-var k = undefined
-var n = undefined
+var i = undefined ;
+var j = undefined ;
+var k = undefined ;
+var n = undefined ;
 
-const nw = 4
-const np = 10 
+const nw = 4 ;
+const np = 10 ;
 
-const emitter = new Event()
-const worker  = new Array(nw)
-const promise = new Array(nw)
+const emitter = new Event() ;
+const worker = new Array(nw) ;
+const promise = new Array(nw) ;
 
 class Point {
-  constructor (x, y, z) {
-    this.x = x
-    this.y = y
-    this.z = z
-  }
+ constructor (x, y, z) {
+  this.x = x ;
+  this.y = y ;
+  this.z = z ;
+ }
 }
 
-const points = new Array(np)
+const points = new Array(np) ;
 
-for (i = 0; i < np; ++i) {
-  points[i] = new Point(Math.random(), Math.random(), Math.random())
+for (i = 0 ; i < np ; ++i) {
+ points[i] = new Point(Math.random(), Math.random(), Math.random()) ;
 }
 
 function disconnect (worker) {
-  console.log(`Worker #${worker.id} has disconnected.`)
+ console.log(`Worker #${worker.id} has disconnected.`) ;
 }
-
 
 async function thread (i) {
-  worker[i].send ({ 'i': i })
-  let result = undefined
-  let threadpromise = new Promise ((resolve, reject) => {
-    emitter.once (('result' + i.toString()) , (err,res) => { resolve(result = i) })
-  })
-    console.log ('threadpromise=' , threadpromise)
-    await threadpromise
-  return (result)
+ worker[i].send({ 'i': i }) ;
+ let result ;
+ let threadpromise = new Promise((resolve, reject) => {
+  emitter.once(('result' + i.toString()), (err, res) => { resolve(result = i) ; }) ;
+ }) ;
+ console.log('threadpromise=', threadpromise) ;
+ await threadpromise ;
+ return (result) ;
 }
-
 
 if (Cluster.isMaster) {
+ for (i = 0 ; i < nw ; ++i) {
+  worker[i] = Cluster.fork() ;
+ }
 
+ for (i = 0 ; i < nw ; ++i) {
+  worker[i].on('message', () => {
+   emitter.emit(('result' + i.toString()), null) ;
+  }) ;
+ }
 
-  for (i = 0; i < nw; ++i) {
-    worker[i] = Cluster.fork()
-  }
+ for (i = 0 ; i < nw ; ++i) {
+  promise[i] = thread(i) ;
+ }
 
+ //  console.log (emitter)
 
-  for (i = 0; i < nw; ++i) {
-    worker[i].on ('message' , () => {
-      emitter.emit (('result' + i.toString()) , null )
-    })
-  }
+ //  console.log (promise)
 
+ let mainpromise = thread(0) ;
 
+ let finalpromise = Promise.all(promise) ;
 
-  for (i = 0; i < nw; ++i) {
-    promise[i] = thread(i)
-  }
+ finalpromise.then(() => { console.log('Finished.', promise) ; }) ;
 
+ mainpromise.then(() => {
+  console.log('Finished.', mainpromise) ;
+ }) ;
 
-//  console.log (emitter)
+ setTimeout(() => {}, 5000) ;
 
-//  console.log (promise)
+ Cluster.on('disconnect', disconnect) ;
 
+ for (i = 0 ; i < nw ; ++i) {
+  worker[i].disconnect() ;
+ }
 
-  let mainpromise = thread(0)
-	
-  let finalpromise = Promise.all (promise)
+ //  console.log( finalpromise )
 
-
-  finalpromise.then( () => { console.log ('Finished.' , promise) })
-
-
-  mainpromise.then( () => {
-
-    console.log ('Finished.' , mainpromise)
-  
-   })
-
-
-  setTimeout( () => {} , 5000 )
-
-
-  Cluster.on ('disconnect', disconnect)
-  
-  for (i = 0; i < nw; ++i) {
-    worker[i].disconnect()
-  }
-
-
-//  console.log( finalpromise )
-
-//  console.log( mainpromise )
-
-
+ //  console.log( mainpromise )
 } else if (Cluster.isWorker) {
-  process.on('message', (msg) => {
-    console.log( msg )
-    var jx = (1e3 + Math.random() * 1e3)
-    var result = undefined
-    for (var j = 0; j < jx; ++j) {
-      result = (Math.sin(j) + Math.cos(j))
-    }
-    process.send({ 'id': Cluster.worker.id, 'obj': msg })
-  })
+ process.on('message', (msg) => {
+  console.log(msg) ;
+  var jx = (1e3 + Math.random() * 1e3) ;
+  var result = undefined ;
+  for (var j = 0 ; j < jx ; ++j) {
+   result = (Math.sin(j) + Math.cos(j)) ;
+  }
+  process.send({ 'id': Cluster.worker.id, 'obj': msg }) ;
+ }) ;
 }
-
-
