@@ -17,7 +17,7 @@ function test()
 
   const x = [ [v_dx] , [v_dy] , [v_xl] , [v_yl] , [v_xr] , [v_yr] , [v_z] ] ;
 
-  const v_izzFz = izzFz( 0.0 , 1.0 ) ;
+  const v_izzFz = izzFz( 0.0 , 0.0 , 1.0 ) ;
   
   const v_izzqzAQ = izzqzAQ( x ) ;
 
