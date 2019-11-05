@@ -3,6 +3,7 @@
 module.exports = { test , izzFz , izzqzAQ } ;
 
 
+
 function test()
  {
 
@@ -20,27 +21,27 @@ function test()
   
   const v_izzqzAQ = izzqzAQ( x ) ;
 
-  console.log( 'izzFz=' , v_izzFz ) ;
-
-  console.log( 'izzqzAQ=' , v_izzqzAQ ) ;
-
   return( [ v_izzFz , v_izzqzAQ ] ) ;
 
  }
 
 
-function izzFz( rr , zz )
+
+function izzFz( x , y , z )
  {
 
   const c_3__2pi = ( 3.0 / (2.0 * Math.PI) ) ;
 
+  const rr   = ( (x * x) + (y * y) ) ;
+  const zz   = ( z * z ) ;
   const rrzz = ( rr / zz ) ;
 
-  const izzq = ( (c_3__2pi / zz) * Math.pow( (1.0 / (1.0 + rrzz)) , 2.5 ) ) ;
+  const izzf = ( (c_3__2pi / zz) * Math.pow( (1.0 / (1.0 + rrzz)) , 2.5 ) ) ;
 
-  return( izzq ) ;
+  return( izzf ) ;
 
  } ; // end function izzFz()
+
 
 
 function izzqzAQ( x )
@@ -69,25 +70,23 @@ function izzqzAQ( x )
 
   const dx__2  = ( dx / 2.0 ) ;
   const dy__2  = ( dy / 2.0 ) ;
-
-  const zz     = ( z * z ) ;
+  
   const da     = ( dx * dy ) ;
 
   var x        = undefined ;
   var y        = undefined ;
-  var rr       = undefined ;
   var izzq     = undefined ;
 
   izzq = c_0 ;
 
 
-  if( zz > c_0 )
+  if( z > c_0 )
 
     for( x = (xl + dx__2); x < xr; x += dx )
 
       for( y = (yl + dy__2); y < yr; y += dy )
       
-        izzq += ( izzFz( (rr = ((x * x) + (y * y))) , zz ) * da ) ;
+        izzq += ( izzFz( x , y , z ) * da ) ;
 
   else
 
