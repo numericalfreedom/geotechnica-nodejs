@@ -1,7 +1,10 @@
 
+
 const Async = require('async')
 
+
 var proxies = { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9, j: 10, k: 11, l: 12, m: 13, n: 14, o: 15, p: 16 }
+
 
 async function process () {
   var promise = new Promise((resolve, reject) => {
@@ -11,15 +14,24 @@ async function process () {
       resolve(timeout)
     }, timeout)
   })
-  await promise
+  await promise ;
+  return( promise ) ;
 }
 
-function displayitems (item, key, callback) {
-//console.log(callback)
-  process()
-  console.log('key : ' + key + '')
-  console.log('item : ' + item + '')
-  callback()
+
+async function displayitems ( item, key , callback ) {
+  var promise = new Promise((resolve, reject) => {
+    var timeout = (5000 * Math.random())
+    setTimeout(() => {
+      console.log('timeout=', timeout)
+      console.log('key : ' + key + '')
+      console.log('item : ' + item + '')
+      resolve(timeout)
+//    callback() ;
+    } , timeout) ;
+  })
+  await promise ;
+  return( promise ) ;
 }
 
 
@@ -34,7 +46,7 @@ function queuedisplayitems (item, callback) {
 
 
 function promisedisplayitems (item, callback) {
-//console.log(callback)
+console.log(callback)
   var promise = new Promise((resolve, reject) => {
     var timeout = (3000 + (500 * Math.random()))
     setTimeout(() => {
@@ -64,13 +76,15 @@ async function asyncdisplayitems (data , callback) {
 }
 
 
-function finalcallback (err) {
+function finalcallback (err , result) {
   if (err) {
     console.log('error')
   }
-  console.log('all done')
+  console.log( 'all done' , result )
 }
 
+
+Async.forEachLimit( proxies , 2 , asyncdisplayitems , finalcallback )
 
 // Async.eachOf(proxies, asyncdisplayitems, finalcallback)
 
@@ -96,9 +110,10 @@ let i = undefined
 // }
 
 
-for( i = 0; i<10; ++i ) {
+// for( i = 0; i<10; ++i ) {
 
-  q.push( { "key": i , "item": (i+1) } , function( err ) { console.log( 'A done' ) } )
+//  q.push( { "key": i , "item": (i+1) } , function( err ) { console.log( 'A done' ) } )
 
-}
+// }
+
 
