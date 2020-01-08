@@ -94,6 +94,9 @@ client1.on('data', function(data) {
   if( data.toString() == 'Operation client1!' )
    {
     L( 'Operation client1!' ) ;
+    let jx = Math.ceil( 1e9 + Math.random() * 1e9 ) ;
+    let result = undefined ;
+    for (let j = 0 ; j < jx ; ++j)  result = (Math.sin(j) + Math.cos(j)) ;
     client1.write( 'Byebye from Client1!' ) ;
    }
   if( data.toString() == 'Take it easy client1!' )
@@ -118,6 +121,9 @@ client2.on('data', function(data) {
   if( data.toString() == 'Operation client2!' )
    {
     L( 'Operation client2!' ) ;
+    let jx = Math.ceil( 1e7 + Math.random() * 1e7 ) ;
+    let result = undefined ;
+    for (let j = 0 ; j < jx ; ++j)  result = (Math.sin(j) + Math.cos(j)) ;
     client2.write( 'Byebye from Client2!' ) ;
    }
   if( data.toString() == 'Take it easy client2!' )
@@ -142,6 +148,9 @@ client3.on('data', function(data) {
   if( data.toString() == 'Operation client3!' )
    {
     L( 'Operation client3!' ) ;
+    let jx = Math.ceil( 1e8 + Math.random() * 1e8 ) ;
+    let result = undefined ;
+    for (let j = 0 ; j < jx ; ++j)  result = (Math.sin(j) + Math.cos(j)) ;  
     client3.write( 'Byebye from Client3!' ) ;
    }
   if( data.toString() == 'Take it easy client3!' )
