@@ -7,7 +7,8 @@ let  dp  = 1.0e3 ;
 let  dps = undefined ;
 
 let  e   = 0.0 ;
-let  ep  = 0.0 ;
+let  eel = 0.0 ;
+let  epl = 0.0 ;
 
 let  k   = undefined ;
 
@@ -15,10 +16,10 @@ let  kr  = 1.0e4 ;
 let  pc  = 0.0 ;
 let  pr  = 1.0e5 ;
 
-let  mp  = 1.00 ;
-let  mr  = 0.80 ;
+let  mp  = 0.50 ;
+let  mr  = 0.60 ;
 let  n   = 0.50 ;
-let  r   = 1.25 ;
+let  r   = 2.00 ;
 
 let  i   = undefined ;
 
@@ -35,11 +36,11 @@ for( i = 0 , ii = 1 ; (i < (ps.length - 1)) ; ++i , ++ii )
 
      if( mr != 1.0 )
 
-      ep = ( (Math.pow( ((pc + (n * pc) + pr) / pr) , (1 - mr) ) - Math.pow( (((n * pc) + pr) / pr) , (1 - mr) )) / (r * kr * (1 - mr)) ) ;
+      epl = ( e - (eel = ((Math.pow( ((pc + (n * pc) + pr) / pr) , (1 - mr) ) - Math.pow( (((n * pc) + pr) / pr) , (1 - mr) )) / (r * kr * (1 - mr)))) ) ;
 
      else
 
-      ep = ( Math.log( (pc + (n * pc) + pr) / ((n * pc) + pr) ) / (r * kr) ) ;
+      epl = ( e - (eel = (Math.log( (pc + (n * pc) + pr) / ((n * pc) + pr) ) / (r * kr))) ) ;
 
     } // end if +
 
@@ -54,7 +55,7 @@ for( i = 0 , ii = 1 ; (i < (ps.length - 1)) ; ++i , ++ii )
 
    e += de ;
 
-   console.log( p , pc , k , e , ep ) ;
+   console.log( p , pc , k , e , eel , epl ) ;
 
   } ; // end for()
 
