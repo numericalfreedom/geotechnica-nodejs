@@ -26,8 +26,8 @@ let    n     = 0.50 ;
 let    r     = 2.00 ;
 
 const  as0   = 0.50 ;
-const  af0   = 0.40 ;
-const  ag0   = 0.10 ;
+const  af0   = 0.49 ;
+const  ag0   = 0.01 ;
 
 let    as    = as0 ;
 let    af    = af0 ;
