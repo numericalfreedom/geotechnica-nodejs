@@ -140,7 +140,7 @@ for( i = 0 , ii = 1 ; (i < (pes.length - 1)) ; ++i , ++ii )
    rg = ( rg0 * (ag0 / ag) ) ;
 
 
-   console.log( pe , pc , k , e , eel , epl , p , pt , as , af , ag , a ) ;
+   console.log( pe , p , pt , pc , k , e , eel , epl , as , af , ag , a ) ;
 
 
   } ; // end for()
