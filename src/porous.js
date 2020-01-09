@@ -4,6 +4,7 @@ let    pe    = undefined ;
 let    pes   = [ 0.0 , 1.0e7 , 0.0 , 2.0e7 , 0.0 , 3.0e7 , 0.0 , 4.0e7 , 0.0 , 5.0e7 , 0.0 ] ;
 
 let    a     = undefined ;
+let    dpt   = undefined ;
 let    pt    = undefined ;
 
 let    de    = undefined ;
@@ -16,7 +17,7 @@ let    epl   = 0.0 ;
 
 let    k     = undefined ;
 
-let    kr    = 1.0e3 ;
+let    kr    = 3.0e3 ;
 let    pc    = 0.0 ;
 let    pr    = 1.0e5 ;
 
@@ -71,7 +72,7 @@ let    i     = undefined ;
 let    ii    = undefined ;
 
 
-for( i = 0 , ii = 1 ; (i < (pes.length - 1)) ; ++i , ++ii )
+for( pt = 0 , i = 0 , ii = 1 ; (i < (pes.length - 1)) ; ++i , ++ii )
 
  for( pe = pes[i] , dpes = (dpe * Math.sign( pes[ii] - pes[i] )) ; pe != pes[ii] ; pe += dpes )
   {
@@ -98,6 +99,7 @@ for( i = 0 , ii = 1 ; (i < (pes.length - 1)) ; ++i , ++ii )
 
     } // end else
 
+
    de = ( dpes / k ) ;
 
    e += de ;
@@ -116,14 +118,16 @@ for( i = 0 , ii = 1 ; (i < (pes.length - 1)) ; ++i , ++ii )
    kp = ( (ks * kf * kg) / ((as * kf * kg) + (af * ks * kg) + (ag * ks * kf) ) ) ;
 
 
-   dp = ( kp * de )
+   dp  = ( kp * de ) ;
 
-   p += dp ;
+   p  += dp ;
 
-   a  = ( 1 - (k / ks) ) ;
+   a   = ( 1 - (k / ks) ) ;
 
 
-   pt = ( pe + (a * p) ) ;
+   dpt = ( dpes + (a * dp) ) ;
+
+   pt += dpt ;
 
 
    as = ( as0 * Math.pow( ((gs * ((p - p0) / rcs02)) + 1) , (-1 / gs) ) ) ;
@@ -144,4 +148,5 @@ for( i = 0 , ii = 1 ; (i < (pes.length - 1)) ; ++i , ++ii )
 
 
   } ; // end for()
+
 
