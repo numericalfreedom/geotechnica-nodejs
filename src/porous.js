@@ -1,38 +1,85 @@
+"use strict"
 
-let  p  = undefined ;
-let  ps = [ 0.0 , 1.0e7 , 0.0 , 2.0e7 , 0.0 , 3.0e7 , 0.0 , 4.0e7 , 0.0 , 5.0e7 , 0.0 ] ;
+let    pe    = undefined ;
+let    pes   = [ 0.0 , 1.0e7 , 0.0 , 2.0e7 , 0.0 , 3.0e7 , 0.0 , 4.0e7 , 0.0 , 5.0e7 , 0.0 ] ;
 
-let  de  = undefined ;
-let  dp  = 1.0e3 ;
-let  dps = undefined ;
+let    a     = undefined ;
+let    pt    = undefined ;
 
-let  e   = 0.0 ;
-let  eel = 0.0 ;
-let  epl = 0.0 ;
+let    de    = undefined ;
+let    dpe   = 1.0e3 ;
+let    dpes  = undefined ;
 
-let  k   = undefined ;
+let    e     = 0.0 ;
+let    eel   = 0.0 ;
+let    epl   = 0.0 ;
 
-let  kr  = 1.0e4 ;
-let  pc  = 0.0 ;
-let  pr  = 1.0e5 ;
+let    k     = undefined ;
 
-let  mp  = 0.50 ;
-let  mr  = 0.60 ;
-let  n   = 0.50 ;
-let  r   = 2.00 ;
+let    kr    = 1.0e3 ;
+let    pc    = 0.0 ;
+let    pr    = 1.0e5 ;
 
-let  i   = undefined ;
+let    mp    = 0.50 ;
+let    mr    = 0.60 ;
+let    n     = 0.50 ;
+let    r     = 2.00 ;
+
+const  as0   = 0.50 ;
+const  af0   = 0.40 ;
+const  ag0   = 0.10 ;
+
+let    as    = as0 ;
+let    af    = af0 ;
+let    ag    = ag0 ;
+
+const  gs    = 7.00 ;
+const  gf    = 3.00 ;
+const  gg    = 1.40 ;
+
+const  cs0   = 5000.0 ;
+const  cf0   = 1450.0 ;
+const  cg0   =  333.0 ;
+
+const  rs0   = 2650.0 ;
+const  rf0   = 1000.0 ;
+const  rg0   =    1.3 ;
+
+let    rs    = rs0 ;
+let    rf    = rf0 ;
+let    rg    = rg0 ;
+
+const  rcs02 = ( rs0 * cs0 * cs0 ) ;
+const  rcf02 = ( rf0 * cf0 * cf0 ) ;
+const  rcg02 = ( rg0 * cg0 * cg0 ) ;
+
+let    ks    = undefined ;
+let    kf    = undefined ;
+let    kg    = undefined ;
+let    kp    = undefined ;
+
+const  rho0  = 2000.0 ;
+let    rho   = undefined ;
+
+const  p0    = 1.0e5 ;
+let    dp    = undefined ;
+let    p     = p0 ;
+
+let    r0r   = undefined ;
+
+let    i     = undefined ;
+let    ii    = undefined ;
 
 
-for( i = 0 , ii = 1 ; (i < (ps.length - 1)) ; ++i , ++ii )
+for( i = 0 , ii = 1 ; (i < (pes.length - 1)) ; ++i , ++ii )
 
- for( p = ps[i] , dps = (dp * Math.sign( ps[ii] - ps[i] )) ; p != ps[ii] ; p += dps )
+ for( pe = pes[i] , dpes = (dpe * Math.sign( pes[ii] - pes[i] )) ; pe != pes[ii] ; pe += dpes )
   {
 
-   if( pc < p )
+   if( pc < pe )
     {
 
-     k  = ( kr * pr * Math.pow( ((p + (n * (pc = p)) + pr) / pr) , mp ) ) ;
+     k  = ( kr * pr * Math.pow( ((pe + (n * (pc = pe)) + pr) / pr) , mp ) ) ;
 
      if( mr != 1.0 )
 
@@ -47,15 +94,54 @@ for( i = 0 , ii = 1 ; (i < (ps.length - 1)) ; ++i , ++ii )
    else
     {
 
-     k = ( r * kr * pr * Math.pow( ((p + (n * pc) + pr) / pr) , mr ) ) ;
+     k = ( r * kr * pr * Math.pow( ((pe + (n * pc) + pr) / pr) , mr ) ) ;
 
     } // end else
 
-   de = ( dps / k ) ;
+   de = ( dpes / k ) ;
 
    e += de ;
 
-   console.log( p , pc , k , e , eel , epl ) ;
+
+   rho = ( rho0 / (1 - e) ) ;
+
+
+   ks = ( rcs02 * Math.pow( (rs / rs0) , (gs + 1) ) ) ;
+
+   kf = ( rcf02 * Math.pow( (rf / rf0) , (gf + 1) ) ) ;
+
+   kg = ( gg * p0 * Math.pow( (rg / rg0) , (gg + 1) ) ) ;
+
+
+   kp = ( (ks * kf * kg) / ((as * kf * kg) + (af * ks * kg) + (ag * ks * kf) ) ) ;
+
+
+   dp = ( kp * de )
+
+   p += dp ;
+
+   a  = ( 1 - (k / ks) ) ;
+
+
+   pt = ( pe + (a * p) ) ;
+
+
+   as = ( as0 * Math.pow( ((gs * ((p - p0) / rcs02)) + 1) , (-1 / gs) ) ) ;
+
+   af = ( af0 * Math.pow( ((gf * ((p - p0) / rcf02)) + 1) , (-1 / gf) ) ) ;
+
+   ag = ( ag0 * Math.pow( (p / p0) , (-1 / gg) ) ) ;
+
+
+   rs = ( rs0 * (as0 / as) ) ;
+
+   rf = ( rf0 * (af0 / af) ) ;
+
+   rg = ( rg0 * (ag0 / ag) ) ;
+
+
+   console.log( pe , pc , k , e , eel , epl , p , pt , as , af , ag , a ) ;
+
 
   } ; // end for()
 
