@@ -17,7 +17,7 @@ let    epl   = 0.0 ;
 
 let    k     = undefined ;
 
-let    kr    = 3.0e3 ;
+let    kr    = 2.0e3 ;
 let    pc    = 0.0 ;
 let    pr    = 1.0e5 ;
 
