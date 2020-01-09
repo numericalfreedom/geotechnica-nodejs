@@ -64,7 +64,7 @@ let    rho   = undefined ;
 
 const  p0    = 1.0e5 ;
 let    dp    = undefined ;
-let    p     = p0 ;
+let    p     = undefined ;
 
 let    r0r   = undefined ;
 
@@ -72,7 +72,7 @@ let    i     = undefined ;
 let    ii    = undefined ;
 
 
-for( pt = 0 , i = 0 , ii = 1 ; (i < (pes.length - 1)) ; ++i , ++ii )
+for( p = 0 , pt = 0 , i = 0 , ii = 1 ; (i < (pes.length - 1)) ; ++i , ++ii )
 
  for( pe = pes[i] , dpes = (dpe * Math.sign( pes[ii] - pes[i] )) ; pe != pes[ii] ; pe += dpes )
   {
@@ -130,11 +130,11 @@ for( pt = 0 , i = 0 , ii = 1 ; (i < (pes.length - 1)) ; ++i , ++ii )
    pt += dpt ;
 
 
-   as = ( as0 * Math.pow( ((gs * ((p - p0) / rcs02)) + 1) , (-1 / gs) ) ) ;
+   as = ( as0 * Math.pow( ((gs * (p / rcs02)) + 1) , (-1 / gs) ) ) ;
 
-   af = ( af0 * Math.pow( ((gf * ((p - p0) / rcf02)) + 1) , (-1 / gf) ) ) ;
+   af = ( af0 * Math.pow( ((gf * (p / rcf02)) + 1) , (-1 / gf) ) ) ;
 
-   ag = ( ag0 * Math.pow( (p / p0) , (-1 / gg) ) ) ;
+   ag = ( ag0 * Math.pow( ((p + p0) / p0) , (-1 / gg) ) ) ;
 
 
    rs = ( rs0 * (as0 / as) ) ;
