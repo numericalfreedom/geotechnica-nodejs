@@ -1,106 +1,291 @@
+'use strict' ;
 
 
-function WedgeSlope( x , th )
+const g = 10.0 ;
+
+
+module.exports = { g , degrees , radians , wedgeslope }
+
+
+function degrees( r )
+ {
+
+  return( 180.00 * (r / Math.PI) ) ;
+
+ }
+
+
+function radians( d )
+ {
+
+  return( Math.PI * (d / 180.00) ) ;
+
+ }
+
+
+function wedgeslope( x , th )
  {
   
-  const c_r     =  0;
-  const c_h     =  0;
-  const c_bt    =  1;
+  const c_r      =   0 ;
 
-  const c_rh    =  2;
-  const c_ph    =  3;
-  const c_c     =  4;
+  const c_h      =   0 ;
+  const c_bt     =   1 ;
 
-  const c_q     =  5;
-  const c_ap    =  6;
-  const c_fv    =  7;
-  const c_fh    =  8;
+  const c_rh     =   2 ;
+  const c_ph     =   3 ;
+  const c_c      =   4 ;
 
-  const c_gph   =  9;
-  const c_gc    = 10;
-  const c_gg    = 11;
-  const c_gq    = 12;
+  const c_pvgk   =   5 ;
+  const c_apvgk  =   6 ;
+  const c_bpvgk  =   7 ;
 
-  const r_r     =  0;
-  const r_phd   =  0;
-  const r_cd    =  1;
-  const r_fe    =  2;
-  const r_fr    =  3;
-  const r_m     =  4;
-  const r_rx    =  5;
+  const c_qvqr   =   8 ;
+  const c_aqvqr  =   9 ;
+  const c_bqvqr  =  10 ;
 
-  const c_g     = 10;
+  const c_phgk   =  11 ;
+  const c_aphgk  =  12 ;
+  const c_bphgk  =  13 ;
 
-  var   r       = new Array( r_rx );
+  const c_qhqr   =  14 ;
+  const c_aqhqr  =  15 ;
+  const c_bqhqr  =  16 ;
 
-  for( var i = 0; i < r_rx; ++i )  r[i] = new Array( 1 );
+  const c_fvgk   =  17 ;
+  const c_afvgk  =  18 ;
 
-  var   thrad   = Radians( th );
-    
-  var   h       = x[ c_h   ][ c_r ];
-  var   btrad   = Radians( x[ c_bt ][ c_r ] );
+  const c_fvqr   =  19 ;
+  const c_afvqr  =  20 ;
 
-  var   rh      = x[ c_rh  ][ c_r ];
-  var   phkrad  = Radians( x[ c_ph ][ c_r ] );
-  var   ck      = x[ c_c   ][ c_r ];
+  const c_fhgk   =  21 ;
+  const c_fhqr   =  22 ;
 
-  var   q       = x[ c_q   ][ c_r ];
-  var   aprad   = Radians( x[ c_ap ][ c_r ] );
+  const c_gmph   =  23 ;
+  const c_gmc    =  24 ;
+  const c_gmg    =  25 ;
+  const c_gmq    =  26 ;
 
-  var   fv      = x[ c_fv  ][ c_r ];
-  var   fh      = x[ c_fh  ][ c_r ];
+  const r_r      =   0 ;
 
-  var   gph     = x[ c_gph ][ c_r ];
-  var   gc      = x[ c_gc  ][ c_r ];
+  const r_phd    =   0 ;
+  const r_cd     =   1 ;
 
-  var   gg      = x[ c_gg  ][ c_r ];
-  var   gq      = x[ c_gq  ][ c_r ];
+  const r_bapvgk =   2 ;
+  const r_baqvqr =   3 ;
+  const r_baphgk =   4 ;
+  const r_baqhqr =   5 ;
+  const r_bafvgk =   6 ;
+  const r_bafvqr =   7 ;
 
-  var   l       = 0;
+  const r_l      =   8 ;
 
-  var   fp      = 0;
-  var   fq      = 0;
+  const r_gk     =   9 ;
+  const r_fvk    =  10 ;
+  const r_fhk    =  11 ;
+  const r_fpk    =  12 ;
+  const r_fqk    =  13 ;
+  const r_tk     =  14 ;
+  const r_nk     =  15 ;
+  const r_fek    =  16 ;
+  const r_frk    =  17 ;
+  const r_eta    =  18 ;	 
 
-  var   fe      = 0;
-  var   fr      = 0;
+  const r_gd     =  19 ;
+  const r_fvd    =  20 ;
+  const r_fhd    =  21 ;
+  const r_fpd    =  22 ;
+  const r_fqd    =  23 ;
+  const r_td     =  24 ;
+  const r_nd     =  25 ;
+  const r_fed    =  26 ;
+  const r_frd    =  27 ;
+  const r_mu     =  28 ;
 
-  var   m       = 0;
+  const r_rx     =  29 ;
 
-  var   phdrad  = Math.atan( Math.tan( phkrad ) / gph );
-  var   cd      = ( ck / gc );
-
-
-  if( thrad > btrad )  thrad = btrad;
-
-  if( aprad > btrad )  aprad = btrad;
-
-  if( aprad < thrad )  aprad = thrad;
-
-
-  fp = ( (gq * fv) + (gg * (1 / 2) * rh * c_g * h * h * ((1 / Math.tan( thrad )) - (1 / Math.tan( btrad )))) );
- 
-  if( aprad > thrad ) fp += ( gq * q * h * ((1 / Math.tan( thrad )) - (1 / Math.tan( aprad ))) );
-
-  fq = ( gq * fh );
-
-
-  l  = ( h / Math.sin( thrad ) );
-
-  fe = (   (fp * Math.sin( thrad )) - (fq * Math.cos( thrad )) );
-
-  fr = ( (((fp * Math.cos( thrad )) + (fq * Math.sin( thrad ))) * Math.tan( phdrad )) + (cd * l) );
-
-  if( fr )  m = ( fe / fr );  else  m = ( Math.tan( btrad ) / Math.tan( phdrad ) );
+  const c_g      =  10.00 ;
 
 
-  r[ r_phd ][ r_r ] = Degrees( phdrad );
-  r[ r_cd  ][ r_r ] = cd;
+  var   r       = new Array( r_rx ) ;
+
+  for( var i = 0; i < r_rx; ++i )  r[i] = new Array( 1 ) ;
+
+  const h       = x[ c_h     ][ c_r ] ;
+  const btrad   = radians( x[ c_bt ][ c_r ] ) ;
+
+  const rh      = x[ c_rh    ][ c_r ] ;
+  const phkrad  = radians( x[ c_ph ][ c_r ] ) ;
+  const ck      = x[ c_c     ][ c_r ] ;
+
+  const pvgk   =  x[ c_pvgk  ][ c_r ] ;
+  const apvgk  =  x[ c_apvgk ][ c_r ] ;
+  const bpvgk  =  x[ c_bpvgk ][ c_r ] ;
+
+  const qvqr   =  x[ c_qvqr  ][ c_r ] ;
+  const aqvqr  =  x[ c_aqvqr ][ c_r ] ;
+  const bqvqr  =  x[ c_bqvqr ][ c_r ] ;
+
+  const phgk   =  x[ c_phgk  ][ c_r ] ;
+  const aphgk  =  x[ c_aphgk ][ c_r ] ;
+  const bphgk  =  x[ c_bphgk ][ c_r ] ;
+
+  const qhqr   =  x[ c_qhqr  ][ c_r ] ;
+  const aqhqr  =  x[ c_aqhqr ][ c_r ] ;
+  const bqhqr  =  x[ c_bqhqr ][ c_r ] ;
   
-  r[ r_fe  ][ r_r ] = fe;
-  r[ r_fr  ][ r_r ] = fr;
-  r[ r_m   ][ r_r ] = m;
+  const fvgk   =  x[ c_fvgk  ][ c_r ] ;
+  const afvgk  =  x[ c_afvgk ][ c_r ] ;
+
+  const fvqr   =  x[ c_fvqr  ][ c_r ] ;
+  const afvqr  =  x[ c_afvqr ][ c_r ] ;
+
+  const fhgk   =  x[ c_fhgk  ][ c_r ] ;
+  const fhqr   =  x[ c_fhqr  ][ c_r ] ;
+
+  const gmph   =  x[ c_gmph  ][ c_r ] ;
+  const gmc    =  x[ c_gmc   ][ c_r ] ;
+  const gmg    =  x[ c_gmg   ][ c_r ] ;
+  const gmq    =  x[ c_gmq   ][ c_r ] ;
+
+  const thrad  = radians( th ) ;
+
+  const ath    = ( (h / Math.tan( thrad )) - (h / Math.tan( btrad )) ) ;
+
+  var   phdrad  = Math.atan( Math.tan( phkrad ) / gmph );
+  var   phd     = degrees( phdrad ) ;
+  var   cd      = ( ck / gmc );
+
+  var   bapvgk  = undefined ;
+  var   baqvqr  = undefined ;
+  var   baphgk  = undefined ;
+  var   baqhqr  = undefined ;
+  var   bafvgk  = undefined ;
+  var   bafvqr  = undefined ;
+
+  var   l       = undefined ;
+
+  var   gk      = undefined ;
+  var   fvk     = undefined ;
+  var   fhk     = undefined ;
+  var   fpk     = undefined ;
+  var   fqk     = undefined ;
+  var   tk      = undefined ;
+  var   nk      = undefined ;
+  var   fek     = undefined ;
+  var   frk     = undefined ;
+
+  var   gd      = undefined ;
+  var   fvd     = undefined ;
+  var   fhd     = undefined ;
+  var   fpd     = undefined ;
+  var   fqd     = undefined ;
+  var   td      = undefined ;
+  var   nd      = undefined ;
+  var   fed     = undefined ;
+  var   frd     = undefined ;
+
+  var   eta     = undefined ;
+  var   mu      = undefined ;
+
+  const cab     = function( c , a , b ) { var d ; if( c > (a + b) )  d = b ;  else  if( c > a )  d = (c - a) ;  else  d = 0.0 ; return( d ) ; } ;
+
+  bapvgk = cab( ath , apvgk , bpvgk ) ;
+  baqvqr = cab( ath , aqvqr , bqvqr ) ;
+  baphgk = cab( ath , aphgk , bphgk ) ;
+  baqhqr = cab( ath , aqhqr , bqhqr ) ;
+
+  if( ath > afvgk )  bafvgk = 1.0 ;  else  bafvgk = 0.0 ;
+  if( ath > afvqr )  bafvqr = 1.0 ;  else  bafvqr = 0.0 ;
+
+
+  console.log( "ath="    , ath    ) ;
+  console.log( "bapvgk=" , bapvgk ) ;
+  console.log( "aqvqr="  , aqvqr  ) ;
+  console.log( "bqvqr="  , bqvqr  ) ;
+  console.log( "baqvqr=" , baqvqr ) ;
+  console.log( "baphgk=" , baphgk ) ;
+  console.log( "baqhqr=" , baqhqr ) ;
+
+
+  l  = ( h / Math.sin( thrad ) ) ;
+
+
+  gk = ( (1 / 2) * rh * c_g * h * h * ((1 / Math.tan( thrad )) - (1 / Math.tan( btrad ))) ) ;
+
+  fvk = ( (pvgk * bapvgk) + (qvqr * baqvqr) + (fvgk * bafvgk) + (fvqr * bafvqr) ) ;
+
+  fhk = ( (phgk * baphgk) + (qhqr * baqhqr) + fhgk + fhqr ) ;
+
+  fpk = ( gk + fvk ) ;
+
+  fqk = ( fhk ) ;
+
+  fek = tk = ( (fpk * Math.sin( thrad )) - (fqk * Math.cos( thrad )) ) ;
+
+  nk  =      ( (fpk * Math.cos( thrad )) + (fqk * Math.sin( thrad )) ) ;
+
+  frk = ( (nk * Math.tan( phkrad )) + (ck * l) );
+
+  if( fek )  eta = ( frk / fek ) ;  else  eta = 0.0 ;
+
+
+  gd  = ( gmg * (1 / 2) * rh * c_g * h * h * ((1 / Math.tan( thrad )) - (1 / Math.tan( btrad ))) ) ;
+
+  fvd = ( (gmg * pvgk * bapvgk) + (gmq * qvqr * baqvqr) + (gmg * fvgk * bafvgk) + (gmq * fvqr * bafvqr) ) ;
+
+  fhd = ( (gmg * phgk * baphgk) + (gmq * qhqr * baqhqr) + (gmg * fhgk) + (gmq * fhqr) ) ;
+
+  fpd = ( gd + fvd ) ;
+
+  fqd = ( fhd ) ;
+
+  fed = td = ( (fpd * Math.sin( thrad )) - (fqd * Math.cos( thrad )) );
+
+  nd  =      ( (fpd * Math.cos( thrad )) + (fqd * Math.sin( thrad )) ) ;
+
+  frd = ( (nd * Math.tan( phdrad )) + (cd * l) ) ;
+
+  if( frd )  mu = ( fed / frd ) ;  else  mu = 0.0 ;
+
+
+  r[ r_phd    ][ r_r ] = phd ;
+  r[ r_cd     ][ r_r ] = cd ;
+
+  r[ r_bapvgk ][ r_r ] = bapvgk ;
+  r[ r_baqvqr ][ r_r ] = baqvqr ;
+  r[ r_baphgk ][ r_r ] = baphgk ;
+  r[ r_baqhqr ][ r_r ] = baqhqr ;
+  r[ r_bafvgk ][ r_r ] = bafvgk ;
+  r[ r_bafvqr ][ r_r ] = bafvqr ;
+
+  r[ r_l      ][ r_r ] = l ;
+
+  r[ r_gk     ][ r_r ] = gk ;
+  r[ r_fvk    ][ r_r ] = fvk ;
+  r[ r_fhk    ][ r_r ] = fhk ;
+  r[ r_fpk    ][ r_r ] = fpk ;
+  r[ r_fqk    ][ r_r ] = fqk ;
+  r[ r_tk     ][ r_r ] = tk ;
+  r[ r_nk     ][ r_r ] = nk ;
+  r[ r_fek    ][ r_r ] = fek ;
+  r[ r_frk    ][ r_r ] = frk ;
+  r[ r_eta    ][ r_r ] = eta ;
+
+  r[ r_gd     ][ r_r ] = gd ;
+  r[ r_fvd    ][ r_r ] = fvd ;
+  r[ r_fhd    ][ r_r ] = fhd ;
+  r[ r_fpd    ][ r_r ] = fpd ;
+  r[ r_fqd    ][ r_r ] = fqd ;
+  r[ r_td     ][ r_r ] = td ;
+  r[ r_nd     ][ r_r ] = nd ;
+  r[ r_fed    ][ r_r ] = fed ;
+  r[ r_frd    ][ r_r ] = frd ;
+  r[ r_mu     ][ r_r ] = mu ;
+
 
   return( r );
-  
- }; // end function WedgeSlope()
+
+ 
+ }; // end function wedgeslope()
+
 
