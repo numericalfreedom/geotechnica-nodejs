@@ -58,12 +58,15 @@ function wedgeslope( x , th )
   const c_afvqr  =  20 ;
 
   const c_fhgk   =  21 ;
-  const c_fhqr   =  22 ;
+  const c_afhgk  =  22 ;
 
-  const c_gmph   =  23 ;
-  const c_gmc    =  24 ;
-  const c_gmg    =  25 ;
-  const c_gmq    =  26 ;
+  const c_fhqr   =  23 ;
+  const c_afhqr  =  24 ;
+
+  const c_gmph   =  25 ;
+  const c_gmc    =  26 ;
+  const c_gmg    =  27 ;
+  const c_gmq    =  28 ;
 
   const r_r      =   0 ;
 
@@ -76,32 +79,35 @@ function wedgeslope( x , th )
   const r_baqhqr =   5 ;
   const r_bafvgk =   6 ;
   const r_bafvqr =   7 ;
+  const r_bafhgk =   8 ;
+  const r_bafhqr =   9 ;
 
-  const r_l      =   8 ;
+  const r_l      =  10 ;
+  const r_a      =  11 ;
 
-  const r_gk     =   9 ;
-  const r_fvk    =  10 ;
-  const r_fhk    =  11 ;
-  const r_fpk    =  12 ;
-  const r_fqk    =  13 ;
-  const r_tk     =  14 ;
-  const r_nk     =  15 ;
-  const r_fek    =  16 ;
-  const r_frk    =  17 ;
-  const r_eta    =  18 ;	 
+  const r_gk     =  12 ;
+  const r_fvk    =  13 ;
+  const r_fhk    =  14 ;
+  const r_fpk    =  15 ;
+  const r_fqk    =  16 ;
+  const r_tk     =  17 ;
+  const r_nk     =  18 ;
+  const r_fek    =  19 ;
+  const r_frk    =  20 ;
+  const r_eta    =  21 ;	 
 
-  const r_gd     =  19 ;
-  const r_fvd    =  20 ;
-  const r_fhd    =  21 ;
-  const r_fpd    =  22 ;
-  const r_fqd    =  23 ;
-  const r_td     =  24 ;
-  const r_nd     =  25 ;
-  const r_fed    =  26 ;
-  const r_frd    =  27 ;
-  const r_mu     =  28 ;
+  const r_gd     =  22 ;
+  const r_fvd    =  23 ;
+  const r_fhd    =  24 ;
+  const r_fpd    =  25 ;
+  const r_fqd    =  26 ;
+  const r_td     =  27 ;
+  const r_nd     =  28 ;
+  const r_fed    =  29 ;
+  const r_frd    =  30 ;
+  const r_mu     =  31 ;
 
-  const r_rx     =  29 ;
+  const r_rx     =  32 ;
 
   const c_g      =  10.00 ;
 
@@ -140,7 +146,10 @@ function wedgeslope( x , th )
   const afvqr  =  x[ c_afvqr ][ c_r ] ;
 
   const fhgk   =  x[ c_fhgk  ][ c_r ] ;
+  const afhgk  =  x[ c_afhgk ][ c_r ] ;
+
   const fhqr   =  x[ c_fhqr  ][ c_r ] ;
+  const afhqr  =  x[ c_afhqr ][ c_r ] ;
 
   const gmph   =  x[ c_gmph  ][ c_r ] ;
   const gmc    =  x[ c_gmc   ][ c_r ] ;
@@ -161,8 +170,11 @@ function wedgeslope( x , th )
   var   baqhqr  = undefined ;
   var   bafvgk  = undefined ;
   var   bafvqr  = undefined ;
+  var   bafhgk  = undefined ;
+  var   bafhqr  = undefined ;
 
   var   l       = undefined ;
+  var   a       = undefined ;
 
   var   gk      = undefined ;
   var   fvk     = undefined ;
@@ -196,6 +208,8 @@ function wedgeslope( x , th )
 
   if( ath > afvgk )  bafvgk = 1.0 ;  else  bafvgk = 0.0 ;
   if( ath > afvqr )  bafvqr = 1.0 ;  else  bafvqr = 0.0 ;
+  if( ath > afhgk )  bafhgk = 1.0 ;  else  bafhgk = 0.0 ;
+  if( ath > afhqr )  bafhqr = 1.0 ;  else  bafhqr = 0.0 ;
 
 
   console.log( "ath="    , ath    ) ;
@@ -209,8 +223,10 @@ function wedgeslope( x , th )
 
   l  = ( h / Math.sin( thrad ) ) ;
 
+  a  = ( (1 / 2) * h * h * ((1 / Math.tan( thrad )) - (1 / Math.tan( btrad ))) ) ;
 
-  gk = ( (1 / 2) * rh * c_g * h * h * ((1 / Math.tan( thrad )) - (1 / Math.tan( btrad ))) ) ;
+
+  gk = ( a * rh * g ) ;
 
   fvk = ( (pvgk * bapvgk) + (qvqr * baqvqr) + (fvgk * bafvgk) + (fvqr * bafvqr) ) ;
 
@@ -257,8 +273,11 @@ function wedgeslope( x , th )
   r[ r_baqhqr ][ r_r ] = baqhqr ;
   r[ r_bafvgk ][ r_r ] = bafvgk ;
   r[ r_bafvqr ][ r_r ] = bafvqr ;
+  r[ r_bafhgk ][ r_r ] = bafhgk ;
+  r[ r_bafhqr ][ r_r ] = bafhqr ;
 
   r[ r_l      ][ r_r ] = l ;
+  r[ r_a      ][ r_r ] = a ;
 
   r[ r_gk     ][ r_r ] = gk ;
   r[ r_fvk    ][ r_r ] = fvk ;
