@@ -11,7 +11,9 @@ using namespace v8;
 
 void ArrayAddEigenvalue(const FunctionCallbackInfo<Value>& args) {
   Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
+  v8::Local<Context> context = isolate -> GetCurrentContext();
+
+  v8::HandleScope scope( isolate );
 
   Eigen::MatrixXd   m(3,3) ;
   Eigen::MatrixXd   n(3,3) ;
@@ -21,14 +23,14 @@ void ArrayAddEigenvalue(const FunctionCallbackInfo<Value>& args) {
   Eigen::VectorXcd  eivals ;
 
   if ( args.Length() < 3 || args.Length() > 3 ) {
-    isolate->ThrowException(Exception::TypeError(
-        String::NewFromUtf8( isolate , "Wrong number of arguments" )));
+    isolate->ThrowException( Exception::TypeError(
+        String::NewFromUtf8( isolate , "Wrong number of arguments" , NewStringType::kNormal ).ToLocalChecked() ) );
     return;
   }
 
   if ( (! args[0]->IsArray()) || (! args[1]->IsArray()) || (! args[2]->IsArray())  ) {
-    isolate->ThrowException(Exception::TypeError(
-        String::NewFromUtf8( isolate , "Wrong arguments" )));
+    isolate->ThrowException( Exception::TypeError( 
+        String::NewFromUtf8( isolate , "Wrong arguments" , NewStringType::kNormal ).ToLocalChecked() ) );
     return;
   }
 
@@ -46,12 +48,12 @@ void ArrayAddEigenvalue(const FunctionCallbackInfo<Value>& args) {
   for( ii = ((unsigned int) 0); ii < iix; ++ii )
    {
 
-    v8::Local<Array> bv = v8::Local<Array>::Cast( av -> Get(ii) ) ;
+    v8::Local<Array> bv = v8::Local<Array>::Cast( (av -> Get(context,ii)).ToLocalChecked() ) ;
 
     if( ! bv -> IsArray() )
      {
       isolate->ThrowException(Exception::TypeError(
-        String::NewFromUtf8( isolate , "Wrong arguments" )));
+        String::NewFromUtf8( isolate , "Wrong arguments" , NewStringType::kNormal ).ToLocalChecked()));
       return;
      }
 
@@ -60,7 +62,7 @@ void ArrayAddEigenvalue(const FunctionCallbackInfo<Value>& args) {
     for( jj = ((unsigned int) 0); jj < jjx; ++jj )
      {
     
-      double cv = static_cast<double>( v8::Local<Value>::Cast( bv -> Get(jj) ) -> NumberValue() ) ;
+      double cv = static_cast<double>( v8::Local<Value>::Cast( (bv -> Get(context,jj)).ToLocalChecked() ) -> NumberValue( context ).ToChecked() ) ;
 
       printf( "%f\n" , cv ) ;
 
@@ -73,10 +75,10 @@ void ArrayAddEigenvalue(const FunctionCallbackInfo<Value>& args) {
   unsigned int j   = ((unsigned int) 0) ;
   unsigned int k   = ((unsigned int) 0) ;
 
-  unsigned int ix  = mv->Length() ;
-  unsigned int jx  = nv->Length() ;
+//  unsigned int ix  = mv->Length() ;
+//  unsigned int jx  = nv->Length() ;
 
-  double       rv  = ((double) 0.0) ;
+//  double       rv  = ((double) 0.0) ;
 
   v8::Local<Array> mr = v8::Array::New( isolate , 3 );
 
@@ -88,8 +90,9 @@ void ArrayAddEigenvalue(const FunctionCallbackInfo<Value>& args) {
 
       k = ( (j * 3) + i ) ;
 
-      m( i , j ) = static_cast<double>( v8::Local<Value>::Cast( mv->Get(k) ) -> NumberValue() ) ;
-      n( i , j ) = static_cast<double>( v8::Local<Value>::Cast( nv->Get(k) ) -> NumberValue() ) ;
+      m( i , j ) = static_cast<double>( v8::Local<Value>::Cast( (mv->Get(context,k)).ToLocalChecked() ) -> NumberValue( context ).ToChecked() ) ;
+
+      n( i , j ) = static_cast<double>( v8::Local<Value>::Cast( (nv->Get(context,k)).ToLocalChecked() ) -> NumberValue( context ).ToChecked() ) ;
 
      } ;
 
@@ -102,14 +105,14 @@ void ArrayAddEigenvalue(const FunctionCallbackInfo<Value>& args) {
 
   for( i = ((unsigned int) 0); i < 3; ++i )
 
-    mr->Set( i , v8::Number::New( isolate , eivals( i ).real() ) ) ;
+    mr->Set( context , i , v8::Number::New( isolate , eivals( i ).real() ) ) ;
 
 
   args.GetReturnValue().Set( mr ) ;
 
 }
 
-void Init(Handle<Object> exports) {
+void Init(Local<Object> exports , Local<Object> module) {
   NODE_SET_METHOD( exports , "arrayaddeigenvalue" , ArrayAddEigenvalue );
 }
 

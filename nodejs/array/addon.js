@@ -11,3 +11,15 @@ var r = a.arrayaddeigenvalue( m , n , q ) ;
 
 console.log( r ) ;
 
+
+const mm = [ 1 , 0 , 0 , 0 , 2 , 0 , 0 , 0 , 3 ] ;
+
+const nn = [ 1 , 0 , 0 , 0 , 2 , 0 , 0 , 0 , 3 ] ;
+
+const qq = [ [ 1 , 2 , 3 ] , [ 2 , 1 , 3 ] , [ 3 , 2 , 1 ] , [ 13 ] ] ;
+
+var rr = a.arrayaddeigenvalue( mm , nn , qq ) ;
+
+console.log( rr ) ;
+
+
