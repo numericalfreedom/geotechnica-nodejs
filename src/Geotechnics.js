@@ -1708,8 +1708,14 @@ function jzzqz(  a , b , x , y , z , n )
   return( jzzqz ) ;
 
  }
+
  
+ /**
  
+@function
+@name frqz
+ 
+*/
  
 function frqz( a , b , x , y , z , n , v )
  {
@@ -1811,4 +1817,401 @@ function frqz( a , b , x , y , z , n , v )
    return( fr ) ;
   
  } ; // end function frqz()
+
+
+/**
+ 
+@function
+@name quadrilateralfoundation
+ 
+*/
+
+function quadrilateralfoundation( cc , x )
+ {
+
+  const c_r  = 0 ;
+
+  const c_a  = 0 ;
+  const c_b  = 1 ;
+  const c_g  = 2 ;
+  const c_nu = 3 ;
+
+  const r_a0 = 0 ;
+  const r_i0 = 1 ;
+  const r_r0 = 2 ;
+  const r_k0 = 3 ;
+  const r_r  = 4 ;
+  
+  var a  = x[ c_a  ][ c_r ] ;
+  var b  = x[ c_b  ][ c_r ] ;
+  var g  = x[ c_g  ][ c_r ] ;
+  var nu = x[ c_nu ][ c_r ] ;
+
+  var a0 = 0.0 ;
+  var i0 = 0.0 ;
+  var r0 = 0.0 ;
+  var k0 = 0.0 ;
+  
+  var r = new Array( r_r ) ;
+  
+  switch( cc )
+   {
+
+
+    case 1:
+    
+     a0 = a0u( a , b ) ;
+     i0 = 0.0 ;
+     r0 = r0u( a0 ) ;
+     k0 = kux0( r0 , g , nu )
+     
+     break ;
+
+
+    case 2:
+    
+     a0 = a0u( a , b ) ;
+     i0 = 0.0 ;
+     r0 = r0u( a0 ) ;
+     k0 = kuy0( r0 , g , nu )
+     
+     break ;
+
+
+    default:
+    case 3:
+    
+     a0 = a0u( a , b ) ;
+     i0 = 0.0 ;
+     r0 = r0u( a0 ) ;
+     k0 = kuz0( r0 , g , nu )
+     
+     break ;
+
+
+    case 4:
+    
+     a0 = 0.0 ;
+     i0 = i0x( a , b ) ;
+     r0 = r0rx( i0 ) ;
+     k0 = krx0( r0 , g , nu )
+     
+     break ;
+
+
+    case 5:
+    
+     a0 = 0.0 ;
+     i0 = i0y( a , b ) ;
+     r0 = r0ry( i0 ) ;
+     k0 = kry0( r0 , g , nu )
+     
+     break ;
+
+
+    case 6:
+    
+     a0 = 0.0 ;
+     i0 = i0z( a , b ) ;
+     r0 = r0rz( i0 ) ;
+     k0 = krz0( r0 , g , nu )
+     
+     break ;
+          
+   }
+   
+  r[ r_a0 ] = a0 ;
+  r[ r_i0 ] = i0 ;
+  r[ r_r0 ] = r0 ;
+  r[ r_k0 ] = k0 ;
+    
+  return( r ) ;
+ 
+ }
+
+
+/**
+ 
+@function
+@name gel
+ 
+*/
+
+
+function gel( e , nu )
+ {
+ 
+  const g = ( e / (2.0 * (1.0 + nu)) ) ;
+ 
+  return( g ) ;
+ 
+ }
+
+
+/**
+ 
+@function
+@name kel
+ 
+*/
+
+function kel( e , nu )
+ {
+ 
+  const k = ( e / (3.0 * (1.0 - (2.0 * nu))) ) ;
+ 
+  return( k ) ;
+ 
+ }
+
+
+/**
+ 
+@function
+@name a0u
+ 
+*/
+
+function a0u( a , b )
+ {
+
+  const a0 = ( a * b ) ;
+ 
+  return( a0 ) ;
+ 
+ }
+
+
+/**
+ 
+@function
+@name r0u
+ 
+*/
+
+function r0u( a0 ) 
+ {
+
+  const r0 = Math.sqrt( a0 / Math.PI ) ;
+  
+  return( r0 ) ;
+  
+ }
+
+
+/**
+ 
+@function
+@name kux0
+ 
+*/
+
+function kux0( r0 , g , nu ) 
+ {
+
+  const k = ( (8.0 * g * r0) / (2.0 - nu) ) ;
+  
+  return( k ) ;
+  
+ }
+
+
+/**
+ 
+@function
+@name kuy0
+ 
+*/
+
+function kuy0( r0 , g , nu ) 
+ {
+
+  const k = ( (8.0 * g * r0) / (2.0 - nu) ) ;
+  
+  return( k ) ;
+  
+ }
+
+
+/**
+ 
+@function
+@name kuz0
+ 
+*/
+
+function kuz0( r0 , g , nu ) 
+ {
+
+  const k = ( (4.0 * g * r0) / (1.0 - nu) ) ;
+  
+  return( k ) ;
+  
+ }
+
+
+/**
+ 
+@function
+@name i0x
+ 
+*/
+
+function i0x( a , b )
+ {
+ 
+  const rx = ( a / 2.0 ) ; 
+  const ry = ( b / 2.0 ) ; 
+ 
+  const i0 = ( (4.0 * rx * ry * ry * ry) / 3.0 ) ;
+ 
+  return( i0 ) ;
+ 
+ }
+
+
+/**
+ 
+@function
+@name i0y
+ 
+*/
+
+function i0y( a , b )
+ {
+ 
+  const rx = ( a / 2.0 ) ; 
+  const ry = ( b / 2.0 ) ; 
+ 
+  const i0 = ( (4.0 * rx * rx * rx * ry) / 3.0 ) ;
+
+  return( i0 ) ;
+ 
+ }
+
+
+/**
+ 
+@function
+@name i0z
+ 
+*/
+
+function i0z( a , b )
+ {
+ 
+  const rx = ( a / 2.0 ) ; 
+  const ry = ( b / 2.0 ) ; 
+ 
+  const i0 = ( ((4.0 * rx * ry * ry * ry) / 3.0) + ((4.0 * rx * rx * rx * ry) / 3.0) ) ;
+
+  return( i0 ) ;
+ 
+ }
+
+
+/**
+ 
+@function
+@name r0rx
+ 
+*/
+
+function r0rx( i0x )
+ {
+ 
+  const r0 = Math.pow( ((4.0 * i0x) / Math.PI) , (1.0 / 4.0) ) ;
+  
+  return( r0 ) ;
+ 
+ }
+
+
+/**
+ 
+@function
+@name r0ry
+ 
+*/
+
+function r0ry( i0y )
+ {
+ 
+  const r0 = Math.pow( ((4.0 * i0y) / Math.PI) , (1.0 / 4.0) ) ;
+  
+  return( r0 ) ;
+ 
+ }
+
+
+/**
+ 
+@function
+@name r0rz
+ 
+*/
+
+function r0rz( i0z )
+ {
+ 
+  const r0 = Math.pow( ((2.0 * i0z) / Math.PI) , (1.0 / 4.0) ) ;
+  
+  return( r0 ) ;
+ 
+ }
+
+
+/**
+ 
+@function
+@name krx0
+ 
+*/
+
+function krx0( r0 , g , nu ) 
+ {
+
+  const k = ( (8.0 * g * r0 * r0 * r0) / (3.0 * (1.0 - nu)) ) ;
+  
+  return( k ) ;
+  
+ }
+
+
+/**
+ 
+@function
+@name kry0
+ 
+*/
+
+function kry0( r0 , g , nu ) 
+ {
+
+  const k = ( (8.0 * g * r0 * r0 * r0) / (3.0 * (1.0 - nu)) ) ;
+ 
+  return( k ) ;
+  
+ }
+
+
+/**
+ 
+@function
+@name krz0
+ 
+*/
+
+function krz0( r0 , g , nu ) 
+ {
+
+  const k = ( (16.0 * g * r0 * r0 * r0) / 3.0 ) ;
+  
+  return( k ) ;
+  
+ }
+
+
+
+
 
