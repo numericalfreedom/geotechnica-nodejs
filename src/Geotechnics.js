@@ -1822,8 +1822,10 @@ function frqz( a , b , x , y , z , n , v )
 /**
  
 @function
-@name quadrilateralfoundation
- 
+@name      quadrilateralfoundation
+@parameter cc
+@parameter x
+
 */
 
 function quadrilateralfoundation( cc , x )
