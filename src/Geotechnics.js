@@ -2105,7 +2105,7 @@ function i0z( a , b )
   const rx = ( a / 2.0 ) ; 
   const ry = ( b / 2.0 ) ; 
  
-  const i0 = ( ((4.0 * rx * ry * ry * ry) / 3.0) + ((4.0 * rx * rx * rx * ry) / 3.0) ) ;
+  const i0 = ( ((4.0 * rx * rx * rx * ry) / 3.0) + ((4.0 * rx * ry * ry * ry) / 3.0) ) ;
 
   return( i0 ) ;
  
@@ -2212,8 +2212,5 @@ function krz0( r0 , g , nu )
   return( k ) ;
   
  }
-
-
-
 
 
