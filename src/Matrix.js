@@ -18,11 +18,11 @@
 "use strict" ;
 
 
-/** @const  {number}  c_asm  Asymmetric matrix storage */
+/** @const  {number}  c_asm  Asymmetric full matrix storage */
 
 const c_asm = 0 ;
 
-/** @const  {number}  c_smt  Symmetric matrix storage */
+/** @const  {number}  c_smt  Symmetric full matrix storage */
 
 const c_smt = 1 ;
 
@@ -33,9 +33,19 @@ const c_cca = 2 ;
 /** @const  {number}  c_ccs  Compressed column symmetric matrix storage */
 
 const c_ccs = 3 ;
+
+/** @const  {number}  c_cra  Compressed row asymmetric matrix storage */
+
 const c_cra = 4 ;
+
+/** @const  {number}  c_crs  Compressed row asymmetric matrix storage */
+
 const c_crs = 5 ;
+
+
 const c_sla = 6 ;
+
+
 const c_sls = 7 ;
 
 
