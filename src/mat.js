@@ -176,6 +176,16 @@ function mat_005( fd , pv )
   fs.writeSync( fd , '$     LCID      SIDR      SCLA      SCLO      OFFA      OFFO                      \n' ) ;
   fs.writeSync( fd , ` ${ps[lcid]} \n` ) ;
   fs.writeSync( fd , '$                 A1                  O1                                          \n' ) ;
+  fs.writeSync( fd , `           ${ps[e1]}           ${ps[p1]} \n` ) ;
+  fs.writeSync( fd , `           ${ps[e2]}           ${ps[p2]} \n` ) ;
+  fs.writeSync( fd , `           ${ps[e3]}           ${ps[p3]} \n` ) ;
+  fs.writeSync( fd , `           ${ps[e4]}           ${ps[p4]} \n` ) ;
+  fs.writeSync( fd , `           ${ps[e5]}           ${ps[p5]} \n` ) ;
+  fs.writeSync( fd , `           ${ps[e6]}           ${ps[p6]} \n` ) ;
+  fs.writeSync( fd , `           ${ps[e7]}           ${ps[p7]} \n` ) ;
+  fs.writeSync( fd , `           ${ps[e8]}           ${ps[p8]} \n` ) ;
+  fs.writeSync( fd , `           ${ps[e9]}           ${ps[p9]} \n` ) ;
+  fs.writeSync( fd , `           ${ps[e10]}           ${ps[p10]} \n` ) ;
   fs.writeSync( fd , '$ \n' ) ;
   fs.writeSync( fd , '$...............................................................................  \n' ) ;
 
