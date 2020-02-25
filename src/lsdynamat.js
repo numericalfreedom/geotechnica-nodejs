@@ -1,9 +1,8 @@
-
 'use strict' ;
 
+const fs = require( 'fs' ) ;
 
-module.exports = { lsdynamat } ;
-
+module.exports = { lsdynamat , csf , cg , cm } ;
 
 const mid  =  0 ;
 const ro   =  1 ;
@@ -37,7 +36,6 @@ const p8   = 28 ;
 const p9   = 29 ;
 const p10  = 30 ;
 
-const fs = require( 'fs' ) ;
 
 const fd = fs.openSync( 'mat.key' , 'w' ) ;
 
@@ -87,6 +85,152 @@ mat_005( fd , pv , pv ) ;
 
 fs.closeSync( fd ) ; 
 
+
+/**
+ *
+ * function lsdynamat: construct object and write systematic material cards for LSDYNA
+ *
+ * @constructor
+ *
+ * @param   {number} en - Minimum deformation
+ * @param   {number} ex - Maximum deformation
+ *
+ * @returns {Array}
+ *
+ */
+
+function lsdynamat( en , ex , es , nz , sz , pz , pr , vm , wm , rs , cs , ks , rf , cf , kf , kg )
+ {
+
+  this.en   = ( (en != undefined) ?  en :    0.00    ) ;
+  this.ex   = ( (ex != undefined) ?  ex :    0.50    ) ;
+  this.es   = ( (ex != undefined) ?  es :    1.00e-6 ) ;
+
+  this.nz   = ( (nz != undefined) ?  nz :    0.50    ) ;
+  this.sz   = ( (sz != undefined) ?  sz :    0.50    ) ;
+
+  this.pz   = ( (pz != undefined) ?  pz :    1.00e5  ) ;
+
+  this.pr   = ( (pr != undefined) ?  pr :    1.00e5  ) ;
+  this.vm   = ( (vm != undefined) ?  vm :  200.00    ) ;
+  this.wm   = ( (wm != undefined) ?  wm :    0.50    ) ;
+
+  this.rs   = ( (rs != undefined) ?  rs : 2650.00    ) ;
+  this.cs   = ( (cs != undefined) ?  cs : 4000.00    ) ;
+  this.ks   = ( (ks != undefined) ?  ks :    3.00    ) ;
+
+  this.rf   = ( (rf != undefined) ?  rf : 1000.00    ) ;
+  this.cf   = ( (cf != undefined) ?  cf : 1450.00    ) ;
+  this.kf   = ( (kf != undefined) ?  kf :    7.00    ) ;
+
+  this.kg   = ( (kg != undefined) ?  kg :    1.40    ) ;
+
+  this.ccm  = undefined ;
+  this.ccs  = undefined ;
+  this.ccf  = undefined ;
+  this.ccg  = undefined ;
+
+  this.pt   = undefined ;
+  this.pe   = undefined ;
+  this.pn   = undefined ;
+
+  this.n    = undefined ;
+  this.s    = undefined ;
+
+  this.a    = undefined ;
+  this.b    = undefined ;
+
+  var ie    = 0 ;
+  var ien   = 0 ;
+  var iex   = ((ex - en) / es) ;
+  var ies   = undefined ;
+
+  return ;
+
+ }
+
+
+/**
+ *
+ * function csf : incremental compressibility from the tait equation of state for solids and fluids
+ *
+ * @param   {number} r  - Density
+ * @param   {number} c  - Wave velocity
+ * @param   {number} k  - Exponent
+ * @param   {number} p  - Pressure
+ * @param   {number} pz - Initial pressure
+ *
+ * @returns {number}
+ *
+ */
+
+function csf( r , c , k , p , pz )
+ {
+
+  const rcc  = ( r * c * c ) ;
+
+  const dedp = ( 1.0 / ((k * (p - pz)) + rcc) ) ;
+
+  return( dedp ) ;
+
+ } ; // end function csf()
+
+
+/**
+ *
+ * function cg : incremental compressiblity for adiabatic compression of gases
+ *
+ * @param   {number} p - Pressure
+ * @param   {number} k - Exponent
+ *
+ * @returns {number}
+ *
+ */
+
+function cg( p , k )
+ {
+
+  const dedp = ( 1.0 / (k * p) ) ;
+
+  return( dedp ) ;
+
+ } ; // end function cg()
+
+
+/**
+ *
+ * function cm : incremental compressiblity for granular matrix
+ *
+ * @param   {number} pe - Effective pressure
+ * @param   {number} pr - Reference pressure
+ * @param   {number} vm - Coefficient for solid porous matrix
+ * @param   {number} wm - Exponent for solid porous matrix
+ *
+ * @returns {number}
+ *
+ */
+
+function cm( pe , pr , vm , wm )
+ {
+
+  const dedp = ( 1.0 / ((vm * pr) * Math.pow( ((pe + pr) / pr) , wm )) ) ;
+
+  return( dedp ) ;
+
+ } ; // end function cm()
+
+
+/**
+ *
+ * @function mat_005
+ *
+ * @param r
+ * @param c
+ * @param k
+ * @param p
+ * @param pz
+ *
+ */
 
 function mat_005( fd , pv , px )
  {
