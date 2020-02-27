@@ -2,7 +2,7 @@
 
 const fs = require( 'fs' ) ;
 
-module.exports = { lsdynamat , csf , cg , cm } ;
+module.exports = { lsdynamat , csf , rrsf , cg , rrg , cm , rrm } ;
 
 const mid  =  0 ;
 const ro   =  1 ;
@@ -154,8 +154,8 @@ function lsdynamat( en , ex , es , nz , sz , pz , pr , vm , wm , rs , cs , ks , 
  *
  * function csf : incremental compressibility from the tait equation of state for solids and fluids
  *
- * @param   {number} r  - Density
- * @param   {number} c  - Wave velocity
+ * @param   {number} rz - Density
+ * @param   {number} cz - Wave velocity
  * @param   {number} k  - Exponent
  * @param   {number} p  - Pressure
  * @param   {number} pz - Initial pressure
@@ -164,16 +164,43 @@ function lsdynamat( en , ex , es , nz , sz , pz , pr , vm , wm , rs , cs , ks , 
  *
  */
 
-function csf( r , c , k , p , pz )
+function csf( rz , cz , k , p , pz )
  {
 
-  const rcc  = ( r * c * c ) ;
+  const rcc  = ( rz * cz * cz ) ;
 
   const dedp = ( 1.0 / ((k * (p - pz)) + rcc) ) ;
 
   return( dedp ) ;
 
  } ; // end function csf()
+
+
+/**
+ *
+ * function rrsf : relative density from the tait equation of state for solids and fluids
+ *
+ * @param   {number} rz - Density
+ * @param   {number} cz - Wave velocity
+ * @param   {number} k  - Exponent
+ * @param   {number} p  - Pressure
+ * @param   {number} pz - Initial pressure
+ *
+ * @returns {number}
+ *
+ */
+
+function rrsf( rz , cz , k , p , pz )
+ {
+
+  const rcc  = ( rz * cz * cz ) ;
+
+  const r    = ( rz / Math.pow( ((k * ((p - pz) / rcc)) + 1.0) , (1.0 / k) ) ) ;
+
+  return( r ) ;
+
+ } ; // end function rrsf()
+
 
 
 /**
@@ -199,6 +226,28 @@ function cg( p , k )
 
 /**
  *
+ * function rrg : relative density for adiabatic compression of gases
+ *
+ * @param   {number} rz - Initial density
+ * @param   {number} p  - Pressure
+ * @param   {number} k  - Exponent
+ *
+ * @returns {number}
+ *
+ */
+
+function rrg( p , k )
+ {
+
+  const r = ( rz / Math.pow( (p / pz) , (1.0 / k) ) ) ;
+
+  return( r ) ;
+
+ } ; // end function rzrg()
+
+
+/**
+ *
  * function cm : incremental compressiblity for granular matrix
  *
  * @param   {number} pe - Effective pressure
@@ -218,6 +267,29 @@ function cm( pe , pr , vm , wm )
   return( dedp ) ;
 
  } ; // end function cm()
+
+
+/**
+ *
+ * function rrm : relative density for granular matrix
+ *
+ * @param   {number} pe - Effective pressure
+ * @param   {number} pr - Reference pressure
+ * @param   {number} vm - Coefficient for solid porous matrix
+ * @param   {number} wm - Exponent for solid porous matrix
+ *
+ * @returns {number}
+ *
+ */
+
+function rrm( rz , pe , pr , vm , wm )
+ {
+
+  const r = ( rz / Math.exp( (Math.pow( ((pe + pr) / pr) , (1.0 - wm) ) - 1.0) / (vm * (1.0 - wm)) ) ) ;
+
+  return( r ) ;
+
+ } ; // end function rrm()
 
 
 /**
