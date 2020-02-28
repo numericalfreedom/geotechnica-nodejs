@@ -99,17 +99,16 @@ fs.closeSync( fd ) ;
  *
  */
 
-function lsdynamat( en , ex , es , nz , sz , pz , pr , vm , wm , rs , cs , ks , rf , cf , kf , kg )
+function lsdynamat( px , ps , pz , nz , sz , pr , vm , wm , rs , cs , ks , rf , cf , kf , kg )
  {
 
-  this.en   = ( (en != undefined) ?  en :    0.00    ) ;
-  this.ex   = ( (ex != undefined) ?  ex :    0.50    ) ;
-  this.es   = ( (ex != undefined) ?  es :    1.00e-6 ) ;
+  this.px   = ( (ex != undefined) ?  px :    1.00e9  ) ;
+  this.ps   = ( (ex != undefined) ?  ps :    1.00    ) ;
+  
+  this.pz   = ( (pz != undefined) ?  pz :    1.00e5  ) ;
 
   this.nz   = ( (nz != undefined) ?  nz :    0.50    ) ;
   this.sz   = ( (sz != undefined) ?  sz :    0.50    ) ;
-
-  this.pz   = ( (pz != undefined) ?  pz :    1.00e5  ) ;
 
   this.pr   = ( (pr != undefined) ?  pr :    1.00e5  ) ;
   this.vm   = ( (vm != undefined) ?  vm :  200.00    ) ;
@@ -129,6 +128,7 @@ function lsdynamat( en , ex , es , nz , sz , pz , pr , vm , wm , rs , cs , ks , 
   this.ccs  = undefined ;
   this.ccf  = undefined ;
   this.ccg  = undefined ;
+  this.ccp  = undefined ;
 
   this.pt   = undefined ;
   this.pe   = undefined ;
@@ -140,14 +140,68 @@ function lsdynamat( en , ex , es , nz , sz , pz , pr , vm , wm , rs , cs , ks , 
   this.a    = undefined ;
   this.b    = undefined ;
 
-  var ie    = 0 ;
-  var ien   = 0 ;
-  var iex   = ((ex - en) / es) ;
-  var ies   = undefined ;
+  var ip    = 0 ;
+  var ipn   = 0 ;
+  var ipx   = ((px - pn) / ps) ;
+  var ips   = undefined ;
+
+  for( ip = 0 , this.pn = 0.0 , this.pt = this.pe = this.pz ; this.pt <= px ; this.pt += ps , ++ip )
+   {
+
+    this.ccf = csf( this.rf , this.cf , this.kf , this.pn , this.pz ) ;
+
+    this.ccg = cg(  this.pn , this.kg ) ;
+
+    this.ccs = csf( this.rs , this.cs , this.ks , this.pn , this.pz ) ;
+
+    this.ccm = cm(  this.pe , this.pr , this.vm , this.wm ) ;
+
+   }
+
 
   return ;
 
  }
+
+
+/**
+ *
+ * function biota : Biot factor alpha
+ *
+ * @param {number} cs - compressibility of the solid constituent
+ * @param {number} cm - compressibility of the porous matrix
+ *
+ */
+
+function biota( cs , cm )
+ {
+
+  const a = ( 1.0 - (cs / cm) ) ;
+
+  return( a ) ;
+ 
+ }; // end function biota()
+
+
+/**
+ *
+ * function bishopb : Bishop factor b
+ *
+ * @param {number} cs - compressibility of the solid constituent
+ * @param {number} cp - compressibility of the pore content
+ * @param {number} cm - compressibility of the porous matrix
+ * @param {number} n  - porosity
+ *
+ */
+
+function bishopb( cs , cp , cm , n )
+ {
+
+  const b = ( 1.0 / (1.0 + (n *(cp - cs) / (cm - cs))) ) ;
+
+  return( b ) ;
+ 
+ }; // end function bishopb()
 
 
 /**
