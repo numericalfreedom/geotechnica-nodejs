@@ -2,7 +2,7 @@
 
 const fs = require( 'fs' ) ;
 
-module.exports = { lsdynamat , csf , rrsf , cg , rrg , cm , rrm } ;
+module.exports = { lsdynamat , biota , bishopb , ctu , ctsf , rrsf , ctg , rrg , ctm , rrm } ;
 
 const mid  =  0 ;
 const ro   =  1 ;
@@ -92,47 +92,58 @@ fs.closeSync( fd ) ;
  *
  * @constructor
  *
- * @param   {number} en - Minimum deformation
+ * @param   {number} px - Minimum deformation
  * @param   {number} ex - Maximum deformation
  *
  * @returns {Array}
  *
  */
 
-function lsdynamat( px , ps , pz , nz , sz , pr , vm , wm , rs , cs , ks , rf , cf , kf , kg )
+function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , rzf , czf , kf , nzg , rzg , kg , nv )
  {
 
-  this.px   = ( (ex != undefined) ?  px :    1.00e9  ) ;
-  this.ps   = ( (ex != undefined) ?  ps :    1.00    ) ;
-  
-  this.pz   = ( (pz != undefined) ?  pz :    1.00e5  ) ;
+  this.pz   = ( (pz  != undefined) ?  pz  :    1.00e5 ) ;
+  this.px   = ( (px  != undefined) ?  px  :    1.00e9 ) ;
+  this.ps   = ( (ps  != undefined) ?  ps  :    1.00e3 ) ;
 
-  this.nz   = ( (nz != undefined) ?  nz :    0.50    ) ;
-  this.sz   = ( (sz != undefined) ?  sz :    0.50    ) ;
+  this.pr   = ( (pr  != undefined) ?  pr  :    1.00e5 ) ;
+  this.vm   = ( (vm  != undefined) ?  vm  :    2.00e1 ) ;
+  this.wm   = ( (wm  != undefined) ?  wm  :    0.50   ) ;
 
-  this.pr   = ( (pr != undefined) ?  pr :    1.00e5  ) ;
-  this.vm   = ( (vm != undefined) ?  vm :  200.00    ) ;
-  this.wm   = ( (wm != undefined) ?  wm :    0.50    ) ;
+  this.nzs  = ( (nzs != undefined) ?  nzs :    0.50   ) ;
+  this.rzs  = ( (rzs != undefined) ?  rzs : 2650.00   ) ;
+  this.czs  = ( (czs != undefined) ?  czs : 4000.00   ) ;
+  this.ks   = ( (ks  != undefined) ?  ks  :    3.00   ) ;
 
-  this.rs   = ( (rs != undefined) ?  rs : 2650.00    ) ;
-  this.cs   = ( (cs != undefined) ?  cs : 4000.00    ) ;
-  this.ks   = ( (ks != undefined) ?  ks :    3.00    ) ;
+  this.nzf  = ( (nzf != undefined) ?  nzf :    0.30   ) ;
+  this.rzf  = ( (rzf != undefined) ?  rzf : 1000.00   ) ;
+  this.czf  = ( (czf != undefined) ?  czf : 1450.00   ) ;
+  this.kf   = ( (kf  != undefined) ?  kf  :    7.00   ) ;
 
-  this.rf   = ( (rf != undefined) ?  rf : 1000.00    ) ;
-  this.cf   = ( (cf != undefined) ?  cf : 1450.00    ) ;
-  this.kf   = ( (kf != undefined) ?  kf :    7.00    ) ;
+  this.nzg  = ( (nzg != undefined) ?  nzg :    0.20   ) ;
+  this.rzg  = ( (rzg != undefined) ?  rzg :    1.30   ) ;
+  this.kg   = ( (kg  != undefined) ?  kg  :    1.40   ) ;
 
-  this.kg   = ( (kg != undefined) ?  kg :    1.40    ) ;
+  this.nv   = ( (nv  != undefined) ?  nv  :  100      ) ;
 
-  this.ccm  = undefined ;
-  this.ccs  = undefined ;
-  this.ccf  = undefined ;
-  this.ccg  = undefined ;
-  this.ccp  = undefined ;
+  this.ctu  = undefined ;
+  this.ctm  = undefined ;
+  this.cts  = undefined ;
+  this.ctf  = undefined ;
+  this.ctg  = undefined ;
+  this.ctp  = undefined ;
 
   this.pt   = undefined ;
   this.pe   = undefined ;
   this.pn   = undefined ;
+
+  this.dpt  = undefined ;
+  this.dpe  = undefined ;
+  this.dpn  = undefined ;
+
+  this.ns   = this.nzs ;
+  this.nf   = this.nzf ;
+  this.ng   = this.nzg ;
 
   this.n    = undefined ;
   this.s    = undefined ;
@@ -140,23 +151,74 @@ function lsdynamat( px , ps , pz , nz , sz , pr , vm , wm , rs , cs , ks , rf , 
   this.a    = undefined ;
   this.b    = undefined ;
 
-  var ip    = 0 ;
-  var ipn   = 0 ;
-  var ipx   = ((px - pn) / ps) ;
-  var ips   = undefined ;
+  this.de   = undefined ;
+  this.e    = undefined ;
 
-  for( ip = 0 , this.pn = 0.0 , this.pt = this.pe = this.pz ; this.pt <= px ; this.pt += ps , ++ip )
+  this.rs   = this.rzs ;
+  this.rf   = this.rzf ;
+  this.rg   = this.rzg ;
+
+  let  ip   = undefined ;
+
+
+  for( ip = 0 , this.e = 0.0 , this.pt = this.pe = this.pn = this.pz , this.dpt = this.ps ; this.pt <= this.px ; this.pt += this.dpt , this.pe += this.dpe , this.pn += this.dpn , ++ip )
    {
 
-    this.ccf = csf( this.rf , this.cf , this.kf , this.pn , this.pz ) ;
 
-    this.ccg = cg(  this.pn , this.kg ) ;
+    this.rs  = rrsf( this.rzs , this.czs , this.ks , this.pt , this.pz ) ;
 
-    this.ccs = csf( this.rs , this.cs , this.ks , this.pn , this.pz ) ;
+    this.rf  = rrsf( this.rzf , this.czf , this.kf , this.pn , this.pz ) ;
 
-    this.ccm = cm(  this.pe , this.pr , this.vm , this.wm ) ;
+    this.rg  = rrg(  this.rzg , this.kg  , this.pn , this.pz ) ;
 
-   }
+
+    this.ns  = ( this.nzs * (this.rzs / this.rs) ) ;
+
+    this.nf  = ( this.nzf * (this.rzf / this.rf) ) ;
+
+    this.ng  = ( this.nzg * (this.rzg / this.rg) ) ;
+
+
+    this.n   = ( 1.0 - this.ns ) ;
+
+    this.s   = ( this.nf / this.n ) ;
+
+	   
+
+    this.cts = ctsf( this.rzs , this.czs , this.ks , this.pn , this.pz ) ;
+
+    this.ctf = ctsf( this.rzf , this.czf , this.kf , this.pn , this.pz ) ;
+
+
+    this.ctg = ctg(  this.kg , this.pn ) ;
+
+    this.ctp = ( (this.s * this.ctf) + ((1.0 - this.s) * this.ctg) ) ;
+
+    this.ctm = ctm(  this.vm , this.wm , this.pr , this.pe ) ;
+
+
+    this.a   = biota( this.cts , this.ctm ) ;
+
+    this.b   = bishopb( this.cts , this.ctp , this.ctm , this.n ) ;
+
+
+    this.ctu = ctu( this.ctm , this.a , this.b ) ;
+
+
+    this.dpn = ( this.b * this.dpt ) ;
+
+    this.dpe = ( (1.0 - (this.a * this.b)) * this.dpt ) ;
+
+
+    this.de  = ( this.ctu * this.dpt ) ;
+
+    this.e  += this.de ;
+
+
+   } ; // end for()
+
+
+  console.log( 'pt=' , this.pt , 'e=' , this.e , 'n=' , this.n , 's=' , this.s , 'a=' , this.a , 'b=' , this.b , 'ctu=' , this.ctu , 'ctm=' , this.ctm , 'ctf=' , this.ctf , 'cts=' , this.cts , 'ctg=' , this.ctg ) ;
 
 
   return ;
@@ -168,15 +230,15 @@ function lsdynamat( px , ps , pz , nz , sz , pr , vm , wm , rs , cs , ks , rf , 
  *
  * function biota : Biot factor alpha
  *
- * @param {number} cs - compressibility of the solid constituent
- * @param {number} cm - compressibility of the porous matrix
+ * @param {number} cts - incremental compressibility of the solid constituent
+ * @param {number} ctm - incremental compressibility of the porous matrix
  *
  */
 
-function biota( cs , cm )
+function biota( cts , ctm )
  {
 
-  const a = ( 1.0 - (cs / cm) ) ;
+  const a = ( 1.0 - (cts / ctm) ) ;
 
   return( a ) ;
  
@@ -187,17 +249,17 @@ function biota( cs , cm )
  *
  * function bishopb : Bishop factor b
  *
- * @param {number} cs - compressibility of the solid constituent
- * @param {number} cp - compressibility of the pore content
- * @param {number} cm - compressibility of the porous matrix
- * @param {number} n  - porosity
+ * @param {number} cts - Incremental compressibility of the solid constituent
+ * @param {number} ctp - Incremental compressibility of the pore content
+ * @param {number} ctm - Incremental compressibility of the porous matrix
+ * @param {number} n   - Porosity
  *
  */
 
-function bishopb( cs , cp , cm , n )
+function bishopb( cts , ctp , ctm , n )
  {
 
-  const b = ( 1.0 / (1.0 + (n *(cp - cs) / (cm - cs))) ) ;
+  const b = ( 1.0 / (1.0 + (n * ((ctp - cts) / (ctm - cts)))) ) ;
 
   return( b ) ;
  
@@ -206,7 +268,29 @@ function bishopb( cs , cp , cm , n )
 
 /**
  *
- * function csf : incremental compressibility from the tait equation of state for solids and fluids
+ * function ctu : incremental undrained compressiblity for adiabatic compression of ternary mixture
+ *
+ * @param   {number} ctm - Incremental stiffness of porous matrix
+ * @param   {number} a   - Biot a coefficient
+ * @param   {number} b   - Bishop b coefficient
+ *
+ * @returns {number}
+ *
+ */
+
+function ctu( ctm , a , b )
+ {
+
+  const dedp = ( ctm * (1.0 - (a * b)) ) ;
+
+  return( dedp ) ;
+
+ } ; // end function ctu()
+
+
+/**
+ *
+ * function ctsf : incremental compressibility from the Tait equation of state for solids and fluids
  *
  * @param   {number} rz - Density
  * @param   {number} cz - Wave velocity
@@ -218,21 +302,21 @@ function bishopb( cs , cp , cm , n )
  *
  */
 
-function csf( rz , cz , k , p , pz )
+function ctsf( rz , cz , k , p , pz )
  {
 
   const rcc  = ( rz * cz * cz ) ;
 
-  const dedp = ( 1.0 / ((k * (p - pz)) + rcc) ) ;
+  const dedp = (- 1.0 / ((k * (p - pz)) + rcc) ) ;
 
   return( dedp ) ;
 
- } ; // end function csf()
+ } ; // end function ccsf()
 
 
 /**
  *
- * function rrsf : relative density from the tait equation of state for solids and fluids
+ * function rrsf : relative density from the Tait equation of state for solids and fluids
  *
  * @param   {number} rz - Density
  * @param   {number} cz - Wave velocity
@@ -259,23 +343,23 @@ function rrsf( rz , cz , k , p , pz )
 
 /**
  *
- * function cg : incremental compressiblity for adiabatic compression of gases
+ * function ctg : incremental compressiblity for adiabatic compression of gases
  *
- * @param   {number} p - Pressure
  * @param   {number} k - Exponent
+ * @param   {number} p - Pressure
  *
  * @returns {number}
  *
  */
 
-function cg( p , k )
+function ctg( k , p )
  {
 
-  const dedp = ( 1.0 / (k * p) ) ;
+  const dedp = (- 1.0 / (k * p) ) ;
 
   return( dedp ) ;
 
- } ; // end function cg()
+ } ; // end function ctg()
 
 
 /**
@@ -283,14 +367,15 @@ function cg( p , k )
  * function rrg : relative density for adiabatic compression of gases
  *
  * @param   {number} rz - Initial density
- * @param   {number} p  - Pressure
  * @param   {number} k  - Exponent
+ * @param   {number} p  - Pressure
+ * @param   {number} pz - Initial pressure
  *
  * @returns {number}
  *
  */
 
-function rrg( p , k )
+function rrg( rz , k , p , pz )
  {
 
   const r = ( rz / Math.pow( (p / pz) , (1.0 / k) ) ) ;
@@ -302,7 +387,7 @@ function rrg( p , k )
 
 /**
  *
- * function cm : incremental compressiblity for granular matrix
+ * function ctm : incremental compressiblity for granular matrix
  *
  * @param   {number} pe - Effective pressure
  * @param   {number} pr - Reference pressure
@@ -313,14 +398,14 @@ function rrg( p , k )
  *
  */
 
-function cm( pe , pr , vm , wm )
+function ctm( vm , wm , pe , pr )
  {
 
-  const dedp = ( 1.0 / ((vm * pr) * Math.pow( ((pe + pr) / pr) , wm )) ) ;
+  const dedp = (- 1.0 / ((vm * pr) * Math.pow( ((pe + pr) / pr) , wm )) ) ;
 
   return( dedp ) ;
 
- } ; // end function cm()
+ } ; // end function ctm()
 
 
 /**
@@ -336,7 +421,7 @@ function cm( pe , pr , vm , wm )
  *
  */
 
-function rrm( rz , pe , pr , vm , wm )
+function rrm( rz , vm , wm , pe , pr )
  {
 
   const r = ( rz / Math.exp( (Math.pow( ((pe + pr) / pr) , (1.0 - wm) ) - 1.0) / (vm * (1.0 - wm)) ) ) ;
