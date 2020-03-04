@@ -99,12 +99,12 @@ fs.closeSync( fd ) ;
  *
  */
 
-function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , rzf , czf , kf , nzg , rzg , kg , nv )
+function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , rzf , czf , kf , nzg , rzg , kg , nvs , nvl )
  {
 
   this.pz   = ( (pz  != undefined) ?  pz  :    1.00e5 ) ;
-  this.px   = ( (px  != undefined) ?  px  :    1.00e9 ) ;
-  this.ps   = ( (ps  != undefined) ?  ps  :    1.00e3 ) ;
+  this.px   = ( (px  != undefined) ?  px  :    1.00e6 + this.pz ) ;
+  this.ps   = ( (ps  != undefined) ?  ps  :    1.00e5 ) ;
 
   this.pr   = ( (pr  != undefined) ?  pr  :    1.00e5 ) ;
   this.vm   = ( (vm  != undefined) ?  vm  :    2.00e1 ) ;
@@ -124,7 +124,8 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
   this.rzg  = ( (rzg != undefined) ?  rzg :    1.30   ) ;
   this.kg   = ( (kg  != undefined) ?  kg  :    1.40   ) ;
 
-  this.nv   = ( (nv  != undefined) ?  nv  :  100      ) ;
+  this.nvs  = ( (nvs != undefined) ?  nvs :   10      ) ;
+  this.nvl  = ( (nvl != undefined) ?  nvl :  100      ) ;
 
   this.ctu  = undefined ;
   this.ctm  = undefined ;
@@ -159,9 +160,22 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
   this.rg   = this.rzg ;
 
   let  ip   = undefined ;
+	 
+  let  js   = undefined ;
+  let  jsr  = undefined ;
+  let  jss  = Math.ceil( (this.ptx - this.ptz) / (nvs * this.pts) ) ;
+
+  let  jl   = undefined ;
+  let  jlr  = undefined ;
+  let  jls  = Math.ceil( (this.ptx - this.ptz) / (nvl * this.pts) ) ;
+
+  let  rvs  = new Array( nvs ) ;
+  let  rvl  = new Array( nvl ) ;
+
+  console.log( '        pt=           e=          n=          s=          a=          b=         ctu=         ctm=          ctf=          cts=         ctg=' ) ;
 
 
-  for( ip = 0 , this.e = 0.0 , this.pt = this.pe = this.pn = this.pz , this.dpt = this.ps ; this.pt <= this.px ; this.pt += this.dpt , this.pe += this.dpe , this.pn += this.dpn , ++ip )
+  for( ip = js = jl = jsr = jlr = 0 , this.e = 0.0 , this.pt = this.pe = this.pn = this.pz , this.dpt = this.ps ; this.pt <= this.px ; this.pt += this.dpt , this.pe += this.dpe , this.pn += this.dpn , ++ip )
    {
 
 
@@ -183,7 +197,6 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
 
     this.s   = ( this.nf / this.n ) ;
 
-	   
 
     this.cts = ctsf( this.rzs , this.czs , this.ks , this.pn , this.pz ) ;
 
@@ -204,6 +217,8 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
 
     this.ctu = ctu( this.ctm , this.a , this.b ) ;
 
+    console.log( (this.pt - this.pz).toExponential(6) , this.e.toExponential(6) , this.n.toExponential(6) , this.s.toExponential(6) , this.a.toExponential(6) , this.b.toExponential(6) , this.ctu.toExponential(6) , this.ctm.toExponential(6) , this.ctf.toExponential(6) , this.cts.toExponential(6) , this.ctg.toExponential(6) ) ;
+
 
     this.dpn = ( this.b * this.dpt ) ;
 
@@ -214,11 +229,7 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
 
     this.e  += this.de ;
 
-
    } ; // end for()
-
-
-  console.log( 'pt=' , this.pt , 'e=' , this.e , 'n=' , this.n , 's=' , this.s , 'a=' , this.a , 'b=' , this.b , 'ctu=' , this.ctu , 'ctm=' , this.ctm , 'ctf=' , this.ctf , 'cts=' , this.cts , 'ctg=' , this.ctg ) ;
 
 
   return ;
@@ -307,7 +318,7 @@ function ctsf( rz , cz , k , p , pz )
 
   const rcc  = ( rz * cz * cz ) ;
 
-  const dedp = (- 1.0 / ((k * (p - pz)) + rcc) ) ;
+  const dedp = ( 1.0 / ((k * (p - pz)) + rcc) ) ;
 
   return( dedp ) ;
 
@@ -355,7 +366,7 @@ function rrsf( rz , cz , k , p , pz )
 function ctg( k , p )
  {
 
-  const dedp = (- 1.0 / (k * p) ) ;
+  const dedp = ( 1.0 / (k * p) ) ;
 
   return( dedp ) ;
 
@@ -401,7 +412,7 @@ function rrg( rz , k , p , pz )
 function ctm( vm , wm , pe , pr )
  {
 
-  const dedp = (- 1.0 / ((vm * pr) * Math.pow( ((pe + pr) / pr) , wm )) ) ;
+  const dedp = ( 1.0 / ((vm * pr) * Math.pow( ((pe + pr) / pr) , wm )) ) ;
 
   return( dedp ) ;
 
