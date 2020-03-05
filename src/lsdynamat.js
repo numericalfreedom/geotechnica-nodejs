@@ -146,14 +146,21 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
   this.nf   = this.nzf ;
   this.ng   = this.nzg ;
 
-  this.n    = undefined ;
-  this.s    = undefined ;
+  this.n    = ( this.nf + this.ng ) ;
+  this.s    = ( this.nf / this.n  ) ;
+
+  this.dns  = undefined ;
+  this.dnf  = undefined ;
+  this.dng  = undefined ;
+
+  this.dn   = undefined ;
+  this.ds   = undefined ;
 
   this.a    = undefined ;
   this.b    = undefined ;
 
-  this.de   = undefined ;
-  this.e    = undefined ;
+  this.eps  = undefined ;
+  this.deps = undefined ;
 
   this.rs   = this.rzs ;
   this.rf   = this.rzf ;
@@ -163,11 +170,11 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
 	 
   let  js   = undefined ;
   let  jsr  = undefined ;
-  let  jss  = Math.ceil( (this.ptx - this.ptz) / (nvs * this.pts) ) ;
+  let  jsn  = Math.ceil( (this.ptx - this.ptz) / (nvs * this.pts) ) ;
 
   let  jl   = undefined ;
   let  jlr  = undefined ;
-  let  jls  = Math.ceil( (this.ptx - this.ptz) / (nvl * this.pts) ) ;
+  let  jln  = Math.ceil( (this.ptx - this.ptz) / (nvl * this.pts) ) ;
 
   let  rvs  = new Array( nvs ) ;
   let  rvl  = new Array( nvl ) ;
@@ -175,64 +182,81 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
   console.log( '        pt=           e=          n=          s=          a=          b=         ctu=         ctm=          ctf=          cts=         ctg=' ) ;
 
 
-  for( ip = js = jl = jsr = jlr = 0 , this.e = 0.0 , this.pt = this.pe = this.pn = this.pz , this.dpt = this.ps ; this.pt <= this.px ; this.pt += this.dpt , this.pe += this.dpe , this.pn += this.dpn , ++ip )
+  for( ip = js = jsr = jl = jlr = 0 , this.eps = 0.0 , this.pt = this.pe = this.pn = this.pz , this.dpt = this.ps ; this.pt <= this.px ; ++ip , ((js = (++js % jsn)) || (++jsr)) , ((jl = (++jl % jln)) || (++jlr)) )
    {
 
-
-    this.rs  = rrsf( this.rzs , this.czs , this.ks , this.pt , this.pz ) ;
-
-    this.rf  = rrsf( this.rzf , this.czf , this.kf , this.pn , this.pz ) ;
-
-    this.rg  = rrg(  this.rzg , this.kg  , this.pn , this.pz ) ;
+    if( ip )
+     {
 
 
-    this.ns  = ( this.nzs * (this.rzs / this.rs) ) ;
+      this.cts = ctsf( this.rzs , this.czs , this.ks , this.pn , this.pz ) ;
 
-    this.nf  = ( this.nzf * (this.rzf / this.rf) ) ;
+      this.ctf = ctsf( this.rzf , this.czf , this.kf , this.pn , this.pz ) ;
 
-    this.ng  = ( this.nzg * (this.rzg / this.rg) ) ;
+      this.ctg = ctg(  this.kg , this.pn ) ;
 
+      this.ctp = ( (this.s * this.ctf) + ((1.0 - this.s) * this.ctg) ) ;
 
-    this.n   = ( 1.0 - this.ns ) ;
-
-    this.s   = ( this.nf / this.n ) ;
-
-
-    this.cts = ctsf( this.rzs , this.czs , this.ks , this.pn , this.pz ) ;
-
-    this.ctf = ctsf( this.rzf , this.czf , this.kf , this.pn , this.pz ) ;
+      this.ctm = ctm(  this.vm , this.wm , this.pr , this.pe ) ;
 
 
-    this.ctg = ctg(  this.kg , this.pn ) ;
+      this.a    = biota( this.cts , this.ctm ) ;
 
-    this.ctp = ( (this.s * this.ctf) + ((1.0 - this.s) * this.ctg) ) ;
+      this.b    = bishopb( this.cts , this.ctp , this.ctm , this.n ) ;
 
-    this.ctm = ctm(  this.vm , this.wm , this.pr , this.pe ) ;
-
-
-    this.a   = biota( this.cts , this.ctm ) ;
-
-    this.b   = bishopb( this.cts , this.ctp , this.ctm , this.n ) ;
+	     
+      this.ctu  = ctu( this.ctm , this.a , this.b ) ;
 
 
-    this.ctu = ctu( this.ctm , this.a , this.b ) ;
+      this.pt  += this.dpt ;
 
-    console.log( (this.pt - this.pz).toExponential(6) , this.e.toExponential(6) , this.n.toExponential(6) , this.s.toExponential(6) , this.a.toExponential(6) , this.b.toExponential(6) , this.ctu.toExponential(6) , this.ctm.toExponential(6) , this.ctf.toExponential(6) , this.cts.toExponential(6) , this.ctg.toExponential(6) ) ;
+      this.pn  += ( this.dpn  = (this.b * this.dpt) ) ;
 
-
-    this.dpn = ( this.b * this.dpt ) ;
-
-    this.dpe = ( (1.0 - (this.a * this.b)) * this.dpt ) ;
+      this.pe  += ( this.dpe  = (this.dpt - (this.a * this.dpn)) ) ;
 
 
-    this.de  = ( this.ctu * this.dpt ) ;
+      this.ns  += ( this.dns  = (- ((1.0 - this.n) * this.cts) - (this.cts * this.dpe)) ) ;
 
-    this.e  += this.de ;
+      this.nf  += ( this.dnf  = (- this.nf * this.ctf * this.dpn) ) ;
+
+      this.ng  += ( this.dng  = (- this.ng * this.ctg * this.dpn) ) ;
+
+
+      this.n    = ( this.nf + this.ng ) ;
+
+      this.s    = ( this.nf / this.n ) ;
+
+
+      this.eps += ( this.deps = (this.ctu * this.dpt) ) ;
+
+
+      this.rs   = rrsf( this.rzs , this.czs , this.ks , this.pt , this.pz ) ;
+
+      this.rf   = rrsf( this.rzf , this.czf , this.kf , this.pn , this.pz ) ;
+
+      this.rg   = rrg(  this.rzg , this.kg  , this.pn , this.pz ) ;
+
+
+     } ; // end if() -
+
+
+    if( ! js )
+
+      rvs[jsr] = [ this.eps , (this.pt - this.pz) , this.n , this.s , this.ns , this.nf , this.ng ] ;
+
+
+    if( ! jl )
+
+      rvs[jlr] = [ this.eps , (this.pt - this.pz) , this.n , this.s , this.ns , this.nf , this.ng ] ;
+
+
+//  console.log( (this.pt - this.pz).toExponential(6) , this.e.toExponential(6) , this.n.toExponential(6) , this.s.toExponential(6) , this.a.toExponential(6) , this.b.toExponential(6) , this.ctu.toExponential(6) , this.ctm.toExponential(6) , this.ctf.toExponential(6) , this.cts.toExponential(6) , this.ctg.toExponential(6) ) ;
+
 
    } ; // end for()
 
 
-  return ;
+  return( [ rvs , rvl ] ) ;
 
  }
 
