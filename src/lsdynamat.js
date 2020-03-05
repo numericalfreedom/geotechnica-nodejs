@@ -2,7 +2,7 @@
 
 const fs = require( 'fs' ) ;
 
-module.exports = { lsdynamat , biota , bishopb , ctu , ctsf , rrsf , ctg , rrg , ctm , rrm } ;
+module.exports = { lsdynamat , runlsdynamat , lsdynamat005 , biota , bishopb , ctu , ctsf , rrsf , ctg , rrg , ctm , rrm } ;
 
 const mid  =  0 ;
 const ro   =  1 ;
@@ -95,7 +95,7 @@ fs.closeSync( fd ) ;
  * @param   {number} px - Minimum deformation
  * @param   {number} ex - Maximum deformation
  *
- * @returns {Array}
+ * @returns {Object}
  *
  */
 
@@ -103,7 +103,7 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
  {
 
   this.pz   = ( (pz  != undefined) ?  pz  :    1.00e5 ) ;
-  this.px   = ( (px  != undefined) ?  px  :    1.00e6 + this.pz ) ;
+  this.px   = ( (px  != undefined) ?  px  :    1.00e7 ) ;
   this.ps   = ( (ps  != undefined) ?  ps  :    1.00e5 ) ;
 
   this.pr   = ( (pr  != undefined) ?  pr  :    1.00e5 ) ;
@@ -112,13 +112,13 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
 
   this.nzs  = ( (nzs != undefined) ?  nzs :    0.50   ) ;
   this.rzs  = ( (rzs != undefined) ?  rzs : 2650.00   ) ;
-  this.czs  = ( (czs != undefined) ?  czs : 4000.00   ) ;
-  this.ks   = ( (ks  != undefined) ?  ks  :    3.00   ) ;
+  this.czs  = ( (czs != undefined) ?  czs : 6319.00   ) ;
+  this.ks   = ( (ks  != undefined) ?  ks  :    7.00   ) ;
 
   this.nzf  = ( (nzf != undefined) ?  nzf :    0.30   ) ;
   this.rzf  = ( (rzf != undefined) ?  rzf : 1000.00   ) ;
-  this.czf  = ( (czf != undefined) ?  czf : 1450.00   ) ;
-  this.kf   = ( (kf  != undefined) ?  kf  :    7.00   ) ;
+  this.czf  = ( (czf != undefined) ?  czf : 1460.00   ) ;
+  this.kf   = ( (kf  != undefined) ?  kf  :    3.00   ) ;
 
   this.nzg  = ( (nzg != undefined) ?  nzg :    0.20   ) ;
   this.rzg  = ( (rzg != undefined) ?  rzg :    1.30   ) ;
@@ -149,10 +149,6 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
   this.n    = ( this.nf + this.ng ) ;
   this.s    = ( this.nf / this.n  ) ;
 
-  this.dns  = undefined ;
-  this.dnf  = undefined ;
-  this.dng  = undefined ;
-
   this.dn   = undefined ;
   this.ds   = undefined ;
 
@@ -166,46 +162,84 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
   this.rf   = this.rzf ;
   this.rg   = this.rzg ;
 
+  this.rrs  = this.rzs ;
+  this.rrf  = this.rzf ;
+  this.rrg  = this.rzg ;
+
+  this.rz   = ( (this.nzs * this.rzs) + (this.nzf * this.rzf) + (this.nzg * this.rzg) );
+  this.rr   = this.rz ;
+  this.r    = this.rz ;
+
+  this.runlsdynamat = runlsdynamat ;
+  this.lsdynamat005 = lsdynamat005 ;
+
+  return ;
+
+ }
+
+
+/**
+ *
+ * function runlsdynamat: compute material cards for LSDYNA
+ *
+ * @returns {Array}
+ *
+ */
+
+function runlsdynamat()
+ {
+
+
+  this.ns   = this.nzs ;
+  this.nf   = this.nzf ;
+  this.ng   = this.nzg ;
+
+  this.n    = ( this.nf + this.ng ) ;
+  this.s    = ( this.nf / this.n  ) ;
+
+  this.rs   = this.rzs ;
+  this.rf   = this.rzf ;
+  this.rg   = this.rzg ;
+
   let  ip   = undefined ;
 	 
   let  js   = undefined ;
   let  jsr  = undefined ;
-  let  jsn  = Math.ceil( (this.ptx - this.ptz) / (nvs * this.pts) ) ;
+  let  jsn  = Math.ceil( (this.px - this.pz) / (this.nvs * this.ps) ) ;
 
   let  jl   = undefined ;
   let  jlr  = undefined ;
-  let  jln  = Math.ceil( (this.ptx - this.ptz) / (nvl * this.pts) ) ;
+  let  jln  = Math.ceil( (this.px - this.pz) / (this.nvl * this.ps) ) ;
 
-  let  rvs  = new Array( nvs ) ;
-  let  rvl  = new Array( nvl ) ;
-
-  console.log( '        pt=           e=          n=          s=          a=          b=         ctu=         ctm=          ctf=          cts=         ctg=' ) ;
+  let  rvs  = new Array( this.nvs ) ;
+  let  rvl  = new Array( this.nvl ) ;
 
 
   for( ip = js = jsr = jl = jlr = 0 , this.eps = 0.0 , this.pt = this.pe = this.pn = this.pz , this.dpt = this.ps ; this.pt <= this.px ; ++ip , ((js = (++js % jsn)) || (++jsr)) , ((jl = (++jl % jln)) || (++jlr)) )
    {
 
-    if( ip )
-     {
+
+    this.cts = ctsf( this.rzs , this.czs , this.ks , this.pt , this.pz ) ;
+
+    this.ctf = ctsf( this.rzf , this.czf , this.kf , this.pn , this.pz ) ;
+
+    this.ctg = ctg(  this.kg , this.pn ) ;
+
+    this.ctp = ( (this.s * this.ctf) + ((1.0 - this.s) * this.ctg) ) ;
+
+    this.ctm = ctm(  this.vm , this.wm , this.pr , this.pe ) ;
 
 
-      this.cts = ctsf( this.rzs , this.czs , this.ks , this.pn , this.pz ) ;
+    this.a    = biota( this.cts , this.ctm ) ;
 
-      this.ctf = ctsf( this.rzf , this.czf , this.kf , this.pn , this.pz ) ;
-
-      this.ctg = ctg(  this.kg , this.pn ) ;
-
-      this.ctp = ( (this.s * this.ctf) + ((1.0 - this.s) * this.ctg) ) ;
-
-      this.ctm = ctm(  this.vm , this.wm , this.pr , this.pe ) ;
-
-
-      this.a    = biota( this.cts , this.ctm ) ;
-
-      this.b    = bishopb( this.cts , this.ctp , this.ctm , this.n ) ;
+    this.b    = bishopb( this.cts , this.ctp , this.ctm , this.n ) ;
 
 	     
-      this.ctu  = ctu( this.ctm , this.a , this.b ) ;
+    this.ctu  = ctu( this.ctm , this.a , this.b ) ;
+
+
+    if( ip )
+     {
 
 
       this.pt  += this.dpt ;
@@ -215,11 +249,14 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
       this.pe  += ( this.dpe  = (this.dpt - (this.a * this.dpn)) ) ;
 
 
-      this.ns  += ( this.dns  = (- ((1.0 - this.n) * this.cts) - (this.cts * this.dpe)) ) ;
+      this.eps += ( this.deps = (this.ctu * this.dpt) ) ;
 
-      this.nf  += ( this.dnf  = (- this.nf * this.ctf * this.dpn) ) ;
 
-      this.ng  += ( this.dng  = (- this.ng * this.ctg * this.dpn) ) ;
+      this.ns  += ( this.dns  = (- ((1.0 - this.n) * this.cts) - (this.cts * this.dpe)) - (this.ns * this.deps) ) ;
+
+      this.nf  += ( this.dnf  = (- this.nf * this.ctf * this.dpn) - (this.nf * this.deps) ) ;
+
+      this.ng  += ( this.dng  = (- this.ng * this.ctg * this.dpn) - (this.ng * this.deps) ) ;
 
 
       this.n    = ( this.nf + this.ng ) ;
@@ -227,14 +264,22 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
       this.s    = ( this.nf / this.n ) ;
 
 
-      this.eps += ( this.deps = (this.ctu * this.dpt) ) ;
+      this.rrs  = rrsf( this.rzs , this.czs , this.ks , this.pt , this.pz ) ;
 
+      this.rrf  = rrsf( this.rzf , this.czf , this.kf , this.pn , this.pz ) ;
 
-      this.rs   = rrsf( this.rzs , this.czs , this.ks , this.pt , this.pz ) ;
+      this.rrg  = rrg(  this.rzg , this.kg  , this.pn , this.pz ) ;
 
-      this.rf   = rrsf( this.rzf , this.czf , this.kf , this.pn , this.pz ) ;
-
-      this.rg   = rrg(  this.rzg , this.kg  , this.pn , this.pz ) ;
+      this.rr   = ( (this.ns * this.rs) + (this.nf * this.rf) + (this.ng * this.rg) );
+      
+      
+      this.rs   = ( (this.nzs * this.rzs) / this.ns ) ;
+      
+      this.rf   = ( (this.nzf * this.rzf) / this.nf ) ;
+      
+      this.rg   = ( (this.nzg * this.rzg) / this.ng ) ;
+      
+      this.r    = ( this.rz / (this.ns + this.nf + this.ng) ) ;
 
 
      } ; // end if() -
@@ -242,15 +287,12 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
 
     if( ! js )
 
-      rvs[jsr] = [ this.eps , (this.pt - this.pz) , this.n , this.s , this.ns , this.nf , this.ng ] ;
+      rvs[jsr] = [ this.eps , (this.pt - this.pz) , (this.pe - this.pz) , (this.pn - this.pz) , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rr , this.rs , this.rf , this.rg , this.r ] ;
 
 
     if( ! jl )
 
-      rvs[jlr] = [ this.eps , (this.pt - this.pz) , this.n , this.s , this.ns , this.nf , this.ng ] ;
-
-
-//  console.log( (this.pt - this.pz).toExponential(6) , this.e.toExponential(6) , this.n.toExponential(6) , this.s.toExponential(6) , this.a.toExponential(6) , this.b.toExponential(6) , this.ctu.toExponential(6) , this.ctm.toExponential(6) , this.ctf.toExponential(6) , this.cts.toExponential(6) , this.ctg.toExponential(6) ) ;
+      rvl[jlr] = [ this.eps , (this.pt - this.pz) , (this.pe - this.pz) , (this.pn - this.pz) , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rr , this.rs , this.rf , this.rg , this.r ] ;
 
 
    } ; // end for()
@@ -258,6 +300,25 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
 
   return( [ rvs , rvl ] ) ;
 
+
+ } ; // end function runlsdynamat()
+
+
+/**
+ *
+ * function lsdynamat005 : MAT_005 record
+ *
+ * @param {string} fn  - File name
+ * @param {Array}  rvs - Short array of results for material record
+ * @param {Array}  rvl - Long array of results for load curve
+ *
+ */
+
+function lsdynamat005( fn , rvs , rvl )
+ {
+
+  return ;
+	 
  }
 
 
@@ -368,7 +429,7 @@ function rrsf( rz , cz , k , p , pz )
 
   const rcc  = ( rz * cz * cz ) ;
 
-  const r    = ( rz / Math.pow( ((k * ((p - pz) / rcc)) + 1.0) , (1.0 / k) ) ) ;
+  const r    = ( rz / Math.pow( ((k * ((p - pz) / rcc)) + 1.0) , (- (1.0 / k)) ) ) ;
 
   return( r ) ;
 
@@ -413,7 +474,7 @@ function ctg( k , p )
 function rrg( rz , k , p , pz )
  {
 
-  const r = ( rz / Math.pow( (p / pz) , (1.0 / k) ) ) ;
+  const r = ( rz / Math.pow( (p / pz) , (- (1.0 / k)) ) ) ;
 
   return( r ) ;
 
