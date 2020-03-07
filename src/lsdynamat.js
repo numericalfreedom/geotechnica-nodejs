@@ -89,12 +89,34 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
   this.rr   = this.rz ;
   this.r    = this.rz ;
 
+  this.dimension    = dimension ;
   this.runlsdynamat = runlsdynamat ;
   this.lsdynamat005 = lsdynamat005 ;
 
   return ;
 
  }
+
+
+/**
+ *
+ * function dimension : dimension transformation
+ *
+ * @param {number} mr  - mass ratio
+ * @param {number} mx  - mass exponent 
+ * @param {number} lr  - length ratio
+ * @param {number} lx  - length exponent 
+ * @param {number} tr  - time ratio
+ * @param {number} tx  - time exponent 
+ *
+ */
+
+function dimension( mr , mx , lr , lx , tr , tx )
+ {
+
+  return( Math.pow( mr , mx ) * Math.pow( lr , lx ) * Math.pow( tr , tx ) ) ;
+	 
+ } ; // end function dimension()
 
 
 /**
@@ -222,27 +244,6 @@ function runlsdynamat()
 
 
  } ; // end function runlsdynamat()
-
-
-/**
- *
- * function dimension : dimension transformation
- *
- * @param {number} mr  - mass ratio
- * @param {number} mx  - mass exponent 
- * @param {number} lr  - length ratio
- * @param {number} lx  - length exponent 
- * @param {number} tr  - time ratio
- * @param {number} tx  - time exponent 
- *
- */
-
-function dimension( mr , mx , lr , lx , tr , tx )
- {
-
-  return( Math.pow( mr , mx ) * Math.pow( lr , lx ) * Math.pow( tr , tx ) ) ;
-	 
- } ; // end function dimension()
 
 
 /**
