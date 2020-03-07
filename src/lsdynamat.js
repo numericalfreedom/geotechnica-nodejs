@@ -67,6 +67,12 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
 
   this.dv   = undefined ;
 
+  this.vzs  = this.nzs ;
+  this.vzf  = this.nzf ;
+  this.vzg  = this.nzg ;
+  
+  this.vz   = ( this.vzs + this.vzf + this.vzg ) ; 
+
   this.vs   = this.nzs ;
   this.vf   = this.nzf ;
   this.vg   = this.nzg ;
@@ -93,9 +99,9 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
   this.eps  = undefined ;
   this.deps = undefined ;
 
-  this.rs   = this.rzs ;
-  this.rf   = this.rzf ;
-  this.rg   = this.rzg ;
+  this.rs   = this.nzs ;
+  this.rf   = this.nzf ;
+  this.rg   = this.nzg ;
 
   this.rrs  = this.rzs ;
   this.rrf  = this.rzf ;
@@ -159,9 +165,11 @@ function runlsdynamat()
   this.n    = ( this.nf + this.ng ) ;
   this.s    = ( this.nf / this.n  ) ;
 
-  this.rs   = this.rzs ;
-  this.rf   = this.rzf ;
-  this.rg   = this.rzg ;
+  this.rs   = this.nzs ;
+  this.rf   = this.nzf ;
+  this.rg   = this.nzg ;
+
+  this.r    = ( this.rs + this.rf + this.rg ) ;
 
   let  ip   = undefined ;
 	 
@@ -214,14 +222,14 @@ function runlsdynamat()
       this.eps += ( this.deps = (this.ctu * this.dpt) ) ;
 
 
-      this.vf  += ( this.dvf  =  (- (this.nf * this.ctf * this.dpn)) ) ;
+      this.vf  += ( this.dvf  = (this.v * (- (this.nf * this.ctf * this.dpn))) ) ;
 
-      this.vg  += ( this.dvg  =  (- (this.ng * this.ctg * this.dpn)) ) ;
+      this.vg  += ( this.dvg  = (this.v * (- (this.ng * this.ctg * this.dpn))) ) ;
 
-      this.vs  += ( this.dvs  = ((- (this.ns * this.cts * this.dpn)) - (this.cts * this.dpe)) ) ;
+      this.vs  += ( this.dvs  = (this.v * ((- (this.ns * this.cts * this.dpn)) - (this.cts * this.dpe))) ) ;
 
 
-      this.v   += ( this.dv   = ((- (this.cts * this.dpn)) - (this.ctm * this.dpe)) ) ;
+      this.v   += ( this.dv   = (this.v * ((- (this.cts * this.dpn)) - (this.ctm * this.dpe))) ) ;
 
 
 //    this.ns  += ( this.dns  = (((- (this.ns * this.cts * this.dpn)) - (this.cts * this.dpe) - (this.ns * this.deps) )) ) ;
@@ -249,17 +257,18 @@ function runlsdynamat()
 
       this.rrg  = rrg(  this.rzg , this.kg  , this.pn , this.pz ) ;
 
-      this.rr   = ( (this.ns * this.rs) + (this.nf * this.rf) + (this.ng * this.rg) );
+
+      this.rr   = ( (this.ns * this.rrs) + (this.nf * this.rrf) + (this.ng * this.rrg) );
+      
+
+      this.rs   = ( (this.rzs / this.rrs) * this.nzs ) ;
+      
+      this.rf   = ( (this.rzf / this.rrf) * this.nzf ) ;
+      
+      this.rg   = ( (this.rzg / this.rrg) * this.nzg ) ;
       
       
-      this.rs   = ( (this.nzs * this.rzs) / this.ns ) ;
-      
-      this.rf   = ( (this.nzf * this.rzf) / this.nf ) ;
-      
-      this.rg   = ( (this.nzg * this.rzg) / this.ng ) ;
-      
-      
-      this.r    = ( this.rz / (this.ns + this.nf + this.ng) ) ;
+      this.r    = ( this.rs + this.rf + this.rg ) ;
 
 
      } ; // end if() -
