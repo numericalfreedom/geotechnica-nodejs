@@ -61,6 +61,22 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
   this.dpe  = undefined ;
   this.dpn  = undefined ;
 
+  this.dvs  = undefined ;
+  this.dvf  = undefined ;
+  this.dvg  = undefined ;
+
+  this.dv   = undefined ;
+
+  this.vs   = this.nzs ;
+  this.vf   = this.nzf ;
+  this.vg   = this.nzg ;
+  
+  this.v    = ( this.vs + this.vf + this.vg ) ; 
+
+  this.dns  = undefined ;
+  this.dnf  = undefined ;
+  this.dng  = undefined ;
+
   this.ns   = this.nzs ;
   this.nf   = this.nzf ;
   this.ng   = this.nzg ;
@@ -130,7 +146,12 @@ function dimension( mr , mx , lr , lx , tr , tx )
 function runlsdynamat()
  {
 
+  this.vs   = this.nzs ;
+  this.vf   = this.nzf ;
+  this.vg   = this.nzg ;
 
+  this.v    = ( this.vs + this.vf + this.vg ) ; 
+  
   this.ns   = this.nzs ;
   this.nf   = this.nzf ;
   this.ng   = this.nzg ;
@@ -193,13 +214,30 @@ function runlsdynamat()
       this.eps += ( this.deps = (this.ctu * this.dpt) ) ;
 
 
-      this.ns  += ( this.dns  = (((- (this.ns * this.cts * this.dpn)) - (this.cts * this.dpe) - (this.ns * this.deps) )) ) ;
+      this.vf  += ( this.dvf  =  (- (this.nf * this.ctf * this.dpn)) ) ;
 
-      this.nf  += ( this.dnf  = (((- (this.nf * this.ctf * this.dpn)) - (this.nf * this.deps))) ) ;
+      this.vg  += ( this.dvg  =  (- (this.ng * this.ctg * this.dpn)) ) ;
 
-      this.ng  += ( this.dng  = (((- (this.ng * this.ctg * this.dpn)) - (this.ng * this.deps))) ) ;
+      this.vs  += ( this.dvs  = ((- (this.ns * this.cts * this.dpn)) - (this.cts * this.dpe)) ) ;
 
 
+      this.v   += ( this.dv   = ((- (this.cts * this.dpn)) - (this.ctm * this.dpe)) ) ;
+
+
+//    this.ns  += ( this.dns  = (((- (this.ns * this.cts * this.dpn)) - (this.cts * this.dpe) - (this.ns * this.deps) )) ) ;
+
+//    this.nf  += ( this.dnf  = (((- (this.nf * this.ctf * this.dpn)) - (this.nf * this.deps))) ) ;
+
+//    this.ng  += ( this.dng  = (((- (this.ng * this.ctg * this.dpn)) - (this.ng * this.deps))) ) ;
+
+
+      this.nf   = ( this.vf / this.v ) ;
+      
+      this.ng   = ( this.vg / this.v ) ;
+      
+      this.ns   = ( this.vs / this.v ) ;
+   
+      
       this.n    = ( this.nf + this.ng ) ;
 
       this.s    = ( this.nf / this.n ) ;
