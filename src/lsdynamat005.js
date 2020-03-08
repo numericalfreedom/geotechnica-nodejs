@@ -30,37 +30,134 @@ const a1lx  = (- 1.0 ) ;
 const a1tx  = ( -2.0 ) ;
 const a1dtf = mat005.dimension( mr , a1mx , lr , a1lx , tr , a1tx ) ;
 
-const rzsn  =   10     ;
-const rzn   = 1800.00  ;
-const rzx   = 2100.00  ;
-const rzs   = ( (rzx - rzn) / rzsn ) ;
+const nznn  =    1     ;
+const nzn   =    0.20  ;
+const nzx   =    0.50  ;
+const nzss  = ( (nzx - nzn) / nznn ) ;
 
-const szsn  =   10     ;
-const szn   =    0.00  ;
-const szx   =    1.00  ;
-const szs   = ( (szx - szn) / szsn ) ;
+const sznn  =    1     ;
+const szn   =    0.10  ;
+const szx   =    0.90  ;
+const szss  = ( (szx - szn) / sznn ) ;
 
-const [ rs , rl ]  = mat005.lsdynamat005() ;
+const mid   =  0 ;
+const ro    =  1 ;
+const g     =  2 ;
+const kun   =  3 ;
+const a0    =  4 ;
+const a1    =  5 ;
+const a2    =  6 ;
+const pc    =  7 ;
+const vcr   =  8 ;
+const ref   =  9 ;
+const lcid  = 10 ;
+
+const gv    = 1.000e9 ;
+const kunv  = 1.000e9 ;
+const a0v   = 3.400e9 ;
+const a1v   = 7.033e4 ;
+const a2v   = 0.300   ;
+const pcv   = 0.000   ;
+const vcrv  = 0 ;
+const refv  = 0 ;
+
+const rzs    = 2650.00 ;
+const rzf    = 1000.00 ;
+const rzg    =    1.30 ;
+
+const rvsl  = 11 ;
+const rvll  = 101 ;
+
+const mfnx  = '.key' ;
+const lfnx  = '.dat' ;
+
+var   rdvs  = new Array( rvsl ) ;
+var   rdvl  = new Array( rvll ) ;
+
+for( i = 0 ; i < rvsl ; rdvs[i++] = [ undefined , undefined ] ) ;
+
+for( i = 0 ; i < rvll ; rdvl[i++] = [ undefined , undefined ] ) ;
+
+var   pv     = undefined ;
+var   rvs    = undefined ;
+var   rvl    = undefined ;
+
+var   midv   = undefined ;
+var   midbs  = 'M' ;
+var   midrz  = undefined ;
+var   midsz  = undefined ;
+
+var   lcidv  = undefined ;
+var   lcidbs = 'L' ;
+
+var   nz     = undefined ;
+var   sz     = undefined ;
+
+var   nzs    = undefined ;
+var   nzf    = undefined ;
+var   nzg    = undefined ;
+
+var   rz     = undefined ;
+
+
+for( nz = nzn ; nz <= nzx ; nz += nzss )
+ {
+	 
+  for( sz = szn ; sz <= szx ; sz += szss )
+   {
+
+    mat005.nzs = ( nzs = (1.0 - nz) ) ;
+
+    mat005.nzf = ( nzf = (nz * sz) ) ;
+
+    mat005.nzg = ( nzg  = (nz * (1.0 - sz)) ) ;
+
+    rz = ( (nzs * rzs) + (nzf * rzf) + (nzg * rzg) ) ;
+
+    midrz = String( Math.trunc( rz / 10 ) ) ;
+
+    midsz = String( Math.trunc( sz * 100 ) ).padStart( 3 , '0' ) ;
+
+    midv  = ( midbs  + '_' + midrz + '_' + midsz ) ;
+
+    lcidv = ( lcidbs + '_' + midrz + '_' + midsz ) ;
+   
+    [ rvs , rvl ]  = mat005.runlsdynamat() ;
+    
+    pv = [ midv , (rz * rdtf) , (gv * sdtf) , (kunv * sdtf) , (a0v * a0dtf) , (a1v * a1dtf) , a2v , (pcv * sdtf) , vcrv , refv , lcidv ] ;
+
+    for( i = 0 ; i < rvsl ; rdvs[i][0] = rvs[i][0] , rdvs[i][1] = (rvs[i++][1] * sdtf) ) ;
+
+    for( i = 0 ; i < rvll ; rdvl[i][0] = rvl[i][0] , rdvl[i][1] = (rvl[i++][1] * sdtf) ) ;
+
+    mat005.lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rvl ) ;
+
+   } ; // end for()
+
+ } ; // end for()
+
 
 var i    = undefined ;
 var j    = undefined ;
 var line = undefined ;
 
-console.log( '           e=          pt=          pe=          pn=           n=           s=           a=           b=          ns=          nf=          ng=         rrs=         rrf=         rrg=          rr=          rs=          rf=          rg=           r=        reps=' ) ;
-console.log( '          (1)          (2)          (3)          (4)          (5)          (6)          (7)          (8)          (9)         (10)         (11)         (12)         (13)         (14)         (15)         (16)         (17)         (18)         (19)         (20)' ) ;
+
+console.log( '           e=          pt=          pe=          pn=           n=           s=           a=           b=          ns=          nf=          ng=         rrs=         rrf=         rrg=         rrm=          rr=          rs=          rf=          rg=           r=        reps=' ) ;
+console.log( '          (1)          (2)          (3)          (4)          (5)          (6)          (7)          (8)          (9)         (10)         (11)         (12)         (13)         (14)         (15)         (16)         (17)         (18)         (19)         (20)         (21)' ) ;
+
 
 if( short )
  
-  for( i = 0 ; i < rs.length ; ++i , console.log( line ) )
+  for( i = 0 ; i < rvs.length ; ++i , console.log( line ) )
 
-    for( line = '' , j = 0 ; j < rs[0].length ; ++j )
+    for( line = '' , j = 0 ; j < rvs[0].length ; ++j )
 
-      line += ( '  ' + rs[i][j].toExponential(6) ) ;
+      line += ( '  ' + rvs[i][j].toExponential(6) ) ;
      
 else
 
-  for( i = 0 ; i < rl.length ; ++i , console.log( line ) )
+  for( i = 0 ; i < rvl.length ; ++i , console.log( line ) )
 
-    for( line = '' , j = 0 ; j < rl[0].length ; ++j )
+    for( line = '' , j = 0 ; j < rvl[0].length ; ++j )
 
-      line += ( '  ' + rl[i][j].toExponential(6) ) ;
+      line += ( '  ' + rvl[i][j].toExponential(6) ) ;

@@ -257,8 +257,7 @@ function runlsdynamat()
 
       this.rrm  = rrm(  this.rzm , this.vm  , this.wm , this.pe , this.pz ) ;
 
-
-      // this.rrm  = ( this.ns * this.rrs ) ;
+      this.rrm  = ( this.ns * this.rrs ) ;
 
 
       this.rr   = ( (this.ns * this.rrs) + (this.nf * this.rrf) + (this.ng * this.rrg) );
@@ -515,7 +514,7 @@ function rrm( rz , vm , wm , pe , pr )
  *
  */
 
-function lsdynamat005( fn , pv , rvs , rvl )
+function lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rv )
  {
 
   const mid  =  0 ;
@@ -530,13 +529,9 @@ function lsdynamat005( fn , pv , rvs , rvl )
   const ref  =  9 ;
   const lcid = 10 ;
 
-  let i      = undefined ;
-  let j      = undefined ;
-  let k      = undefined ;
-
   const ipv  = pv.length ;
-  const isv  = rvs.length ;
-  const ilv  = rvl.length ;
+  const isv  = rsv.length ;
+  const ilv  = rlv.length ;
 
   const ipn  = 0 ;
   const ipx  = ipv ;
@@ -547,7 +542,17 @@ function lsdynamat005( fn , pv , rvs , rvl )
   const iln  = ( isx ) ;
   const ilx  = ( isx + ilv ) ;
 
- 
+  var i      = undefined ;
+  var j      = undefined ;
+  var k      = undefined ;
+
+  var mfn    = undefined ;
+  var mfd    = undefined ;
+  
+  var lfn    = undefined ;
+  var lfd    = undefined ;
+  
+
   let ps = new Array( ilx ) ;
   
   for( i = 0 ; i < ilx ; ps[i++] = [ undefined , undefined ] ) ;
@@ -590,96 +595,118 @@ function lsdynamat005( fn , pv , rvs , rvl )
      } ; // end switch()
 
 
-  for( i = isn , j = 0 ; i < isx ; ++i , j = (i % 2) )
+  for( i = isn ; i < isx ; ++i )
+
+    for( j = 0 ; j < 2 ; ++j )
  
-    if( rsv[i-isn][j] >= 0 )
+      if( rdvs[i-isn][j] >= 0 )
 
-      ps[i] = rsv[i-isn][j].toExponential(4) ;
+        ps[i][j] = rdvs[i-isn][j].toExponential(4) ;
 
-     else
+       else
 
-      ps[i] = rsv[i-isn][j].toExponential(3) ;
+        ps[i][j] = rdvs[i-isn][j].toExponential(3) ;
 
 
-  for( i = iln , j = 0 ; i < ilx ; ++i , j = (i % 2) )
+  for( i = iln ; i < ilx ; ++i )
+
+    for( j = 0 ; j < 2 ; ++j )
  
-    if( rlv[i-iln][j] >= 0 )
+      if( rlv[i-iln][j] >= 0 )
 
-      ps[i] = rlv[i-iln][j].toExponential(4) ;
+        ps[i][j] = rdvl[i-iln][j].toExponential(4) ;
 
-     else
+       else
 
-      ps[i] = rlv[i-iln][j].toExponential(3) ;
+        ps[i][j] = rdvl[i-iln][j].toExponential(3) ;
 
-  const fd = fs.openSync( 'mat.key' , 'w' ) ;
 
-  fs.writeSync( fd , '$ *MAT_005 \n' ) ;
-  fs.writeSync( fd , '*MAT_SOIL_AND_FOAM \n' ) ;
-  fs.writeSync( fd , '$ PARAMETER PC != 0.0 IN THIS CASE \n' ) ;
-  fs.writeSync( fd , '$ \n' ) ;
-  fs.writeSync( fd , '$ *MAT_014 \n' ) ;
-  fs.writeSync( fd , '$ *MAT_SOIL_AND_FOAM_FAILURE \n' ) ;
-  fs.writeSync( fd , '$ PARAMETER PC=0.0 IN THIS CASE \n' ) ;
-  fs.writeSync( fd , '$ \n' ) ;
-  fs.writeSync( fd , '$...>....1....>....2....>....3....>....4....>....5....>....6....>....7....>....8  \n' ) ;
-  fs.writeSync( fd , '$ \n' ) ;
-  fs.writeSync( fd , '$ Parameters converted to Rheinmetall (in-house) dimension base: \n' ) ;
-  fs.writeSync( fd , '$ \n' ) ;
-  fs.writeSync( fd , '$  Mass:   t (Tons) \n' ) ;
-  fs.writeSync( fd , '$  Length: mm (Millimeters) \n' ) ;
-  fs.writeSync( fd , '$  Time:   s (Seconds) \n' ) ;
-  fs.writeSync( fd , '$ \n' ) ;
-  fs.writeSync( fd , '$...............................................................................  \n' ) ;
-  fs.writeSync( fd , '$ \n' ) ;
-  fs.writeSync( fd , '$      MID        RO         G       KUN        A0        A1        A2        PC  \n' ) ;
-  fs.writeSync( fd , ` ${ps[mid]} ${ps[ro]} ${ps[g]} ${ps[kun]} ${ps[a0]} ${ps[a1]} ${ps[a2]} ${ps[pc]} \n` ) ;
-  fs.writeSync( fd , '$ \n' ) ;
-  fs.writeSync( fd , '$      VCR       REF      LCID \n' ) ;
-  fs.writeSync( fd , ` ${ps[vcr]} ${ps[ref]} ${ps[lcid]} \n` ) ;
-  fs.writeSync( fd , '$ \n' ) ;  
+  mfn = ( ps[mid][0] + mfnx ) ;
+  
+  mfd = fs.openSync( mfn , 'w' ) ;
 
-  i = isn ;
+  fs.writeSync( mfd , '$ *MAT_005 \n' ) ;
+  fs.writeSync( mfd , '*MAT_SOIL_AND_FOAM \n' ) ;
+  fs.writeSync( mfd , '$ PARAMETER PC != 0.0 IN THIS CASE \n' ) ;
+  fs.writeSync( mfd , '$ \n' ) ;
+  fs.writeSync( mfd , '$ *MAT_014 \n' ) ;
+  fs.writeSync( mfd , '$ *MAT_SOIL_AND_FOAM_FAILURE \n' ) ;
+  fs.writeSync( mfd , '$ PARAMETER PC=0.0 IN THIS CASE \n' ) ;
+  fs.writeSync( mfd , '$ \n' ) ;
+  fs.writeSync( mfd , '$...>....1....>....2....>....3....>....4....>....5....>....6....>....7....>....8  \n' ) ;
+  fs.writeSync( mfd , '$ \n' ) ;
+  fs.writeSync( mfd , '$ Parameters converted to Rheinmetall (in-house) dimension base: \n' ) ;
+  fs.writeSync( mfd , '$ \n' ) ;
+  fs.writeSync( mfd , '$  Mass:   t (Tons) \n' ) ;
+  fs.writeSync( mfd , '$  Length: mm (Millimeters) \n' ) ;
+  fs.writeSync( mfd , '$  Time:   s (Seconds) \n' ) ;
+  fs.writeSync( mfd , '$ \n' ) ;
+  fs.writeSync( mfd , '$...............................................................................  \n' ) ;
+  fs.writeSync( mfd , '$ \n' ) ;
+  fs.writeSync( mfd , '$      MID        RO         G       KUN        A0        A1        A2        PC  \n' ) ;
+  fs.writeSync( mfd , ` ${ps[mid][0]} ${ps[ro][0]} ${ps[g][0]} ${ps[kun][0]} ${ps[a0][0]} ${ps[a1][0]} ${ps[a2][0]} ${ps[pc][0]} \n` ) ;
+  fs.writeSync( mfd , '$ \n' ) ;
+  fs.writeSync( mfd , '$      VCR       REF      LCID \n' ) ;
+  fs.writeSync( mfd , ` ${ps[vcr][0]} ${ps[ref][0]} ${ps[lcid][0]} \n` ) ;
+  fs.writeSync( mfd , '$ \n' ) ;  
 
-  fs.writeSync( fd , '$     EPS1      EPS2      EPS3      EPS4      EPS5      EPS6      EPS7      EPS8  \n' ) ;
-  fs.writeSync( fd , ` ${ps[i]} ${ps[i+=isx]} ${ps[e3]} ${ps[e4]} ${ps[e5]} ${ps[e6]} ${ps[e7]} ${ps[e8]} \n` ) ;
-  fs.writeSync( fd , '$ \n' ) ;
-  fs.writeSync( fd , '$     EPS9     EPS10 \n' ) ;
-  fs.writeSync( fd , ` ${ps[e9]} ${ps[e10]} \n` ) ;
-  fs.writeSync( fd , '$ \n' ) ;
+  fs.writeSync( mfd , '$     EPS1      EPS2      EPS3      EPS4      EPS5      EPS6      EPS7      EPS8  \n' ) ;
+  fs.writeSync( mfd , ` ${ps[i=isn][0]} ${ps[++i][0]} ${ps[++i][0]} ${ps[++i][0]} ${ps[++i][0]} ${ps[++i][0]} ${ps[++i][0]} ${ps[++i][0]} \n` ) ;
+  fs.writeSync( mfd , '$ \n' ) ;
+  fs.writeSync( mfd , '$     EPS9     EPS10 \n' ) ;
+  fs.writeSync( mfd , ` ${ps[++i][0]} ${ps[i+=2][0]} \n` ) ;
+  fs.writeSync( mfd , '$ \n' ) ;
 
-  fs.writeSync( fd , '$       P1        P2        P3        P4        P5        P6        P7        P8  \n' ) ;
-  fs.writeSync( fd , ` ${ps[p1]} ${ps[p2]} ${ps[p3]} ${ps[p4]} ${ps[p5]} ${ps[p6]} ${ps[p7]} ${ps[p8]} \n` ) ;
-  fs.writeSync( fd , '$ \n' ) ;
-  fs.writeSync( fd , '$       P9       P10 \n' ) ;
-  fs.writeSync( fd , ` ${ps[p9]} ${ps[p10]} \n` ) ;
+  fs.writeSync( mfd , '$       P1        P2        P3        P4        P5        P6        P7        P8  \n' ) ;
+  fs.writeSync( mfd , ` ${ps[i=isn][1]} ${ps[++i][1]} ${ps[++i][1]} ${ps[++i][1]} ${ps[++i][1]} ${ps[++i][1]} ${ps[++i][1]} ${ps[++i][1]} \n` ) ;
+  fs.writeSync( mfd , '$ \n' ) ;
+  fs.writeSync( mfd , '$       P9       P10 \n' ) ;
+  fs.writeSync( mfd , ` ${ps[++i][1]} ${ps[i+=2][1]} \n` ) ;
 
-  fs.writeSync( fd , '$ \n' ) ;
-  fs.writeSync( fd , '$...............................................................................  \n' ) ;
-  fs.writeSync( fd , '$ \n' ) ;
-  fs.writeSync( fd , '*DEFINE_CURVE \n' ) ;
-  fs.writeSync( fd , '$ \n' ) ;
-  fs.writeSync( fd , '$...>....1....>....2....>....3....>....4....>....5....>....6....>....7....>....8  \n' ) ; 
-  fs.writeSync( fd , '$ \n' ) ;
-  fs.writeSync( fd , '$     LCID      SIDR      SCLA      SCLO      OFFA      OFFO                      \n' ) ;
-  fs.writeSync( fd , ` ${ps[lcid]} \n` ) ;
-  fs.writeSync( fd , '$                 A1                  O1                                          \n' ) ;
-  fs.writeSync( fd , `           ${ps[e1]}           ${ps[p1]} \n` ) ;
-  fs.writeSync( fd , `           ${ps[e2]}           ${ps[p2]} \n` ) ;
-  fs.writeSync( fd , `           ${ps[e3]}           ${ps[p3]} \n` ) ;
-  fs.writeSync( fd , `           ${ps[e4]}           ${ps[p4]} \n` ) ;
-  fs.writeSync( fd , `           ${ps[e5]}           ${ps[p5]} \n` ) ;
-  fs.writeSync( fd , `           ${ps[e6]}           ${ps[p6]} \n` ) ;
-  fs.writeSync( fd , `           ${ps[e7]}           ${ps[p7]} \n` ) ;
-  fs.writeSync( fd , `           ${ps[e8]}           ${ps[p8]} \n` ) ;
-  fs.writeSync( fd , `           ${ps[e9]}           ${ps[p9]} \n` ) ;
-  fs.writeSync( fd , `           ${ps[e10]}           ${ps[p10]} \n` ) ;
-  fs.writeSync( fd , '$ \n' ) ;
-  fs.writeSync( fd , '$...............................................................................  \n' ) ;
+  fs.writeSync( mfd , '$ \n' ) ;
+  fs.writeSync( mfd , '$...............................................................................  \n' ) ;
+  fs.writeSync( mfd , '$ \n' ) ;
+  fs.writeSync( mfd , '*DEFINE_CURVE \n' ) ;
+  fs.writeSync( mfd , '$ \n' ) ;
+  fs.writeSync( mfd , '$...>....1....>....2....>....3....>....4....>....5....>....6....>....7....>....8  \n' ) ; 
+  fs.writeSync( mfd , '$ \n' ) ;
+  fs.writeSync( mfd , '$     LCID      SIDR      SCLA      SCLO      OFFA      OFFO                      \n' ) ;
+  fs.writeSync( mfd , ` ${ps[lcid][0]} \n` ) ;
+  fs.writeSync( mfd , '$                 A1                  O1                                          \n' ) ;
+  
+  for( i = iln ; i < ilx ; ++i )
+  
+    fs.writeSync( mfd , `           ${ps[i][0]}           ${ps[i][1]} \n` ) ;
 
-  fs.closeSync( fd ) ; 
+  fs.writeSync( mfd , '$ \n' ) ;
+  fs.writeSync( mfd , '$...............................................................................  \n' ) ;
+
+  fs.closeSync( mfd ) ; 
+
+
+  if( lfnx && rv )
+   {
+
+    lfn = ( ps[mid][0] + lfnx ) ;
+
+    lfd = fs.openSync( lfn , 'w' ) ;
+
+    fs.writeSync( lfd , '           e=          pt=          pe=          pn=           n=           s=           a=           b=          ns=          nf=          ng=         rrs=         rrf=         rrg=         rrm=          rr=          rs=          rf=          rg=           r=        reps=' ) ;
+    fs.writeSync( lfd , '          (1)          (2)          (3)          (4)          (5)          (6)          (7)          (8)          (9)         (10)         (11)         (12)         (13)         (14)         (15)         (16)         (17)         (18)         (19)         (20)         (21)' ) ;
+
+    if( rv )
+ 
+      for( i = 0 ; i < rv.length ; ++i , fs.writeSync( lfd , line ) )
+
+        for( line = '' , j = 0 ; j < rv[0].length ; ++j )
+
+          line += ( '  ' + rv[i][j].toExponential(6) ) ;
+
+    fs.closeSync( lfd ) ;
+    
+   } ; // end if()
 
   return ;
 
  } ; // end function lsdynamat005()
-
-
+ 

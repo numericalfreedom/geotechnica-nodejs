@@ -35,7 +35,7 @@ const p10  = 30 ;
 
 const fs = require( 'fs' ) ;
 
-const fd = fs.openSync( 'mat.key' , 'w' ) ;
+const fd = fs.openSync( 'matref.key' , 'w' ) ;
 
 var pv = new Array( 31 ) ;
 

@@ -6,7 +6,7 @@ const l  = require( './lsdynamat' ) ;
 
 const ll = new l.lsdynamat() ;
 
-const [ rs , rl ]  = ll.runlsdynamat() ;
+const [ rvs , rvl ]  = ll.runlsdynamat() ;
 
 var i    = undefined ;
 var j    = undefined ;
@@ -17,16 +17,16 @@ console.log( '          (1)          (2)          (3)          (4)          (5) 
 
 if( short )
  
-  for( i = 0 ; i < rs.length ; ++i , console.log( line ) )
+  for( i = 0 ; i < rvs.length ; ++i , console.log( line ) )
 
-    for( line = '' , j = 0 ; j < rs[0].length ; ++j )
+    for( line = '' , j = 0 ; j < rvs[0].length ; ++j )
 
-      line += ( '  ' + rs[i][j].toExponential(6) ) ;
+      line += ( '  ' + rvs[i][j].toExponential(6) ) ;
      
 else
 
-  for( i = 0 ; i < rl.length ; ++i , console.log( line ) )
+  for( i = 0 ; i < rvl.length ; ++i , console.log( line ) )
 
-    for( line = '' , j = 0 ; j < rl[0].length ; ++j )
+    for( line = '' , j = 0 ; j < rvl[0].length ; ++j )
 
-      line += ( '  ' + rl[i][j].toExponential(6) ) ;
+      line += ( '  ' + rvl[i][j].toExponential(6) ) ;
