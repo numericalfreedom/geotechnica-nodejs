@@ -127,9 +127,9 @@ for( nz = nzn ; nz <= nzx ; nz += nzss )
 
     rz = ( (nzs * rzs) + (nzf * rzf) + (nzg * rzg) ) ;
 
-    midnz = String( Math.ceil( nz * 100 ) ).padStart( 3 , '0' ) ;
+    midnz = String( Math.round( nz * 100 ) ).padStart( 3 , '0' ) ;
 
-    midsz = String( Math.ceil( sz * 100 ) ).padStart( 3 , '0' ) ;
+    midsz = String( Math.round( sz * 100 ) ).padStart( 3 , '0' ) ;
 
     midv  = ( midbs  + '_' + midnz + '_' + midsz ) ;
 
