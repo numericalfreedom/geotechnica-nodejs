@@ -30,12 +30,12 @@ const a1lx  = (- 1.0 ) ;
 const a1tx  = ( -2.0 ) ;
 const a1dtf = mat005.dimension( mr , a1mx , lr , a1lx , tr , a1tx ) ;
 
-const nznn  =    1     ;
+const nznn  =    6     ;
 const nzn   =    0.20  ;
 const nzx   =    0.50  ;
 const nzss  = ( (nzx - nzn) / nznn ) ;
 
-const sznn  =    1     ;
+const sznn  =    8     ;
 const szn   =    0.10  ;
 const szx   =    0.90  ;
 const szss  = ( (szx - szn) / sznn ) ;
@@ -114,6 +114,7 @@ for( nz = nzn ; nz <= nzx ; nz += nzss )
   
   mat005.vm = ( (((fezz - ez) * (fezz - ez)) / (1.0 + ez)) * vmz ) ;
 
+  // console.log( 'nz=' , nz , ' ez=' , ez , ' vm =' , mat005.vm ) ;
    
   for( sz = szn ; sz <= szx ; sz += szss )
    {
