@@ -61,11 +61,13 @@ const pcv   = 0.000   ;
 const vcrv  = 0 ;
 const refv  = 0 ;
 
-const rzs    = 2650.00 ;
-const rzf    = 1000.00 ;
-const rzg    =    1.30 ;
+const rzs   = 2650.00 ;
+const rzf   = 1000.00 ;
+const rzg   =    1.30 ;
 
-const rvsl  = 11 ;
+const vmz   =   20.00 ;
+
+const rvsl  =  11 ;
 const rvll  = 101 ;
 
 const mfnx  = '.key' ;
@@ -73,6 +75,11 @@ const lfnx  = '.dat' ;
 
 var   rdvs  = new Array( rvsl ) ;
 var   rdvl  = new Array( rvll ) ;
+
+const fezz  = 2.97 ;
+
+var   ez    = undefined ;
+var   fezvm = undefined ;
 
 for( i = 0 ; i < rvsl ; rdvs[i++] = [ undefined , undefined ] ) ;
 
@@ -103,6 +110,11 @@ var   rz     = undefined ;
 for( nz = nzn ; nz <= nzx ; nz += nzss )
  {
 	 
+  ez = ( nz / (1.0 - nz) ) ;
+  
+  mat005.vm = ( (((fezz - ez) * (fezz - ez)) / (1.0 + ez)) * vmz ) ;
+
+   
   for( sz = szn ; sz <= szx ; sz += szss )
    {
 
