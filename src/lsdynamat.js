@@ -174,6 +174,10 @@ function runlsdynamat()
   this.rf   = this.nzf ;
   this.rg   = this.nzg ;
 
+  this.rrs  = this.rzs ;
+  this.rrf  = this.rzf ;
+  this.rrg  = this.rzg ;
+
   this.r    = ( this.rs + this.rf + this.rg ) ;
 
   let  ip   = undefined ;
