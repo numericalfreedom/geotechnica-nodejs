@@ -111,6 +111,8 @@ function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , r
   this.rr   = this.rz ;
   this.r    = this.rz ;
 
+  this.reps = undefined ;
+
   this.dimension    = dimension ;
   this.runlsdynamat = runlsdynamat ;
   this.lsdynamat005 = lsdynamat005 ;
@@ -219,7 +221,7 @@ function runlsdynamat()
       this.pe  += ( this.dpe  = (this.dpt - (this.a * this.dpn)) ) ;
 
 
-      this.eps += ( this.deps = (this.ctu * this.dpt) ) ;
+      this.eps += ( this.deps = (- this.ctu * this.dpt) ) ;
 
 
       this.vf  += ( this.dvf  = (this.v * (- (this.nf * this.ctf * this.dpn))) ) ;
@@ -230,13 +232,6 @@ function runlsdynamat()
 
 
       this.v   += ( this.dv   = (this.v * ((- (this.cts * this.dpn)) - (this.ctm * this.dpe))) ) ;
-
-
-//    this.ns  += ( this.dns  = (((- (this.ns * this.cts * this.dpn)) - (this.cts * this.dpe) - (this.ns * this.deps) )) ) ;
-
-//    this.nf  += ( this.dnf  = (((- (this.nf * this.ctf * this.dpn)) - (this.nf * this.deps))) ) ;
-
-//    this.ng  += ( this.dng  = (((- (this.ng * this.ctg * this.dpn)) - (this.ng * this.deps))) ) ;
 
 
       this.nf   = ( this.vf / this.v ) ;
@@ -269,19 +264,22 @@ function runlsdynamat()
       
       
       this.r    = ( this.rs + this.rf + this.rg ) ;
-
-
+      
+      
      } ; // end if() -
+
+
+    this.reps = Math.log( this.v / this.vz ) ;
 
 
     if( ! js )
 
-      rvs[jsr] = [ this.eps , (this.pt - this.pz) , (this.pe - this.pz) , (this.pn - this.pz) , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rr , this.rs , this.rf , this.rg , this.r ] ;
+      rvs[jsr] = [ this.eps , (this.pt - this.pz) , (this.pe - this.pz) , (this.pn - this.pz) , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rr , this.rs , this.rf , this.rg , this.r , this.reps ] ;
 
 
     if( ! jl )
 
-      rvl[jlr] = [ this.eps , (this.pt - this.pz) , (this.pe - this.pz) , (this.pn - this.pz) , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rr , this.rs , this.rf , this.rg , this.r ] ;
+      rvl[jlr] = [ this.eps , (this.pt - this.pz) , (this.pe - this.pz) , (this.pn - this.pz) , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rr , this.rs , this.rf , this.rg , this.r , this.reps ] ;
 
 
    } ; // end for()
