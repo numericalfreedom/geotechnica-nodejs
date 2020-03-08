@@ -84,7 +84,7 @@ var   rvl    = undefined ;
 
 var   midv   = undefined ;
 var   midbs  = 'M' ;
-var   midrz  = undefined ;
+var   midnz  = undefined ;
 var   midsz  = undefined ;
 
 var   lcidv  = undefined ;
@@ -114,13 +114,15 @@ for( nz = nzn ; nz <= nzx ; nz += nzss )
 
     rz = ( (nzs * rzs) + (nzf * rzf) + (nzg * rzg) ) ;
 
-    midrz = String( Math.trunc( rz / 10 ) ) ;
+    midnz = String( Math.trunc( nz * 100 ) ).padStart( 3 , '0' ) ;
 
     midsz = String( Math.trunc( sz * 100 ) ).padStart( 3 , '0' ) ;
 
-    midv  = ( midbs  + '_' + midrz + '_' + midsz ) ;
+    midv  = ( midbs  + '_' + midnz + '_' + midsz ) ;
 
-    lcidv = ( lcidbs + '_' + midrz + '_' + midsz ) ;
+    lcidv = ( lcidbs + '_' + midnz + '_' + midsz ) ;
+   
+    console.log( 'Writing material key: ' + midv + mfnx ) ;
    
     [ rvs , rvl ]  = mat005.runlsdynamat() ;
     

@@ -530,8 +530,8 @@ function lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rv )
   const lcid = 10 ;
 
   const ipv  = pv.length ;
-  const isv  = rsv.length ;
-  const ilv  = rlv.length ;
+  const isv  = rdvs.length ;
+  const ilv  = rdvl.length ;
 
   const ipn  = 0 ;
   const ipx  = ipv ;
@@ -551,6 +551,8 @@ function lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rv )
   
   var lfn    = undefined ;
   var lfd    = undefined ;
+
+  var line   = undefined ;
   
 
   let ps = new Array( ilx ) ;
@@ -612,7 +614,7 @@ function lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rv )
 
     for( j = 0 ; j < 2 ; ++j )
  
-      if( rlv[i-iln][j] >= 0 )
+      if( rdvl[i-iln][j] >= 0 )
 
         ps[i][j] = rdvl[i-iln][j].toExponential(4) ;
 
@@ -691,12 +693,12 @@ function lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rv )
 
     lfd = fs.openSync( lfn , 'w' ) ;
 
-    fs.writeSync( lfd , '           e=          pt=          pe=          pn=           n=           s=           a=           b=          ns=          nf=          ng=         rrs=         rrf=         rrg=         rrm=          rr=          rs=          rf=          rg=           r=        reps=' ) ;
-    fs.writeSync( lfd , '          (1)          (2)          (3)          (4)          (5)          (6)          (7)          (8)          (9)         (10)         (11)         (12)         (13)         (14)         (15)         (16)         (17)         (18)         (19)         (20)         (21)' ) ;
+    fs.writeSync( lfd , '           e=          pt=          pe=          pn=           n=           s=           a=           b=          ns=          nf=          ng=         rrs=         rrf=         rrg=         rrm=          rr=          rs=          rf=          rg=           r=        reps= \n' ) ;
+    fs.writeSync( lfd , '          (1)          (2)          (3)          (4)          (5)          (6)          (7)          (8)          (9)         (10)         (11)         (12)         (13)         (14)         (15)         (16)         (17)         (18)         (19)         (20)         (21) \n' ) ;
 
     if( rv )
  
-      for( i = 0 ; i < rv.length ; ++i , fs.writeSync( lfd , line ) )
+      for( i = 0 ; i < rv.length ; ++i , fs.writeSync( lfd , line += '\n' ) )
 
         for( line = '' , j = 0 ; j < rv[0].length ; ++j )
 
