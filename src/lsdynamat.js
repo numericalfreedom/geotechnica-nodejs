@@ -18,107 +18,116 @@ module.exports = { lsdynamat , runlsdynamat , lsdynamat005 , dimension , biota ,
  *
  */
 
-function lsdynamat( pz , px , ps , pr , vm , wm , nzs , rzs , czs , ks , nzf , rzf , czf , kf , nzg , rzg , kg , nvs , nvl )
+function lsdynamat( pz , px , ps , pr , vm , wm , kun , nzs , rzs , czs , ks , nzf , rzf , czf , kf , nzg , rzg , kg , nvs , nvl )
  {
 
-  this.pz   = ( (pz  != undefined) ?  pz  :    1.00e5 ) ;
-  this.px   = ( (px  != undefined) ?  px  :    1.00e9 ) ;
-  this.ps   = ( (ps  != undefined) ?  ps  :    1.00e2 ) ;
+  this.pz    = ( (pz  != undefined) ?  pz  :    1.00e5 ) ;
+  this.px    = ( (px  != undefined) ?  px  :    1.00e9 ) ;
+  this.ps    = ( (ps  != undefined) ?  ps  :    1.00e2 ) ;
 
-  this.pr   = ( (pr  != undefined) ?  pr  :    1.00e5 ) ;
-  this.vm   = ( (vm  != undefined) ?  vm  :    2.00e1 ) ;
-  this.wm   = ( (wm  != undefined) ?  wm  :    0.50   ) ;
+  this.pr    = ( (pr  != undefined) ?  pr  :    1.00e5 ) ;
+  this.vm    = ( (vm  != undefined) ?  vm  :    2.00e1 ) ;
+  this.wm    = ( (wm  != undefined) ?  wm  :    0.50   ) ;
 
-  this.nzs  = ( (nzs != undefined) ?  nzs :    0.50   ) ;
-  this.rzs  = ( (rzs != undefined) ?  rzs : 2650.00   ) ;
-  this.czs  = ( (czs != undefined) ?  czs : 6319.00   ) ;
-  this.ks   = ( (ks  != undefined) ?  ks  :    7.00   ) ;
+  this.kun   = ( (kun != undefined) ?  kun :    1.00e8 ) ;
 
-  this.nzf  = ( (nzf != undefined) ?  nzf :    0.30   ) ;
-  this.rzf  = ( (rzf != undefined) ?  rzf : 1000.00   ) ;
-  this.czf  = ( (czf != undefined) ?  czf : 1460.00   ) ;
-  this.kf   = ( (kf  != undefined) ?  kf  :    3.00   ) ;
+  this.nzs   = ( (nzs != undefined) ?  nzs :    0.50   ) ;
+  this.rzs   = ( (rzs != undefined) ?  rzs : 2650.00   ) ;
+  this.czs   = ( (czs != undefined) ?  czs : 6319.00   ) ;
+  this.ks    = ( (ks  != undefined) ?  ks  :    7.00   ) ;
 
-  this.nzg  = ( (nzg != undefined) ?  nzg :    0.20   ) ;
-  this.rzg  = ( (rzg != undefined) ?  rzg :    1.30   ) ;
-  this.kg   = ( (kg  != undefined) ?  kg  :    1.40   ) ;
+  this.nzf   = ( (nzf != undefined) ?  nzf :    0.30   ) ;
+  this.rzf   = ( (rzf != undefined) ?  rzf : 1000.00   ) ;
+  this.czf   = ( (czf != undefined) ?  czf : 1460.00   ) ;
+  this.kf    = ( (kf  != undefined) ?  kf  :    3.00   ) ;
 
-  this.nvs  = ( (nvs != undefined) ?  nvs :   10      ) ;
-  this.nvl  = ( (nvl != undefined) ?  nvl :  100      ) ;
+  this.nzg   = ( (nzg != undefined) ?  nzg :    0.20   ) ;
+  this.rzg   = ( (rzg != undefined) ?  rzg :    1.30   ) ;
+  this.kg    = ( (kg  != undefined) ?  kg  :    1.40   ) ;
 
-  this.ctu  = undefined ;
-  this.ctm  = undefined ;
-  this.cts  = undefined ;
-  this.ctf  = undefined ;
-  this.ctg  = undefined ;
-  this.ctp  = undefined ;
+  this.nvs   = ( (nvs != undefined) ?  nvs :   10      ) ;
+  this.nvl   = ( (nvl != undefined) ?  nvl :  100      ) ;
 
-  this.pt   = undefined ;
-  this.pe   = undefined ;
-  this.pn   = undefined ;
+  this.ctu   = undefined ;
+  this.ctm   = undefined ;
+  this.cts   = undefined ;
+  this.ctf   = undefined ;
+  this.ctg   = undefined ;
+  this.ctp   = undefined ;
 
-  this.dpt  = undefined ;
-  this.dpe  = undefined ;
-  this.dpn  = undefined ;
+  this.pt    = undefined ;
+  this.pe    = undefined ;
+  this.pn    = undefined ;
 
-  this.dvs  = undefined ;
-  this.dvf  = undefined ;
-  this.dvg  = undefined ;
+  this.pec   = undefined ;
 
-  this.dv   = undefined ;
+  this.dpt   = undefined ;
+  this.dpe   = undefined ;
+  this.dpn   = undefined ;
 
-  this.vzs  = this.nzs ;
-  this.vzf  = this.nzf ;
-  this.vzg  = this.nzg ;
+  this.dvs   = undefined ;
+  this.dvf   = undefined ;
+  this.dvg   = undefined ;
+
+  this.dv    = undefined ;
+
+  this.vzs   = this.nzs ;
+  this.vzf   = this.nzf ;
+  this.vzg   = this.nzg ;
   
-  this.vz   = ( this.vzs + this.vzf + this.vzg ) ; 
+  this.vz    = ( this.vzs + this.vzf + this.vzg ) ; 
 
-  this.vs   = this.nzs ;
-  this.vf   = this.nzf ;
-  this.vg   = this.nzg ;
+  this.vs    = this.nzs ;
+  this.vf    = this.nzf ;
+  this.vg    = this.nzg ;
   
-  this.v    = ( this.vs + this.vf + this.vg ) ; 
+  this.v     = ( this.vs + this.vf + this.vg ) ; 
 
-  this.dns  = undefined ;
-  this.dnf  = undefined ;
-  this.dng  = undefined ;
+  this.dns   = undefined ;
+  this.dnf   = undefined ;
+  this.dng   = undefined ;
 
-  this.ns   = this.nzs ;
-  this.nf   = this.nzf ;
-  this.ng   = this.nzg ;
+  this.ns    = this.nzs ;
+  this.nf    = this.nzf ;
+  this.ng    = this.nzg ;
 
-  this.n    = ( this.nf + this.ng ) ;
-  this.s    = ( this.nf / this.n  ) ;
+  this.n     = ( this.nf + this.ng ) ;
+  this.s     = ( this.nf / this.n  ) ;
 
-  this.dn   = undefined ;
-  this.ds   = undefined ;
+  this.dn    = undefined ;
+  this.ds    = undefined ;
 
-  this.a    = undefined ;
-  this.b    = undefined ;
+  this.a     = undefined ;
+  this.b     = undefined ;
 
-  this.eps  = undefined ;
-  this.deps = undefined ;
+  this.eps   = undefined ;
+  this.deps  = undefined ;
 
-  this.rs   = this.nzs ;
-  this.rf   = this.nzf ;
-  this.rg   = this.nzg ;
+  this.epstt = undefined ;
+  this.epsel = undefined ;
+  this.epspl = undefined ;
 
-  this.rrs  = this.rzs ;
-  this.rrf  = this.rzf ;
-  this.rrg  = this.rzg ;
+  this.rs    = this.nzs ;
+  this.rf    = this.nzf ;
+  this.rg    = this.nzg ;
+
+  this.rrs   = this.rzs ;
+  this.rrf   = this.rzf ;
+  this.rrg   = this.rzg ;
   
-  this.rzm  = ( this.nzs * this.rzs ) ;
-  this.rrm  = this.rzm ;
+  this.rzm   = ( this.nzs * this.rzs ) ;
+  this.rrm   = this.rzm ;
 
-  this.rz   = ( (this.nzs * this.rzs) + (this.nzf * this.rzf) + (this.nzg * this.rzg) );
-  this.rr   = this.rz ;
-  this.r    = this.rz ;
+  this.rz    = ( (this.nzs * this.rzs) + (this.nzf * this.rzf) + (this.nzg * this.rzg) );
+  this.rr    = this.rz ;
+  this.r     = this.rz ;
 
-  this.reps = undefined ;
+  this.reps  = undefined ;
 
   this.dimension    = dimension ;
   this.runlsdynamat = runlsdynamat ;
   this.lsdynamat005 = lsdynamat005 ;
+  this.porousmatrix = porousmatrix ;
 
   return ;
 
@@ -295,6 +304,88 @@ function runlsdynamat()
 
 
  } ; // end function runlsdynamat()
+
+
+/**
+ *
+ * function porousmatrix : Porous matrix compression behaviour simulation
+ *
+ * @param {string} pfn  - porous matrix behaviour simulation data file name
+ * @param {Array}  pes  - effective stress levels
+ * @param {number} rmz  - porous matrix inital density
+ *
+ * @returns {undefined}
+ *
+ */
+
+function porousmatrix( pfn , pes , rmz )
+ {
+
+  var dpes   = undefined ; 
+
+  var pc     = undefined ;
+  var dpc    = undefined ;
+
+  var depstt = undefined ;
+  var depsel = undefined ;
+  var depspl = undefined ;
+
+  var rm     = undefined ;
+
+  var pfd    = undefined ;
+
+  var i      = undefined ;
+  var ii     = undefined ;
+
+  pfd = fs.openSync( pfn , 'w' ) ;
+
+  fs.writeSync( pfd , '           e=          pt=          pe=          pn=           n=           s=           a=           b=          ns=          nf=          ng=         rrs=         rrf=         rrg=         rrm=          rr=          rs=          rf=          rg=           r=        reps= \n' ) ;
+  fs.writeSync( pfd , '          (1)          (2)          (3)          (4)          (5)          (6)          (7)          (8)          (9)         (10)         (11)         (12)         (13)         (14)         (15)         (16)         (17)         (18)         (19)         (20)         (21) \n' ) ;
+
+  for( this.epstt = this.epsel = this.epspl = this.pe = this.pec = 0 , i = 0 , ii = 1 ; (i < (pes.length - 1)) ; ++i , ++ii )
+   
+    for( this.pe = pes[i] , dpes = (this.ps * Math.sign( pes[ii] - pes[i] )) ; this.pe != pes[ii] ; this.pe += dpes )
+     {
+
+      if( this.pe > this.pec )
+       {
+
+        this.ctm = ctm( this.vm , this.wm , this.pr , (this.pec = this.pe) ) ;
+
+	depstt = ( dpes * this.ctm ) ;
+
+	depsel = ( dpes / this.kun ) ;
+
+	depspl = ( depstt - depsel ) ;
+
+       } // end if() +
+
+      else
+       {
+
+	this.ctm = ( 1.0  / this.kun ) ;
+
+	depstt   = ( dpes * this.ctm ) ;
+
+       } ; // end else
+
+      this.epstt += depstt ;
+
+      this.epsel += depsel ;
+
+      this.epspl += depspl ;
+
+      rm = ( rmz / Math.exp( epstt ) ) ;
+
+      fs.writeSync( pfd , this.epstt.toFixed( 8 ) , this.pe.toFixed( 4 ) ) ;
+
+     } ; // end for()
+	 
+  fs.closeSync( pfd ) ;
+
+  return( undefined ) ;
+ 
+ }; // end function porousmatrix()
 
 
 /**
