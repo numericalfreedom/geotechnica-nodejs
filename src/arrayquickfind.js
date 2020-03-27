@@ -4,7 +4,7 @@ var a = new Array( 20 ) ;
 
 for( i = 0 ; i < a.length ; a[i] = ((i < 10) ? i++ : (1 + i++)) ) ;
 
-var v = 20 ;
+var v = 220 ;
 
 
 // quickfind( a , v ) ;
@@ -16,6 +16,10 @@ function quickfind( a , v )
   let ri = undefined ;
 
   let i  = undefined ;
+  let n  = undefined ;
+  let nx = undefined ;
+  let ai = undefined ;
+
   let nl = undefined ;
   let nr = undefined ;
 
@@ -23,7 +27,9 @@ function quickfind( a , v )
 
   // for( nl = 0 , nr = (a.length - 1) , i = Math.floor( (nl + nr) / 2 ) ; (((a[i] != v) || (ri = i)) && ((nr-nl) > 1)) ; (((a[i] < v) ? (i = Math.floor( ((nl = i) + nr) / 2 )) : i ) , ((a[i] > v) ? (i = Math.floor( (nl + (nr = i)) / 2 )) : i)) )
 	 
-  for( nl = 0 , nr = (a.length - 1) , i = Math.floor( (nl + nr) / 2 ) ; (((a[i] != v) || (ri = i)) && ((nr-nl) > 1)) ; ((a[i] > v) || (nl = i)) , ((a[i] < v) || (nr = i)) , i = Math.floor( (nl + nr) / 2 ) ) 
+  // for( nl = 0 , nr = (a.length - 1) , i = Math.floor( (nl + nr) / 2 ) ; (((a[i] != v) || (ri = i)) && ((nr-nl) > 1)) ; ((a[i] > v) || (nl = i)) , ((a[i] < v) || (nr = i)) , i = Math.floor( (nl + nr) / 2 ) ) 
+
+  for( i = n = Math.ceil( (a.length - 1) / 2 ) ; (((ai = a[i]) != v)  && i && n) ; ri = i += Math.ceil((ai < v) ? (n /= 2) : (n /= -2)) )
 
     console.log( "nl=" , nl , "nr=" , nr , "i=" , i , "a[i]=" , a[i] ) ;
 
