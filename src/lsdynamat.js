@@ -18,18 +18,21 @@ module.exports = { lsdynamat , runlsdynamat , lsdynamat005 , dimension , biota ,
  *
  */
 
-function lsdynamat( pz , px , ps , pr , vm , wm , kun , nzs , rzs , czs , ks , nzf , rzf , czf , kf , nzg , rzg , kg , nvs , nvl )
+function lsdynamat( pz , px , ps , pr , vem , wem , mem , vrm , wrm , mrm , nzs , rzs , czs , ks , nzf , rzf , czf , kf , nzg , rzg , kg , nvs , nvl )
  {
 
   this.pz    = ( (pz  != undefined) ?  pz  :    1.00e5 ) ;
   this.px    = ( (px  != undefined) ?  px  :    1.00e9 ) ;
   this.ps    = ( (ps  != undefined) ?  ps  :    1.00e2 ) ;
-
   this.pr    = ( (pr  != undefined) ?  pr  :    1.00e5 ) ;
-  this.vm    = ( (vm  != undefined) ?  vm  :    2.00e1 ) ;
-  this.wm    = ( (wm  != undefined) ?  wm  :    0.50   ) ;
 
-  this.kun   = ( (kun != undefined) ?  kun :    1.00e8 ) ;
+  this.vem   = ( (vem != undefined) ?  vem :    2.00e1 ) ;
+  this.wem   = ( (wem != undefined) ?  wem :    0.50   ) ;
+  this.mem   = ( (mem != undefined) ?  mem :    0.00   ) ;
+
+  this.vrm   = ( (vrm != undefined) ?  vrm :    4.00e1 ) ;
+  this.wrm   = ( (wrm != undefined) ?  wrm :    0.70   ) ;
+  this.mrm   = ( (mrm != undefined) ?  mrm :    0.00   ) ;
 
   this.nzs   = ( (nzs != undefined) ?  nzs :    0.50   ) ;
   this.rzs   = ( (rzs != undefined) ?  rzs : 2650.00   ) ;
@@ -47,6 +50,8 @@ function lsdynamat( pz , px , ps , pr , vm , wm , kun , nzs , rzs , czs , ks , n
 
   this.nvs   = ( (nvs != undefined) ?  nvs :   10      ) ;
   this.nvl   = ( (nvl != undefined) ?  nvl :  100      ) ;
+
+  this.kun   = undefined ;
 
   this.ctu   = undefined ;
   this.ctm   = undefined ;
@@ -209,22 +214,28 @@ function runlsdynamat()
    {
 
 
-    this.cts = ctsf( this.rzs , this.czs , this.ks , this.pt , this.pz ) ;
+    this.cts  = ctsf( this.rzs , this.czs , this.ks , this.pt , this.pz ) ;
 
-    this.ctf = ctsf( this.rzf , this.czf , this.kf , this.pn , this.pz ) ;
+    this.ctf  = ctsf( this.rzf , this.czf , this.kf , this.pn , this.pz ) ;
 
-    this.ctg = ctg(  this.kg , this.pn ) ;
+    this.ctg  = ctg(  this.kg , this.pn ) ;
 
-    this.ctp = ( (this.s * this.ctf) + ((1.0 - this.s) * this.ctg) ) ;
+    this.ctp  = ( (this.s * this.ctf) + ((1.0 - this.s) * this.ctg) ) ;
 
-    this.ctm = ctm(  this.vm , this.wm , this.pr , this.pe ) ;
+    if( this.pe > this.pec )
+
+      this.ctm = ctm( this.vem , this.wem , this.mem , this.pr , (this.pec = this.pe) , this.pe ) ;
+
+    else
+
+      this.ctm = ctm( this.vrm , this.wrm , this.mrm , this.pr , this.pec , this.pe ) ;
 
 
     this.a    = biota( this.cts , this.ctm ) ;
 
     this.b    = bishopb( this.cts , this.ctp , this.ctm , this.n ) ;
 
-	     
+
     this.ctu  = ctu( this.ctm , this.a , this.b ) ;
 
 
@@ -240,13 +251,13 @@ function runlsdynamat()
     this.s    = ( this.nf / this.n ) ;
 
 
-    this.rrs  = rrsf( this.rzs , this.czs , this.ks , this.pt , this.pz ) ;
+    this.rrs  = rrsf( this.rzs , this.czs , this.ks  , this.pt , this.pz ) ;
 
-    this.rrf  = rrsf( this.rzf , this.czf , this.kf , this.pn , this.pz ) ;
+    this.rrf  = rrsf( this.rzf , this.czf , this.kf  , this.pn , this.pz ) ;
 
-    this.rrg  = rrg(  this.rzg , this.kg  , this.pn , this.pz ) ;
+    this.rrg  = rrg(  this.rzg , this.kg  , this.pn  , this.pz ) ;
 
-    this.rrm  = rrm(  this.rzm , this.vm  , this.wm , this.pe , this.pz ) ;
+    this.rrm  = rrm(  this.rzm , this.vem , this.wem , this.mem , this.vrm , this.wrm , this.mrm , this.pr , this.pec , this.pe ) ;
 
     this.rrm  = ( this.ns * this.rrs ) ;
 
@@ -339,8 +350,8 @@ function porousmatrix( pfn , pes , rmz )
 
   pfd = fs.openSync( pfn , 'w' ) ;
 
-  fs.writeSync( pfd , '           e=          pt=          pe=          pn=           n=           s=           a=           b=          ns=          nf=          ng=         rrs=         rrf=         rrg=         rrm=          rr=          rs=          rf=          rg=           r=        reps= \n' ) ;
-  fs.writeSync( pfd , '          (1)          (2)          (3)          (4)          (5)          (6)          (7)          (8)          (9)         (10)         (11)         (12)         (13)         (14)         (15)         (16)         (17)         (18)         (19)         (20)         (21) \n' ) ;
+  fs.writeSync( pfd , '       epstt=          pe=          rm= \n' ) ;
+  fs.writeSync( pfd , '          (1)          (2)          (3) \n' ) ;
 
   for( this.epstt = this.epsel = this.epspl = this.pe = this.pec = 0 , i = 0 , ii = 1 ; (i < (pes.length - 1)) ; ++i , ++ii )
    
@@ -350,22 +361,24 @@ function porousmatrix( pfn , pes , rmz )
       if( this.pe > this.pec )
        {
 
-        this.ctm = ctm( this.vm , this.wm , this.pr , (this.pec = this.pe) ) ;
+        this.ctm = ctm( this.vrm , this.wrm , this.mrm , this.pr , (this.pec = this.pe) , this.pe ) ;
 
-	depstt = ( dpes * this.ctm ) ;
+        depsel = ( dpes * this.ctm ) ;
 
-	depsel = ( dpes / this.kun ) ;
+        this.ctm = ctm( this.vem , this.wem , this.mem , this.pr , this.pec , this.pe ) ;
 
-	depspl = ( depstt - depsel ) ;
+        depstt = ( dpes * this.ctm ) ;
+
+        depspl = ( depstt - depsel ) ;
 
        } // end if() +
 
       else
        {
 
-	this.ctm = ( 1.0  / this.kun ) ;
+        this.ctm = ctm( this.vrm , this.wrm , this.mrm , this.pr , this.pec , this.pe ) ;
 
-	depstt   = ( dpes * this.ctm ) ;
+        depstt   = ( dpes * this.ctm ) ;
 
        } ; // end else
 
@@ -377,7 +390,7 @@ function porousmatrix( pfn , pes , rmz )
 
       rm = ( rmz / Math.exp( epstt ) ) ;
 
-      fs.writeSync( pfd , this.epstt.toFixed( 8 ) , this.pe.toFixed( 4 ) ) ;
+      fs.writeSync( pfd , this.epstt.toFixed( 8 ) , this.pe.toFixed( 4 ) , rm.toFixed(4) ) ;
 
      } ; // end for()
 	 
@@ -560,10 +573,10 @@ function rrg( rz , k , p , pz )
  *
  */
 
-function ctm( vm , wm , pe , pr )
+function ctm( vm , wm , mm , pr , pc , pe )
  {
 
-  const dedp = ( 1.0 / ((vm * pr) * Math.pow( ((pe + pr) / pr) , wm )) ) ;
+  const dedp = ( 1.0 / ((vm * pr) * Math.pow( ((pe + (mm * pc) + pr) / pr) , wm )) ) ;
 
   return( dedp ) ;
 
@@ -582,16 +595,16 @@ function ctm( vm , wm , pe , pr )
  * @returns {number}
  *
  */
-
-function rrm( rz , vm , wm , pe , pr )
+ 
+function rrm( rr , vem , wem , mem , vrm , wrm , mrm , pr , pc , pe )
  {
 
-  const r = ( rz / Math.exp( (Math.pow( ((pe + pr) / pr) , (1.0 - wm) ) - 1.0) / (vm * (1.0 - wm)) ) ) ;
+  const r = ( rr / Math.exp( ((Math.pow( (((mem * pc) + pr) / pr) , (1.0 - wem) ) - 1.0) / (vem * (1.0 - wem))) - ((Math.pow( ((pe + (mrm * pc) + pr) / pr) , (1.0 - wrm) ) - Math.pow( ((pc + (mrm * pc) + pr) / pr) , (1.0 - wrm) )) / (vrm * (1.0 - wrm))) ) ) ;
 
   return( r ) ;
 
  } ; // end function rrm()
-
+ 
 
 /**
  *
