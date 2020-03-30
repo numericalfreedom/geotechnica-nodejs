@@ -210,7 +210,7 @@ function runlsdynamat()
   let  rvl  = new Array( this.nvl ) ;
 
 
-  for( ip = js = jl = 0 , jsr = jlr = 0 , this.eps = 0.0 , this.pt = this.pe = this.pn = this.pz , this.dpt = this.ps ; this.pt <= (this.px + this.pz) ; ++ip , ((js = (++js % jsn)) || (++jsr)) , ((jl = (++jl % jln)) || (++jlr)) )
+  for( ip = js = jl = 0 , jsr = jlr = 0 , this.eps = 0.0 , this.pt = this.pec = this.pe = this.pn = this.pz , this.dpt = this.ps ; this.pt <= (this.px + this.pz) ; ++ip , ((js = (++js % jsn)) || (++jsr)) , ((jl = (++jl % jln)) || (++jlr)) )
    {
 
 

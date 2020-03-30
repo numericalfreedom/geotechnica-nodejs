@@ -65,7 +65,13 @@ const rzs   = 2650.00 ;
 const rzf   = 1000.00 ;
 const rzg   =    1.30 ;
 
-const vmz   =   20.00 ;
+const vemz  =   20.00 ;
+const wem   =    0.50 ;
+const mem   =    0.00 ;
+
+const vrmz  =   40.00 ;
+const wrm   =    0.75 ;
+const mrm   =    1.00 ;
 
 const rvsl  =  11 ;
 const rvll  = 101 ;
@@ -112,7 +118,18 @@ for( nz = nzn ; nz <= nzx ; nz += nzss )
 	 
   ez = ( nz / (1.0 - nz) ) ;
   
-  mat005.vm = ( (((fezz - ez) * (fezz - ez)) / (1.0 + ez)) * vmz ) ;
+  mat005.vem = ( (((fezz - ez) * (fezz - ez)) / (1.0 + ez)) * vemz ) ;
+
+  mat005.wem = wem ;
+
+  mat005.mem = mem ;
+
+  mat005.vrm = ( (((fezz - ez) * (fezz - ez)) / (1.0 + ez)) * vrmz ) ;
+
+  mat005.wrm = wrm ;
+
+  mat005.mrm = mrm ;
+	 
 
   // console.log( 'nz=' , nz , ' ez=' , ez , ' vm =' , mat005.vm ) ;
    
