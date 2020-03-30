@@ -116,13 +116,16 @@ var   rz     = undefined ;
 for( nz = nzn ; nz <= nzx ; nz += nzss )
  {
 	 
+
   ez = ( nz / (1.0 - nz) ) ;
   
+
   mat005.vem = ( (((fezz - ez) * (fezz - ez)) / (1.0 + ez)) * vemz ) ;
 
   mat005.wem = wem ;
 
   mat005.mem = mem ;
+
 
   mat005.vrm = ( (((fezz - ez) * (fezz - ez)) / (1.0 + ez)) * vrmz ) ;
 
@@ -193,3 +196,5 @@ else
     for( line = '' , j = 0 ; j < rvl[0].length ; ++j )
 
       line += ( '  ' + rvl[i][j].toExponential(6) ) ;
+
+
