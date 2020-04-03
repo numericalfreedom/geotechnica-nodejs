@@ -3,7 +3,8 @@ var net = require('net');
 
 
 var PIPE_NAME = "mypipe";
-var PIPE_PATH = "\\\\.\\pipe\\" + PIPE_NAME;
+// var PIPE_PATH = "\\\\.\\pipe\\" + PIPE_NAME;
+var PIPE_PATH = "." + PIPE_NAME;
 
 
 var L = console.log;
@@ -79,8 +80,6 @@ server.listen(PIPE_PATH,function(){
 })
 
 
-
-
 // == Client1 part == //
 
 var client1 = net.connect(PIPE_PATH, function() {
@@ -121,7 +120,7 @@ client2.on('data', function(data) {
   if( data.toString() == 'Operation client2!' )
    {
     L( 'Operation client2!' ) ;
-    let jx = Math.ceil( 1e7 + Math.random() * 1e7 ) ;
+    let jx = Math.ceil( 1e9 + Math.random() * 1e9 ) ;
     let result = undefined ;
     for (let j = 0 ; j < jx ; ++j)  result = (Math.sin(j) + Math.cos(j)) ;
     client2.write( 'Byebye from Client2!' ) ;
@@ -148,7 +147,7 @@ client3.on('data', function(data) {
   if( data.toString() == 'Operation client3!' )
    {
     L( 'Operation client3!' ) ;
-    let jx = Math.ceil( 1e8 + Math.random() * 1e8 ) ;
+    let jx = Math.ceil( 1e9 + Math.random() * 1e9 ) ;
     let result = undefined ;
     for (let j = 0 ; j < jx ; ++j)  result = (Math.sin(j) + Math.cos(j)) ;  
     client3.write( 'Byebye from Client3!' ) ;
@@ -160,4 +159,5 @@ client3.on('data', function(data) {
 client3.on('end', function() {
   L('Client3: on end');
  })
+
 

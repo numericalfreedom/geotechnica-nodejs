@@ -2,7 +2,7 @@
 
 const fs = require( 'fs' ) ;
 
-module.exports = { lsdynamat , runlsdynamat , lsdynamat005 , dimension , biota , bishopb , ctu , ctsf , rrsf , ctg , rrg , ctm , rrm } ;
+module.exports = { lsdynamat , runlsdynamat , cycliclsdynamat , lsdynamat005 , dimension , biota , bishopb , ctu , ctsf , rrsf , ctg , rrg , ctm , rrm } ;
 
 
 /**
@@ -26,12 +26,12 @@ function lsdynamat( pz , px , ps , pr , vem , wem , mem , vrm , wrm , mrm , nzs 
   this.ps    = ( (ps  != undefined) ?  ps  :    1.00e2 ) ;
   this.pr    = ( (pr  != undefined) ?  pr  :    1.00e5 ) ;
 
-  this.vem   = ( (vem != undefined) ?  vem :    2.00e1 ) ;
+  this.vem   = ( (vem != undefined) ?  vem :    2.00e2 ) ;
   this.wem   = ( (wem != undefined) ?  wem :    0.50   ) ;
   this.mem   = ( (mem != undefined) ?  mem :    0.00   ) ;
 
-  this.vrm   = ( (vrm != undefined) ?  vrm :    4.00e1 ) ;
-  this.wrm   = ( (wrm != undefined) ?  wrm :    0.70   ) ;
+  this.vrm   = ( (vrm != undefined) ?  vrm :    1.00e4 ) ;
+  this.wrm   = ( (wrm != undefined) ?  wrm :    0.00   ) ;
   this.mrm   = ( (mrm != undefined) ?  mrm :    0.00   ) ;
 
   this.nzs   = ( (nzs != undefined) ?  nzs :    0.50   ) ;
@@ -129,10 +129,11 @@ function lsdynamat( pz , px , ps , pr , vem , wem , mem , vrm , wrm , mrm , nzs 
 
   this.reps  = undefined ;
 
-  this.dimension    = dimension ;
-  this.runlsdynamat = runlsdynamat ;
-  this.lsdynamat005 = lsdynamat005 ;
-  this.porousmatrix = porousmatrix ;
+  this.dimension       = dimension ;
+  this.runlsdynamat    = runlsdynamat ;
+  this.cycliclsdynamat = cycliclsdynamat ;
+  this.lsdynamat005    = lsdynamat005 ;
+  this.porousmatrix    = porousmatrix ;
 
   return ;
 
@@ -315,6 +316,182 @@ function runlsdynamat()
 
 
  } ; // end function runlsdynamat()
+
+
+/**
+ *
+ * function cycliclsdynamat: compute material cards for LSDYNA
+ *
+ * @returns {Array}
+ *
+ */
+
+function cycliclsdynamat( pfn , pts , ptf )
+ {
+
+  this.vs   = this.nzs ;
+  this.vf   = this.nzf ;
+  this.vg   = this.nzg ;
+
+  this.v    = ( this.vs + this.vf + this.vg ) ; 
+  
+  this.ns   = this.nzs ;
+  this.nf   = this.nzf ;
+  this.ng   = this.nzg ;
+  
+  this.n    = ( this.nf + this.ng ) ;
+  this.s    = ( this.nf / this.n  ) ;
+
+  this.rs   = this.nzs ;
+  this.rf   = this.nzf ;
+  this.rg   = this.nzg ;
+
+  this.rrs  = this.rzs ;
+  this.rrf  = this.rzf ;
+  this.rrg  = this.rzg ;
+
+  this.rr   = ( (this.ns * this.rrs) + (this.nf * this.rrf) + (this.ng * this.rrg) );
+
+  this.r    = ( this.rs + this.rf + this.rg ) ;
+
+  let  s    = undefined ;
+
+  let  i    = undefined ;
+  let  ii   = undefined ;
+  
+  let  j    = undefined ;
+  let  jf   = undefined ;
+   
+  var  pfd  = undefined ;
+  
+  
+  pfd = fs.openSync( pfn , 'w' ) ;
+
+
+  fs.writeSync( pfd , '           e=          pt=          pe=          pn=           n=           s=           a=           b=          ns=          nf=          ng=         rrs=         rrf=         rrg=         rrm=          rr=          rs=          rf=          rg=           r=        reps=       epstt=       epsel=       epspl=\n' ) ;
+  fs.writeSync( pfd , '          (1)          (2)          (3)          (4)          (5)          (6)          (7)          (8)          (9)         (10)         (11)         (12)         (13)         (14)         (15)         (16)         (17)         (18)         (19)         (20)         (21)         (22)         (23)         (24)\n' ) ;
+
+
+  for( i = 0 , ii = 1 , this.eps = this.epstt = this.epsel = this.epspl = 0.0 , this.pt = this.pec = this.pe = 0.0 , this.pn = this.pz , this.dpt = this.ps , jf = Math.ceil( ptf / this.ps ) ; (i < (pts.length - 1)) ; ++i , ++ii )
+   
+    for( j = 0 , this.pt = pts[i] , this.dpt = (this.ps * (this.px = Math.sign( pts[ii] - pts[i] ))) ; this.pt != pts[ii] ; (j = (++j % jf)) )
+     {
+
+      this.cts  = ctsf( this.rzs , this.czs , this.ks , this.pt , this.pz ) ;
+
+      this.ctf  = ctsf( this.rzf , this.czf , this.kf , this.pn , this.pz ) ;
+
+      this.ctg  = ctg(  this.kg , this.pn ) ;
+
+      this.ctp  = ( (this.s * this.ctf) + ((1.0 - this.s) * this.ctg) ) ;
+
+      if( this.pe > this.pec )
+
+        this.ctm = ctm( this.vem , this.wem , this.mem , this.pr , ((this.pec = this.pe)) , (this.pe) ) ;
+
+      else
+
+        this.ctm = ctm( this.vrm , this.wrm , this.mrm , this.pr , (this.pec) , (this.pe) ) ;
+
+
+      this.a    = biota( this.cts , this.ctm ) ;
+
+      this.b    = bishopb( this.cts , this.ctp , this.ctm , this.n ) ;
+
+
+      this.ctu  = ctu( this.ctm , this.a , this.b ) ;
+
+
+      this.nf   = ( this.vf / this.v ) ;
+      
+      this.ng   = ( this.vg / this.v ) ;
+      
+      this.ns   = ( this.vs / this.v ) ;
+   
+      
+      this.n    = ( this.nf + this.ng ) ;
+
+      this.s    = ( this.nf / this.n ) ;
+
+
+      this.rrs  = rrsf( this.rzs , this.czs , this.ks  , this.pt , this.pz ) ;
+
+      this.rrf  = rrsf( this.rzf , this.czf , this.kf  , this.pn , this.pz ) ;
+
+      this.rrg  = rrg(  this.rzg , this.kg  , this.pn  , this.pz ) ;
+
+      this.rrm  = rrm(  this.rzm , this.vem , this.wem , this.mem , this.vrm , this.wrm , this.mrm , this.pr , (this.pec) , (this.pe) ) ;
+
+      this.rrm  = ( this.ns * this.rrs ) ;
+
+
+      this.rr   = ( (this.ns * this.rrs) + (this.nf * this.rrf) + (this.ng * this.rrg) );
+      
+
+      this.rs   = ( (this.rzs / this.rrs) * this.nzs ) ;
+      
+      this.rf   = ( (this.rzf / this.rrf) * this.nzf ) ;
+      
+      this.rg   = ( (this.rzg / this.rrg) * this.nzg ) ;
+      
+      
+      this.r    = ( this.rs + this.rf + this.rg ) ;
+      
+
+      this.reps = Math.log( this.v / this.vz ) ;
+
+      // console.log( this.eps , this.pt , this.pe , (this.pn - this.pz) , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rrm , this.rr , this.rs , this.rf , this.rg , this.r , this.reps , this.epstt , this.epsel , this.epspl ) ;
+
+      if( !j )
+       {
+      
+        s = ( `   ${this.eps.toFixed( 6 )}` + `   ${this.pt.toFixed( 6 )}` + `   ${this.pe.toFixed( 6 )}` + `   ${(this.pn - this.pz).toFixed( 6 )}` + `   ${this.n.toFixed( 6 )}` + `   ${this.s.toFixed( 6 )}` + `   ${this.a.toFixed( 6 )}` + `   ${this.b.toFixed( 6 )}` + `   ${this.ns.toFixed( 6 )}` + `   ${this.nf.toFixed( 6 )}` + `   ${this.ng.toFixed( 6 )}` + `   ${this.rrs.toFixed( 6 )}` + `   ${this.rrf.toFixed( 6 )}` + `   ${this.rrg.toFixed( 6 )}` + `   ${this.rrm.toFixed( 6 )}` + `   ${this.rr.toFixed( 6 )}` + `   ${this.rs.toFixed( 6 )}` + `   ${this.rf.toFixed( 6 )}` + `   ${this.rg.toFixed( 6 )}` + `   ${this.r.toFixed( 6 )}` + `   ${this.reps.toFixed( 6 )}` + `   ${this.epstt.toFixed( 6 )}` + `   ${this.epsel.toFixed( 6 )}` + `   ${this.epspl.toFixed( 6 )}` + '\n' ) ;
+    
+        fs.writeSync( pfd , s ) ;
+        
+       } ; // end if () -
+          
+
+      this.pt  += this.dpt ;
+
+      this.pn  += ( this.dpn  = (this.b * this.dpt) ) ;
+
+      this.pe  += ( this.dpe  = (this.dpt - (this.a * this.dpn)) ) ;
+
+
+      this.eps += ( this.deps = (- this.ctu * this.dpt) ) ;
+
+
+      if( this.pe > this.pec )
+            
+        this.epspl += ( (this.epstt += this.deps) - (this.depsel = 0.0) ) ;
+
+      else
+
+        this.epspl  = (  this.epstt - (this.depsel += this.deps) ) ;
+
+
+      this.vf  += ( this.dvf  = (this.v * (- (this.nf * this.ctf * this.dpn))) ) ;
+
+      this.vg  += ( this.dvg  = (this.v * (- (this.ng * this.ctg * this.dpn))) ) ;
+
+      this.vs  += ( this.dvs  = (this.v * ((- (this.ns * this.cts * this.dpn)) - (this.cts * this.dpe))) ) ;
+
+
+      this.v   += ( this.dv   = (this.v * ((- (this.cts * this.dpn)) - (this.ctm * this.dpe))) ) ;
+
+
+     } ; // end for()
+
+
+  fs.closeSync( pfd ) ;
+
+
+  return ;
+
+
+ } ; // end function cycliclsdynamat()
+
 
 
 /**
