@@ -326,8 +326,11 @@ function runlsdynamat()
  *
  */
 
-function cycliclsdynamat( pfn , pts , ptf )
+function cycliclsdynamat( pfn , pts , ptf , esc , ssc )
  {
+
+  if( ! esc )  esc = 1.0 ;
+  if( ! ssc )  ssc = 1.0 ;
 
   this.vs   = this.nzs ;
   this.vf   = this.nzf ;
@@ -445,7 +448,7 @@ function cycliclsdynamat( pfn , pts , ptf )
       if( !j )
        {
       
-        s = ( `   ${this.eps.toFixed( 6 )}` + `   ${this.pt.toFixed( 6 )}` + `   ${this.pe.toFixed( 6 )}` + `   ${(this.pn - this.pz).toFixed( 6 )}` + `   ${this.n.toFixed( 6 )}` + `   ${this.s.toFixed( 6 )}` + `   ${this.a.toFixed( 6 )}` + `   ${this.b.toFixed( 6 )}` + `   ${this.ns.toFixed( 6 )}` + `   ${this.nf.toFixed( 6 )}` + `   ${this.ng.toFixed( 6 )}` + `   ${this.rrs.toFixed( 6 )}` + `   ${this.rrf.toFixed( 6 )}` + `   ${this.rrg.toFixed( 6 )}` + `   ${this.rrm.toFixed( 6 )}` + `   ${this.rr.toFixed( 6 )}` + `   ${this.rs.toFixed( 6 )}` + `   ${this.rf.toFixed( 6 )}` + `   ${this.rg.toFixed( 6 )}` + `   ${this.r.toFixed( 6 )}` + `   ${this.reps.toFixed( 6 )}` + `   ${this.epstt.toFixed( 6 )}` + `   ${this.epsel.toFixed( 6 )}` + `   ${this.epspl.toFixed( 6 )}` + '\n' ) ;
+        s = ( `   ${(this.eps * esc).toFixed( 6 )}` + `   ${(this.pt * ssc).toFixed( 6 )}` + `   ${(this.pe * ssc).toFixed( 6 )}` + `   ${((this.pn - this.pz) * ssc).toFixed( 6 )}` + `   ${this.n.toFixed( 6 )}` + `   ${this.s.toFixed( 6 )}` + `   ${this.a.toFixed( 6 )}` + `   ${this.b.toFixed( 6 )}` + `   ${this.ns.toFixed( 6 )}` + `   ${this.nf.toFixed( 6 )}` + `   ${this.ng.toFixed( 6 )}` + `   ${this.rrs.toFixed( 6 )}` + `   ${this.rrf.toFixed( 6 )}` + `   ${this.rrg.toFixed( 6 )}` + `   ${this.rrm.toFixed( 6 )}` + `   ${this.rr.toFixed( 6 )}` + `   ${this.rs.toFixed( 6 )}` + `   ${this.rf.toFixed( 6 )}` + `   ${this.rg.toFixed( 6 )}` + `   ${this.r.toFixed( 6 )}` + `   ${(this.reps * esc).toFixed( 6 )}` + `   ${(this.epstt * esc).toFixed( 6 )}` + `   ${(this.epsel * esc).toFixed( 6 )}` + `   ${(this.epspl * esc).toFixed( 6 )}` + '\n' ) ;
     
         fs.writeSync( pfd , s ) ;
         

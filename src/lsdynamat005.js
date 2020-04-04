@@ -118,7 +118,7 @@ for( nz = nzn ; nz <= nzx ; nz += nzss )
 	 
 
   ez = ( nz / (1.0 - nz) ) ;
-  
+
 
   mat005.vem = ( (((fezz - ez) * (fezz - ez)) / (1.0 + ez)) * vemz ) ;
 
