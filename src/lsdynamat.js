@@ -105,6 +105,14 @@ function lsdynamat( pz , px , ps , pr , vem , wem , mem , vrm , wrm , mrm , nzs 
   this.a     = undefined ;
   this.b     = undefined ;
 
+  this.ctmtt = undefined ;
+  this.ctmel = undefined ;
+  this.ctmpl = undefined ;
+
+  this.ctutt = undefined ;
+  this.ctuel = undefined ;
+  this.ctupl = undefined ;
+
   this.eps   = undefined ;
   this.deps  = undefined ;
 
@@ -332,47 +340,48 @@ function cycliclsdynamat( pfn , pts , ptf , esc , ssc )
   if( ! esc )  esc = 1.0 ;
   if( ! ssc )  ssc = 1.0 ;
 
-  this.vs   = this.nzs ;
-  this.vf   = this.nzf ;
-  this.vg   = this.nzg ;
+  this.vs    = this.nzs ;
+  this.vf    = this.nzf ;
+  this.vg    = this.nzg ;
 
-  this.v    = ( this.vs + this.vf + this.vg ) ; 
+  this.v     = ( this.vs + this.vf + this.vg ) ; 
   
-  this.ns   = this.nzs ;
-  this.nf   = this.nzf ;
-  this.ng   = this.nzg ;
+  this.ns    = this.nzs ;
+  this.nf    = this.nzf ;
+  this.ng    = this.nzg ;
   
-  this.n    = ( this.nf + this.ng ) ;
-  this.s    = ( this.nf / this.n  ) ;
+  this.n     = ( this.nf + this.ng ) ;
+  this.s     = ( this.nf / this.n  ) ;
 
-  this.rs   = this.nzs ;
-  this.rf   = this.nzf ;
-  this.rg   = this.nzg ;
+  this.rs    = this.nzs ;
+  this.rf    = this.nzf ;
+  this.rg    = this.nzg ;
 
-  this.rrs  = this.rzs ;
-  this.rrf  = this.rzf ;
-  this.rrg  = this.rzg ;
+  this.rrs   = this.rzs ;
+  this.rrf   = this.rzf ;
+  this.rrg   = this.rzg ;
 
-  this.rr   = ( (this.ns * this.rrs) + (this.nf * this.rrf) + (this.ng * this.rrg) );
+  this.rr    = ( (this.ns * this.rrs) + (this.nf * this.rrf) + (this.ng * this.rrg) );
 
-  this.r    = ( this.rs + this.rf + this.rg ) ;
+  this.r     = ( this.rs + this.rf + this.rg ) ;
 
-  let  s    = undefined ;
+  let  s     = undefined ;
 
-  let  i    = undefined ;
-  let  ii   = undefined ;
+  let  i     = undefined ;
+  let  ii    = undefined ;
   
-  let  j    = undefined ;
-  let  jf   = undefined ;
+  let  j     = undefined ;
+  let  jf    = undefined ;
    
-  var  pfd  = undefined ;
-  
-  
+  var  pfd   = undefined ;
+ 
+
+
   pfd = fs.openSync( pfn , 'w' ) ;
 
 
-  fs.writeSync( pfd , '           e=          pt=          pe=          pn=           n=           s=           a=           b=          ns=          nf=          ng=         rrs=         rrf=         rrg=         rrm=          rr=          rs=          rf=          rg=           r=        reps=       epstt=       epsel=       epspl=\n' ) ;
-  fs.writeSync( pfd , '          (1)          (2)          (3)          (4)          (5)          (6)          (7)          (8)          (9)         (10)         (11)         (12)         (13)         (14)         (15)         (16)         (17)         (18)         (19)         (20)         (21)         (22)         (23)         (24)\n' ) ;
+  fs.writeSync( pfd , '         e=        pt=        pe=        pn=         n=         s=         a=         b=        ns=        nf=        ng=          rrs=          rrf=        rrg=         rrm=           rr=        rs=        rf=        rg=         r=      reps=     epstt=     epsel=     epspl=\n' ) ;
+  fs.writeSync( pfd , '        (1)        (2)        (3)        (4)        (5)        (6)        (7)        (8)        (9)       (10)       (11)          (12)          (13)        (14)         (15)          (16)       (17)       (18)       (19)       (20)       (21)       (22)       (23)       (24)\n' ) ;
 
 
   for( i = 0 , ii = 1 , this.eps = this.epstt = this.epsel = this.epspl = 0.0 , this.pt = this.pec = this.pe = 0.0 , this.pn = this.pz , this.dpt = this.ps , jf = Math.ceil( ptf / this.ps ) ; (i < (pts.length - 1)) ; ++i , ++ii )
@@ -380,68 +389,78 @@ function cycliclsdynamat( pfn , pts , ptf , esc , ssc )
     for( j = 0 , this.pt = pts[i] , this.dpt = (this.ps * (this.px = Math.sign( pts[ii] - pts[i] ))) ; this.pt != pts[ii] ; (j = (++j % jf)) )
      {
 
-      this.cts  = ctsf( this.rzs , this.czs , this.ks , this.pt , this.pz ) ;
+      this.cts   = ctsf( this.rzs , this.czs , this.ks , this.pt , this.pz ) ;
 
-      this.ctf  = ctsf( this.rzf , this.czf , this.kf , this.pn , this.pz ) ;
+      this.ctf   = ctsf( this.rzf , this.czf , this.kf , this.pn , this.pz ) ;
 
-      this.ctg  = ctg(  this.kg , this.pn ) ;
+      this.ctg   = ctg(  this.kg , this.pn ) ;
 
-      this.ctp  = ( (this.s * this.ctf) + ((1.0 - this.s) * this.ctg) ) ;
-
-      if( this.pe > this.pec )
-
-        this.ctm = ctm( this.vem , this.wem , this.mem , this.pr , ((this.pec = this.pe)) , (this.pe) ) ;
-
-      else
-
-        this.ctm = ctm( this.vrm , this.wrm , this.mrm , this.pr , (this.pec) , (this.pe) ) ;
+      this.ctp   = ( (this.s * this.ctf) + ((1.0 - this.s) * this.ctg) ) ;
 
 
-      this.a    = biota( this.cts , this.ctm ) ;
+      if( this.pe > this.pec )  this.pec = this.pe ;
 
-      this.b    = bishopb( this.cts , this.ctp , this.ctm , this.n ) ;
+	     
+      this.ctmtt = ctm( this.vem , this.wem , this.mem , this.pr , this.pec , this.pe ) ;
+
+      this.ctmel = ctm( this.vrm , this.wrm , this.mrm , this.pr , this.pec , this.pe ) ;
+
+      this.ctmpl = ( this.ctmtt - this.ctmel ) ;
 
 
-      this.ctu  = ctu( this.ctm , this.a , this.b ) ;
+      if( this.pe == this.pec )  this.ctm = this.ctmtt ;  else  this.ctm = this.ctmel ;	     
+	     
+      this.a     = biota( this.cts , this.ctm ) ;
+
+      this.b     = bishopb( this.cts , this.ctp , this.ctm , this.n ) ;
+
+      this.ctu   = ctu( this.ctm , this.a , this.b ) ;
 
 
-      this.nf   = ( this.vf / this.v ) ;
+      this.ctutt = ctu( this.ctmtt , this.a , this.b ) ;
+
+      this.ctuel = ctu( this.ctmel , this.a , this.b ) ;
+
+      this.ctupl = ( this.ctutt - this.ctuel ) ;
+
+
+      this.nf    = ( this.vf / this.v ) ;
       
-      this.ng   = ( this.vg / this.v ) ;
+      this.ng    = ( this.vg / this.v ) ;
       
-      this.ns   = ( this.vs / this.v ) ;
+      this.ns    = ( this.vs / this.v ) ;
    
       
-      this.n    = ( this.nf + this.ng ) ;
+      this.n     = ( this.nf + this.ng ) ;
 
-      this.s    = ( this.nf / this.n ) ;
-
-
-      this.rrs  = rrsf( this.rzs , this.czs , this.ks  , this.pt , this.pz ) ;
-
-      this.rrf  = rrsf( this.rzf , this.czf , this.kf  , this.pn , this.pz ) ;
-
-      this.rrg  = rrg(  this.rzg , this.kg  , this.pn  , this.pz ) ;
-
-      this.rrm  = rrm(  this.rzm , this.vem , this.wem , this.mem , this.vrm , this.wrm , this.mrm , this.pr , (this.pec) , (this.pe) ) ;
-
-      this.rrm  = ( this.ns * this.rrs ) ;
+      this.s     = ( this.nf / this.n ) ;
 
 
-      this.rr   = ( (this.ns * this.rrs) + (this.nf * this.rrf) + (this.ng * this.rrg) );
+      this.rrs   = rrsf( this.rzs , this.czs , this.ks  , this.pt , this.pz ) ;
+
+      this.rrf   = rrsf( this.rzf , this.czf , this.kf  , this.pn , this.pz ) ;
+
+      this.rrg   = rrg(  this.rzg , this.kg  , this.pn  , this.pz ) ;
+
+      this.rrm   = rrm(  this.rzm , this.vem , this.wem , this.mem , this.vrm , this.wrm , this.mrm , this.pr , (this.pec) , (this.pe) ) ;
+
+      this.rrm   = ( this.ns * this.rrs ) ;
+
+
+      this.rr    = ( (this.ns * this.rrs) + (this.nf * this.rrf) + (this.ng * this.rrg) );
       
 
-      this.rs   = ( (this.rzs / this.rrs) * this.nzs ) ;
+      this.rs    = ( (this.rzs / this.rrs) * this.nzs ) ;
       
-      this.rf   = ( (this.rzf / this.rrf) * this.nzf ) ;
+      this.rf    = ( (this.rzf / this.rrf) * this.nzf ) ;
       
-      this.rg   = ( (this.rzg / this.rrg) * this.nzg ) ;
+      this.rg    = ( (this.rzg / this.rrg) * this.nzg ) ;
       
       
-      this.r    = ( this.rs + this.rf + this.rg ) ;
+      this.r     = ( this.rs + this.rf + this.rg ) ;
       
 
-      this.reps = Math.log( this.v / this.vz ) ;
+      this.reps  = Math.log( this.v / this.vz ) ;
 
       // console.log( this.eps , this.pt , this.pe , (this.pn - this.pz) , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rrm , this.rr , this.rs , this.rf , this.rg , this.r , this.reps , this.epstt , this.epsel , this.epspl ) ;
 
@@ -455,23 +474,24 @@ function cycliclsdynamat( pfn , pts , ptf , esc , ssc )
        } ; // end if () -
           
 
-      this.pt  += this.dpt ;
-
-      this.pn  += ( this.dpn  = (this.b * this.dpt) ) ;
-
-      this.pe  += ( this.dpe  = (this.dpt - (this.a * this.dpn)) ) ;
+   
+      this.eps   += ( this.deps   = (- this.ctu   * this.dpt) ) ;
 
 
-      this.eps += ( this.deps = (- this.ctu * this.dpt) ) ;
+      this.epstt += ( this.depstt = (- this.ctu   * this.dpt) ) ;
+
+      this.epsel += ( this.depsel = (- this.ctuel * this.dpt) ) ;
+	     
+
+      if( this.pe == this.pec )  this.epspl  = ( this.epstt - this.epsel ) ;
 
 
-      if( this.pe > this.pec )
-            
-        this.epspl += ( (this.epstt += this.deps) - (this.depsel = 0.0) ) ;
+      this.pt    +=   this.dpt ;
 
-      else
+      this.pn    += ( this.dpn  = (this.b * this.dpt) ) ;
 
-        this.epspl  = (  this.epstt - (this.depsel += this.deps) ) ;
+      this.pe    += ( this.dpe  = (this.dpt - (this.a * this.dpn)) ) ;
+
 
 
       this.vf  += ( this.dvf  = (this.v * (- (this.nf * this.ctf * this.dpn))) ) ;
