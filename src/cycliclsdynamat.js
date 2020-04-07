@@ -31,7 +31,7 @@ var   pfn   = undefined ;
 const pts   = [ 0.00 , 5.00e6 , 0.00 , 1.00e7 , 0.00 , 2.00e7 , 0.00 , 3.00e7 , 0.00 ] ;
 
 const ezz   =    1.0 ;
-const mez   =    4.9 ;
+const mez   =    3.0 ;
 
 
 rhod        = 1900.0 ;
@@ -48,11 +48,13 @@ console.log( "nzg=" , ll.nzg ) ;
 
 ll.vem      = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
 ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.vem      = ( vemz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
 ll.vrm      = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
 ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.vrm      = ( vrmz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
 
@@ -75,11 +77,13 @@ console.log( "nzg=" , ll.nzg ) ;
 
 ll.vem      = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
 ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.vem      = ( vemz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
 ll.vrm      = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
 ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.vrm      = ( vrmz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
 
@@ -102,16 +106,17 @@ console.log( "nzg=" , ll.nzg ) ;
 
 ll.vem      = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
 ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.vem      = ( vemz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
 ll.vrm      = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
 ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.vrm      = ( vrmz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
 
 pfn         = 'Oed_V5_rho2000kgm3_sv60MPa_dedt10_4_model.dat' ;
 
 ll.cycliclsdynamat( pfn , pts , ptf , esc , ssc ) ;
-
 
