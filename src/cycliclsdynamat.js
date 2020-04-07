@@ -31,7 +31,7 @@ var   pfn   = undefined ;
 const pts   = [ 0.00 , 5.00e6 , 0.00 , 1.00e7 , 0.00 , 2.00e7 , 0.00 , 3.00e7 , 0.00 ] ;
 
 const ezz   =    1.0 ;
-const mez   =    3.0 ;
+const mez   =    4.9 ;
 
 
 rhod        = 1900.0 ;
@@ -47,14 +47,14 @@ console.log( "nzf=" , ll.nzf ) ;
 console.log( "nzg=" , ll.nzg ) ;
 
 ll.vem      = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
-ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vem      = ( vemz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
 ll.vrm      = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
-ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vrm      = ( vrmz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
 
@@ -76,18 +76,76 @@ console.log( "nzf=" , ll.nzf ) ;
 console.log( "nzg=" , ll.nzg ) ;
 
 ll.vem      = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
-ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vem      = ( vemz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
 ll.vrm      = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
-ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vrm      = ( vrmz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
 
-pfn         = 'Oed_V2_rho1900kgm3_sv60MPa_dedt10_4_model.dat' ;
+pfn         = 'Oed_V2_rho1900kgm3_sv60MPa_dedt10_3_model.dat' ;
+
+ll.cycliclsdynamat( pfn , pts , ptf , esc , ssc ) ;
+
+
+rhod        = 1950.0 ;
+ez          = ( (rhos / rhod) - 1.0 ) ;
+nz          = ( ez / (1.0 + ez) ) ;
+
+ll.nzs      = ( 1.0 - nz ) ;
+ll.nzf      = 0.0 ;
+ll.nzg      = nz ;
+
+console.log( "nzs=" , ll.nzs ) ;
+console.log( "nzf=" , ll.nzf ) ;
+console.log( "nzg=" , ll.nzg ) ;
+
+ll.vem      = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
+ll.vem      = ( vemz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.wem      = wemz ;
+ll.mem      = memz ;
+
+ll.vrm      = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
+ll.vrm      = ( vrmz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.wrm      = wrmz ;
+ll.mrm      = mrmz ;
+
+pfn         = 'Oed_V3_rho1900kgm3_sv60MPa_dedt10_2_model.dat' ;
+
+ll.cycliclsdynamat( pfn , pts , ptf , esc , ssc ) ;
+
+
+rhod        = 1900.0 ;
+ez          = ( (rhos / rhod) - 1.0 ) ;
+nz          = ( ez / (1.0 + ez) ) ;
+
+ll.nzs      = ( 1.0 - nz ) ;
+ll.nzf      = 0.0 ;
+ll.nzg      = nz ;
+
+console.log( "nzs=" , ll.nzs ) ;
+console.log( "nzf=" , ll.nzf ) ;
+console.log( "nzg=" , ll.nzg ) ;
+
+ll.vem      = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
+ll.vem      = ( vemz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.wem      = wemz ;
+ll.mem      = memz ;
+
+ll.vrm      = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
+ll.vrm      = ( vrmz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.wrm      = wrmz ;
+ll.mrm      = mrmz ;
+
+pfn         = 'Oed_V4_rho1900kgm3_sv60MPa_dedt10_4_model.dat' ;
 
 ll.cycliclsdynamat( pfn , pts , ptf , esc , ssc ) ;
 
@@ -105,14 +163,14 @@ console.log( "nzf=" , ll.nzf ) ;
 console.log( "nzg=" , ll.nzg ) ;
 
 ll.vem      = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
-ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vem      = ( vemz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
 ll.vrm      = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
-ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vrm      = ( vrmz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
 
