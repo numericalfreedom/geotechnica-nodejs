@@ -34,6 +34,9 @@ const ezz   =    1.0 ;
 const mez   =    4.9 ;
 
 
+/*********************************************************************/
+/*********************************************************************/
+
 rhod        = 1900.0 ;
 ez          = ( (rhos / rhod) - 1.0 ) ;
 nz          = ( ez / (1.0 + ez) ) ;
@@ -42,18 +45,14 @@ ll.nzs      = ( 1.0 - nz ) ;
 ll.nzf      = 0.0 ;
 ll.nzg      = nz ;
 
-console.log( "nzs=" , ll.nzs ) ;
-console.log( "nzf=" , ll.nzf ) ;
-console.log( "nzg=" , ll.nzg ) ;
-
-ll.vem      = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
-ll.vem      = ( vemz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+// ll.vem   = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
+// ll.vem   = ( vemz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
 ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
-ll.vrm      = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
-ll.vrm      = ( vrmz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+// ll.vrm   = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
+// ll.vrm   = ( vrmz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
 ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
@@ -62,6 +61,52 @@ pfn         = 'Oed_V1_rho1900kgm3_sv60MPa_dedt10_4_model.dat' ;
 
 ll.cycliclsdynamat( pfn , pts , ptf , esc , ssc ) ;
 
+console.log() ;
+console.log( "pfn=" , pfn ) ;
+console.log( "nzs=" , ll.nzs.toFixed( 4 ) ) ;
+console.log( "nzf=" , ll.nzf.toFixed( 4 ) ) ;
+console.log( "nzg=" , ll.nzg.toFixed( 4 ) ) ;
+console.log( "ez =" , ez ) ;
+console.log() ;
+
+
+/*********************************************************************/
+/*********************************************************************/
+
+rhod        = 1900.0 ;
+ez          = ( (rhos / rhod) - 1.0 ) ;
+nz          = ( ez / (1.0 + ez) ) ;
+
+ll.nzs      = ( 1.0 - nz ) ;
+ll.nzf      = 0.0 ;
+ll.nzg      = nz ;
+
+// ll.vem   = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
+// ll.vem   = ( vemz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
+ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.wem      = wemz ;
+ll.mem      = memz ;
+
+// ll.vrm   = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
+// ll.vrm   = ( vrmz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
+ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.wrm      = wrmz ;
+ll.mrm      = mrmz ;
+
+pfn         = 'Oed_V2_rho1900kgm3_sv60MPa_dedt10_3_model.dat' ;
+
+ll.cycliclsdynamat( pfn , pts , ptf , esc , ssc ) ;
+
+console.log( "pfn=" , pfn ) ;
+console.log( "nzs=" , ll.nzs.toFixed( 4 ) ) ;
+console.log( "nzf=" , ll.nzf.toFixed( 4 ) ) ;
+console.log( "nzg=" , ll.nzg.toFixed( 4 ) ) ;
+console.log( "ez =" , ez ) ;
+console.log() ;
+
+
+/*********************************************************************/
+/*********************************************************************/
 
 rhod        = 1930.0 ;
 ez          = ( (rhos / rhod) - 1.0 ) ;
@@ -71,55 +116,32 @@ ll.nzs      = ( 1.0 - nz ) ;
 ll.nzf      = 0.0 ;
 ll.nzg      = nz ;
 
-console.log( "nzs=" , ll.nzs ) ;
-console.log( "nzf=" , ll.nzf ) ;
-console.log( "nzg=" , ll.nzg ) ;
-
-ll.vem      = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
-ll.vem      = ( vemz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+// ll.vem   = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
+// ll.vem   = ( vemz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
 ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
-ll.vrm      = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
-ll.vrm      = ( vrmz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+// ll.vrm   = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
+// ll.vrm   = ( vrmz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
 ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
 
-pfn         = 'Oed_V2_rho1900kgm3_sv60MPa_dedt10_3_model.dat' ;
+pfn         = 'Oed_V2_rho1930kgm3_sv60MPa_dedt10_3_model.dat' ;
 
 ll.cycliclsdynamat( pfn , pts , ptf , esc , ssc ) ;
 
+console.log( "pfn=" , pfn ) ;
+console.log( "nzs=" , ll.nzs.toFixed( 4 ) ) ;
+console.log( "nzf=" , ll.nzf.toFixed( 4 ) ) ;
+console.log( "nzg=" , ll.nzg.toFixed( 4 ) ) ;
+console.log( "ez =" , ez ) ;
+console.log() ;
 
-rhod        = 1950.0 ;
-ez          = ( (rhos / rhod) - 1.0 ) ;
-nz          = ( ez / (1.0 + ez) ) ;
 
-ll.nzs      = ( 1.0 - nz ) ;
-ll.nzf      = 0.0 ;
-ll.nzg      = nz ;
-
-console.log( "nzs=" , ll.nzs ) ;
-console.log( "nzf=" , ll.nzf ) ;
-console.log( "nzg=" , ll.nzg ) ;
-
-ll.vem      = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
-ll.vem      = ( vemz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
-ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
-ll.wem      = wemz ;
-ll.mem      = memz ;
-
-ll.vrm      = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
-ll.vrm      = ( vrmz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
-ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
-ll.wrm      = wrmz ;
-ll.mrm      = mrmz ;
-
-pfn         = 'Oed_V3_rho1900kgm3_sv60MPa_dedt10_2_model.dat' ;
-
-ll.cycliclsdynamat( pfn , pts , ptf , esc , ssc ) ;
-
+/*********************************************************************/
+/*********************************************************************/
 
 rhod        = 1900.0 ;
 ez          = ( (rhos / rhod) - 1.0 ) ;
@@ -129,18 +151,84 @@ ll.nzs      = ( 1.0 - nz ) ;
 ll.nzf      = 0.0 ;
 ll.nzg      = nz ;
 
-console.log( "nzs=" , ll.nzs ) ;
-console.log( "nzf=" , ll.nzf ) ;
-console.log( "nzg=" , ll.nzg ) ;
-
-ll.vem      = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
-ll.vem      = ( vemz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+// ll.vem   = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
+// ll.vem   = ( vemz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
 ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
-ll.vrm      = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
-ll.vrm      = ( vrmz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+// ll.vrm   = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
+// ll.vrm   = ( vrmz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
+ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.wrm      = wrmz ;
+ll.mrm      = mrmz ;
+
+pfn         = 'Oed_V3_rho1900kgm3_sv60MPa_dedt10_2_model.dat' ;
+
+ll.cycliclsdynamat( pfn , pts , ptf , esc , ssc ) ;
+
+console.log( "pfn=" , pfn ) ;
+console.log( "nzs=" , ll.nzs.toFixed( 4 ) ) ;
+console.log( "nzf=" , ll.nzf.toFixed( 4 ) ) ;
+console.log( "nzg=" , ll.nzg.toFixed( 4 ) ) ;
+console.log( "ez =" , ez ) ;
+console.log() ;
+
+
+/*********************************************************************/
+/*********************************************************************/
+
+rhod        = 1950.0 ;
+ez          = ( (rhos / rhod) - 1.0 ) ;
+nz          = ( ez / (1.0 + ez) ) ;
+
+ll.nzs      = ( 1.0 - nz ) ;
+ll.nzf      = 0.0 ;
+ll.nzg      = nz ;
+
+// ll.vem   = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
+// ll.vem   = ( vemz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
+ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.wem      = wemz ;
+ll.mem      = memz ;
+
+// ll.vrm   = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
+// ll.vrm   = ( vrmz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
+ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.wrm      = wrmz ;
+ll.mrm      = mrmz ;
+
+pfn         = 'Oed_V3_rho1950kgm3_sv60MPa_dedt10_2_model.dat' ;
+
+ll.cycliclsdynamat( pfn , pts , ptf , esc , ssc ) ;
+
+console.log( "pfn=" , pfn ) ;
+console.log( "nzs=" , ll.nzs.toFixed( 4 ) ) ;
+console.log( "nzf=" , ll.nzf.toFixed( 4 ) ) ;
+console.log( "nzg=" , ll.nzg.toFixed( 4 ) ) ;
+console.log( "ez =" , ez ) ;
+console.log() ;
+
+
+/*********************************************************************/
+/*********************************************************************/
+
+rhod        = 1900.0 ;
+ez          = ( (rhos / rhod) - 1.0 ) ;
+nz          = ( ez / (1.0 + ez) ) ;
+
+ll.nzs      = ( 1.0 - nz ) ;
+ll.nzf      = 0.0 ;
+ll.nzg      = nz ;
+
+// ll.vem   = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
+// ll.vem   = ( vemz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
+ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.wem      = wemz ;
+ll.mem      = memz ;
+
+// ll.vrm   = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
+// ll.vrm   = ( vrmz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
 ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
@@ -149,6 +237,51 @@ pfn         = 'Oed_V4_rho1900kgm3_sv60MPa_dedt10_4_model.dat' ;
 
 ll.cycliclsdynamat( pfn , pts , ptf , esc , ssc ) ;
 
+console.log( "pfn=" , pfn ) ;
+console.log( "nzs=" , ll.nzs.toFixed( 4 ) ) ;
+console.log( "nzf=" , ll.nzf.toFixed( 4 ) ) ;
+console.log( "nzg=" , ll.nzg.toFixed( 4 ) ) ;
+console.log( "ez =" , ez ) ;
+console.log() ;
+
+
+/*********************************************************************/
+/*********************************************************************/
+
+rhod        = 1870.0 ;
+ez          = ( (rhos / rhod) - 1.0 ) ;
+nz          = ( ez / (1.0 + ez) ) ;
+
+ll.nzs      = ( 1.0 - nz ) ;
+ll.nzf      = 0.0 ;
+ll.nzg      = nz ;
+
+// ll.vem   = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
+// ll.vem   = ( vemz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
+ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.wem      = wemz ;
+ll.mem      = memz ;
+
+// ll.vrm   = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
+// ll.vrm   = ( vrmz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
+ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
+ll.wrm      = wrmz ;
+ll.mrm      = mrmz ;
+
+pfn         = 'Oed_V4_rho1870kgm3_sv60MPa_dedt10_4_model.dat' ;
+
+ll.cycliclsdynamat( pfn , pts , ptf , esc , ssc ) ;
+
+console.log( "pfn=" , pfn ) ;
+console.log( "nzs=" , ll.nzs.toFixed( 4 ) ) ;
+console.log( "nzf=" , ll.nzf.toFixed( 4 ) ) ;
+console.log( "nzg=" , ll.nzg.toFixed( 4 ) ) ;
+console.log( "ez =" , ez ) ;
+console.log() ;
+
+
+/*********************************************************************/
+/*********************************************************************/
 
 rhod        = 2000.0 ;
 ez          = ( (rhos / rhod) - 1.0 ) ;
@@ -158,18 +291,14 @@ ll.nzs      = ( 1.0 - nz ) ;
 ll.nzf      = 0.0 ;
 ll.nzg      = nz ;
 
-console.log( "nzs=" , ll.nzs ) ;
-console.log( "nzf=" , ll.nzf ) ;
-console.log( "nzg=" , ll.nzg ) ;
-
-ll.vem      = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
-ll.vem      = ( vemz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+// ll.vem   = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
+// ll.vem   = ( vemz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
 ll.vem      = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
-ll.vrm      = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
-ll.vrm      = ( vrmz * Math.pow( (1.0 / (1.0 + ez)) , mez ) ) ;
+// ll.vrm   = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
+// ll.vrm   = ( vrmz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
 ll.vrm      = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
@@ -178,3 +307,13 @@ pfn         = 'Oed_V5_rho2000kgm3_sv60MPa_dedt10_4_model.dat' ;
 
 ll.cycliclsdynamat( pfn , pts , ptf , esc , ssc ) ;
 
+console.log( "pfn=" , pfn ) ;
+console.log( "nzs=" , ll.nzs.toFixed( 4 ) ) ;
+console.log( "nzf=" , ll.nzf.toFixed( 4 ) ) ;
+console.log( "nzg=" , ll.nzg.toFixed( 4 ) ) ;
+console.log( "ez =" , ez ) ;
+console.log() ;
+
+
+/*********************************************************************/
+/*********************************************************************/
