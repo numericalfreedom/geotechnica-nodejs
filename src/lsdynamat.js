@@ -219,7 +219,7 @@ function runlsdynamat()
   let  rvl  = new Array( this.nvl ) ;
 
 
-  for( ip = js = jl = 0 , jsr = jlr = 0 , this.eps = this.epstt = this.epsel = this.epspl = 0.0 , this.pt = this.pec = this.pe = 0.0 , this.pn = this.pz , this.dpt = this.ps ; this.pt <= (this.px + this.pz) ; ++ip , ((js = (++js % jsn)) || (++jsr)) , ((jl = (++jl % jln)) || (++jlr)) )
+  for( ip = js = jl = 0 , jsr = jlr = 0 , this.eps = this.epstt = this.epsel = this.epspl = 0.0 , this.pec = this.pe = 0.0 , this.pt = this.pn = this.pz , this.dpt = this.ps ; this.pt <= (this.px + this.pz) ; ++ip , ((js = (++js % jsn)) || (++jsr)) , ((jl = (++jl % jln)) || (++jlr)) )
    {
 
 
@@ -303,12 +303,12 @@ function runlsdynamat()
 
     if( ! js )
 
-      rvs[jsr] = [ this.eps , this.pt , this.pe , this.pn , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rrm , this.rr , this.rs , this.rf , this.rg , this.r , this.reps ] ;
+      rvs[jsr] = [ this.eps , (this.pt - this.pz) , this.pe , (this.pn - this.pz) , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rrm , this.rr , this.rs , this.rf , this.rg , this.r , this.reps ] ;
 
 
     if( ! jl )
 
-      rvl[jlr] = [ this.eps , this.pt , this.pe , this.pn , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rrm , this.rr , this.rs , this.rf , this.rg , this.r , this.reps ] ;
+      rvl[jlr] = [ this.eps , (this.pt - this.pz) , this.pe , (this.pn - this.pn) , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rrm , this.rr , this.rs , this.rf , this.rg , this.r , this.reps ] ;
 
 
     this.eps += ( this.deps = (- this.ctu * this.dpt) ) ;
@@ -408,7 +408,7 @@ function cycliclsdynamat( pfn , pts , ptf , esc , ssc )
 
   for( i = 0 , ii = 1 , this.eps = this.epstt = this.epsel = this.epspl = 0.0 , this.pt = this.pec = this.pe = 0.0 , this.pn = this.pz , this.dpt = this.ps , jf = Math.ceil( ptf / this.ps ) ; (i < (pts.length - 1)) ; ++i , ++ii )
    
-    for( j = 0 , this.pt = pts[i] , this.dpt = (this.ps * (this.px = Math.sign( pts[ii] - pts[i] ))) ; this.pt != pts[ii] ; (j = (++j % jf)) )
+    for( j = 0 , this.pt = (pts[i] + this.pz) , this.dpt = (this.ps * (this.px = Math.sign( pts[ii] - pts[i] ))) ; this.pt != pts[ii] ; (j = (++j % jf)) )
      {
 
 
