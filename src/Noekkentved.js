@@ -1,6 +1,8 @@
 /**
  *  Calculation of pile forces in a plane pile raft system
- *
+ * 
+ *  @function
+ *  @name noekkentved
  *  @param  {Array}  x - Input data field
  *  @return {Array}      Pile force results
  *  @customfunction
