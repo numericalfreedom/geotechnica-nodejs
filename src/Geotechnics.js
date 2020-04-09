@@ -4,7 +4,7 @@
 const g = 10.0 ;
 
 
-module.exports = { g , degrees , radians , earthpressure , wedgeslope , groundfailure , punchfailure , izzFz , izzqzAQ } ;
+module.exports = { g , degrees , radians , karp , wedgeslope , groundfailure , punchfailure , izzFz , izzqzAQ , noekkentved } ;
 
 
 function degrees( r )
@@ -23,7 +23,7 @@ function radians( d )
  }
 
 
-function earthpressure( x )
+function karp( x )
  {
 
   const c_0_0 = 0;
@@ -1711,11 +1711,11 @@ function jzzqz(  a , b , x , y , z , n )
 
  
  /**
- 
-@function
-@name frqz
- 
-*/
+  *
+  * @function
+  * @name frqz
+  *
+  */
  
 function frqz( a , b , x , y , z , n , v )
  {
@@ -1933,11 +1933,11 @@ function quadrilateralfoundation( cc , x )
 
 
 /**
- 
-@function
-@name gel
- 
-*/
+ *
+ * @function
+ * @name gel
+ *
+ */
 
 
 function gel( e , nu )
@@ -1951,11 +1951,11 @@ function gel( e , nu )
 
 
 /**
- 
-@function
-@name kel
- 
-*/
+ * 
+ * @function
+ * @name kel
+ *
+ */
 
 function kel( e , nu )
  {
@@ -1968,11 +1968,11 @@ function kel( e , nu )
 
 
 /**
- 
-@function
-@name a0u
- 
-*/
+ *
+ * @function
+ * @name a0u
+ *
+ */
 
 function a0u( a , b )
  {
@@ -1985,11 +1985,11 @@ function a0u( a , b )
 
 
 /**
- 
-@function
-@name r0u
- 
-*/
+ * 
+ * @function
+ * @name r0u
+ *
+ */
 
 function r0u( a0 ) 
  {
@@ -2002,11 +2002,11 @@ function r0u( a0 )
 
 
 /**
- 
-@function
-@name kux0
- 
-*/
+ *
+ * @function
+ * @name kux0
+ *
+ * */
 
 function kux0( r0 , g , nu ) 
  {
@@ -2019,11 +2019,11 @@ function kux0( r0 , g , nu )
 
 
 /**
- 
-@function
-@name kuy0
- 
-*/
+ * 
+ * @function
+ * @name kuy0
+ * 
+ */
 
 function kuy0( r0 , g , nu ) 
  {
@@ -2036,11 +2036,11 @@ function kuy0( r0 , g , nu )
 
 
 /**
- 
-@function
-@name kuz0
- 
-*/
+ *
+ * @function
+ * @name kuz0
+ *
+ * */
 
 function kuz0( r0 , g , nu ) 
  {
@@ -2053,11 +2053,11 @@ function kuz0( r0 , g , nu )
 
 
 /**
- 
-@function
-@name i0x
- 
-*/
+ *
+ * @function
+ * @name i0x
+ *
+ */
 
 function i0x( a , b )
  {
@@ -2073,11 +2073,11 @@ function i0x( a , b )
 
 
 /**
- 
-@function
-@name i0y
- 
-*/
+ *
+ * @function
+ * @name i0y
+ * 
+ */
 
 function i0y( a , b )
  {
@@ -2093,11 +2093,11 @@ function i0y( a , b )
 
 
 /**
- 
-@function
-@name i0z
- 
-*/
+ *
+ * @function
+ * @name i0z
+ *
+ */
 
 function i0z( a , b )
  {
@@ -2113,11 +2113,11 @@ function i0z( a , b )
 
 
 /**
- 
-@function
-@name r0rx
- 
-*/
+ *
+ * @function
+ * @name r0rx
+ *
+ */
 
 function r0rx( i0x )
  {
@@ -2130,11 +2130,11 @@ function r0rx( i0x )
 
 
 /**
- 
-@function
-@name r0ry
- 
-*/
+ *
+ * @function
+ * @name r0ry
+ *
+ */
 
 function r0ry( i0y )
  {
@@ -2147,11 +2147,11 @@ function r0ry( i0y )
 
 
 /**
- 
-@function
-@name r0rz
- 
-*/
+ * 
+ * @function
+ * @name r0rz
+ * 
+ */
 
 function r0rz( i0z )
  {
@@ -2164,11 +2164,11 @@ function r0rz( i0z )
 
 
 /**
- 
-@function
-@name krx0
- 
-*/
+ *
+ * @function
+ * @name krx0
+ *
+ */
 
 function krx0( r0 , g , nu ) 
  {
@@ -2181,11 +2181,11 @@ function krx0( r0 , g , nu )
 
 
 /**
- 
-@function
-@name kry0
- 
-*/
+ *
+ * @function
+ * @name kry0
+ * 
+ */
 
 function kry0( r0 , g , nu ) 
  {
@@ -2198,11 +2198,11 @@ function kry0( r0 , g , nu )
 
 
 /**
- 
-@function
-@name krz0
- 
-*/
+ *
+ * @function
+ * @name krz0
+ *
+ */
 
 function krz0( r0 , g , nu ) 
  {
@@ -2215,6 +2215,7 @@ function krz0( r0 , g , nu )
 
 
 /**
+ *
  *  Calculation of pile forces in a plane pile raft system
  *
  *  @function
