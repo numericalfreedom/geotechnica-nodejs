@@ -4,8 +4,32 @@
 const g = 10.0 ;
 
 
-module.exports = { g , degrees , radians , karp , wedgeslope , groundfailure , punchfailure , izzFz , izzqzAQ , noekkentved } ;
+module.exports = { g , radians , degrees , karp , wedgeslope , groundfailure , punchfailure , izzFz , izzqzAQ , noekkentved } ;
 
+
+/**
+ *  Degrees to radians transformation
+ *
+ *  @param  {Number}  degrees - Angle in degrees
+ *  @return {Number}  Angle in radians
+ *  @customfunction
+ */
+
+function radians( d )
+ {
+
+  return( Math.PI * (d / 180.00) ) ;
+
+ }
+
+
+/**
+ *  Radians to degrees transformation
+ *
+ *  @param  {Number}  radians - Angle in radians
+ *  @return {Number}  Angle in degrees
+ *  @customfunction
+ */
 
 function degrees( r )
  {
@@ -15,13 +39,17 @@ function degrees( r )
  }
 
 
-function radians( d )
- {
-
-  return( Math.PI * (d / 180.00) ) ;
-
- }
-
+/**
+ *
+ *  Calculation of earth pressure coefficients
+ *
+ *  @function
+ *  @name karp
+ *  @param  {Array}  x - Input data field
+ *  @return {Array}      Earth pressure coefficients
+ *  @customfunction
+ *
+ */
 
 function karp( x )
  {
@@ -245,6 +273,17 @@ function karp( x )
  }
 
 
+/**
+ *
+ *  Tensile crack depth and minimum earth pressure depth calculation
+ *
+ *  @function
+ *  @name ztn
+ *  @param  {Array}  x - Input data field
+ *  @return {Array}      Tensile crack depth and minimum earth pressure depth values
+ *  @customfunction
+ *
+ */
 
 function ztn( x , y , kghn , svg )
  {
@@ -275,6 +314,7 @@ function ztn( x , y , kghn , svg )
 
 
 
+
 function fps( ap , bt , th )
  {
    
@@ -299,6 +339,15 @@ function fhs( apt , apb , bt )
 
  } // fhb() : height factor due to different wall surface inclination in COULOMB earth pressure problem
 
+
+/**
+ * 
+ * Slope stability computation with the wedge method
+ *
+ * @function
+ * @name wedgeslope
+ *  
+ */
 
 function wedgeslope( x , th )
  {
