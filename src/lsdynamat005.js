@@ -17,17 +17,19 @@ const rdtf  = mat005.dimension( mr , rmx , lr , rlx , tr , rtx ) ;
 
 const smx   =    1.0   ;
 const slx   = (- 1.0 ) ;
-const stx   = ( -2.0 ) ;
+const stx   = (- 2.0 ) ;
 const sdtf  = mat005.dimension( mr , smx , lr , slx , tr , stx ) ;
+
+// fs = J2 - (a0 + a1 * p + a2 * p  * p)
 
 const a0mx  =    2.0   ;
 const a0lx  = (- 2.0 ) ;
-const a0tx  = ( -4.0 ) ;
+const a0tx  = (- 4.0 ) ;
 const a0dtf = mat005.dimension( mr , a0mx , lr , a0lx , tr , a0tx ) ;
 
 const a1mx  =    1.0   ;
 const a1lx  = (- 1.0 ) ;
-const a1tx  = ( -2.0 ) ;
+const a1tx  = (- 2.0 ) ;
 const a1dtf = mat005.dimension( mr , a1mx , lr , a1lx , tr , a1tx ) ;
 
 const nznn  =    6     ;
@@ -35,9 +37,9 @@ const nzn   =    0.20  ;
 const nzx   =    0.50  ;
 const nzss  = ( (nzx - nzn) / nznn ) ;
 
-const sznn  =    8     ;
-const szn   =    0.10  ;
-const szx   =    0.90  ;
+const sznn  =    10    ;
+const szn   =    0.00  ;
+const szx   =    1.00  ;
 const szss  = ( (szx - szn) / sznn ) ;
 
 const mid   =  0 ;
@@ -52,18 +54,21 @@ const vcr   =  8 ;
 const ref   =  9 ;
 const lcid  = 10 ;
 
-const gv    = 1.000e9 ;
-const kunv  = 1.000e9 ;
-const a0v   = 3.400e9 ;
-const a1v   = 7.033e4 ;
-const a2v   = 0.300   ;
-const pcv   = 0.000   ;
+const gv    = 1.000000e9 ;
+const kunv  = 1.000000e9 ;
+const a0v   = 1.50000e-4 ;
+const a1v   = 1.78494e-1 ;
+const a2v   = 2.13420e-1 ;
+const pcv   = 0.0 ;
 const vcrv  = 0 ;
 const refv  = 0 ;
 
 const rzs   = 2650.00 ;
 const rzf   = 1000.00 ;
 const rzg   =    1.30 ;
+
+
+
 
 const vemz  =   20.00 ;
 const wem   =    0.50 ;
