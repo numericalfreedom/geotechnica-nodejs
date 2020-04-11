@@ -54,11 +54,9 @@ const vcr   =  8 ;
 const ref   =  9 ;
 const lcid  = 10 ;
 
-var   gv    = 1.000000e9 ;
-var   kunv  = 1.000000e9 ;
-const a0v   = 1.50000e-4 ;
-const a1v   = 1.78494e-1 ;
-const a2v   = 2.13420e-1 ;
+const a0v   = 1.500000e8 ;
+const a1v   = 1.784940e-1 ;
+const a2v   = 2.134200e5 ;
 const pcv   = 0.0 ;
 const vcrv  = 0 ;
 const refv  = 0 ;
@@ -84,6 +82,9 @@ const rvll  = 101 ;
 
 const mfnx  = '.key' ;
 const lfnx  = '.dat' ;
+
+var   gv    = undefined ;
+var   kunv  = undefined ;
 
 var   rdvs  = new Array( rvsl ) ;
 var   rdvl  = new Array( rvll ) ;
