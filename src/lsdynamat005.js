@@ -54,8 +54,8 @@ const vcr   =  8 ;
 const ref   =  9 ;
 const lcid  = 10 ;
 
-const gv    = 1.000000e9 ;
-const kunv  = 1.000000e9 ;
+var   gv    = 1.000000e9 ;
+var   kunv  = 1.000000e9 ;
 const a0v   = 1.50000e-4 ;
 const a1v   = 1.78494e-1 ;
 const a2v   = 2.13420e-1 ;
@@ -63,20 +63,21 @@ const pcv   = 0.0 ;
 const vcrv  = 0 ;
 const refv  = 0 ;
 
+const nuurv = 0.35 ;
+
 const rzs   = 2650.00 ;
 const rzf   = 1000.00 ;
 const rzg   =    1.30 ;
 
-
-
-
-const vemz  =   20.00 ;
-const wem   =    0.50 ;
+const vemz  =    4.25e3 ;
+const wem   =    0.55 ;
 const mem   =    0.00 ;
 
-const vrmz  =   40.00 ;
-const wrm   =    0.75 ;
-const mrm   =    1.00 ;
+const vrmz  =    2.00e5 ;
+const wrm   =    0.00 ;
+const mrm   =    0.00 ;
+
+const mez   =   10.00 ;
 
 const rvsl  =  11 ;
 const rvll  = 101 ;
@@ -122,29 +123,28 @@ for( nz = nzn ; nz <= nzx ; nz += nzss )
  {
 	 
 
-  ez = ( nz / (1.0 - nz) ) ;
+  mat005.nzs = ( nzs = (1.0 - nz) ) ;
 
 
-  mat005.vem = ( (((fezz - ez) * (fezz - ez)) / (1.0 + ez)) * vemz ) ;
+  mat005.vem = ( vemz * Math.pow( nzs , mez ) ) ;
 
   mat005.wem = wem ;
 
   mat005.mem = mem ;
 
 
-  mat005.vrm = ( (((fezz - ez) * (fezz - ez)) / (1.0 + ez)) * vrmz ) ;
+  mat005.vrm = kunv = ( vrmz * Math.pow( nzs , mez ) ) ;
 
   mat005.wrm = wrm ;
 
   mat005.mrm = mrm ;
-	 
 
-  // console.log( 'nz=' , nz , ' ez=' , ez , ' vm =' , mat005.vm ) ;
-   
+
+  gv = ( kunv * ((3.0 * (1.0 - (2.0 * nuurv))) / (2.0 * (1.0 + nuurv))) ) ;
+
+
   for( sz = szn ; sz <= szx ; sz += szss )
    {
-
-    mat005.nzs = ( nzs = (1.0 - nz) ) ;
 
     mat005.nzf = ( nzf = (nz * sz) ) ;
 
