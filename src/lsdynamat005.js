@@ -6,6 +6,8 @@ const lsdynamat  = require( './lsdynamat' ) ;
 
 const mat005 = new lsdynamat.lsdynamat() ;
 
+// Dimension system: tons / mm / sec
+
 const mr    =    0.001 ;
 const lr    = 1000.000 ;
 const tr    =    1.000 ;
@@ -20,7 +22,7 @@ const slx   = (- 1.0 ) ;
 const stx   = (- 2.0 ) ;
 const sdtf  = mat005.dimension( mr , smx , lr , slx , tr , stx ) ;
 
-// fs = J2 - (a0 + a1 * p + a2 * p  * p)
+// fs = J2 - (a0 + a1 * p + a2 * p * p)
 
 const a0mx  =    2.0   ;
 const a0lx  = (- 2.0 ) ;
@@ -55,8 +57,9 @@ const ref   =  9 ;
 const lcid  = 10 ;
 
 const a0v   = 1.500000e8  ;
-const a1v   = 2.134200e5  ;
-const a2v   = 1.784940e-1 ;
+const a1v   = 0.0  ;
+const a2v   = 1.795844e-1 ;
+
 const pcv   = 0.0 ;
 const vcrv  = 0 ;
 const refv  = 0 ;
