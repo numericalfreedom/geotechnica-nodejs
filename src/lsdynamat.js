@@ -956,7 +956,7 @@ function lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rv )
 
   fs.writeSync( mfd , '$ *MAT_005 \n' ) ;
   fs.writeSync( mfd , '*MAT_SOIL_AND_FOAM \n' ) ;
-  fs.writeSync( mfd , '$ PARAMETER PC != 0.0 IN THIS CASE \n' ) ;
+  fs.writeSync( mfd , '$ PARAMETER CAN BE PC <> 0.0 IN THIS CASE \n' ) ;
   fs.writeSync( mfd , '$ \n' ) ;
   fs.writeSync( mfd , '$ *MAT_014 \n' ) ;
   fs.writeSync( mfd , '$ *MAT_SOIL_AND_FOAM_FAILURE \n' ) ;

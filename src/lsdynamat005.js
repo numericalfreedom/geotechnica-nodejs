@@ -137,14 +137,16 @@ for( nz = nzn ; nz <= nzx ; nz += nzss )
   mat005.mem = mem ;
 
 
-  mat005.vrm = kunv = ( vrmz * Math.pow( nzs , mez ) ) ;
+  mat005.vrm = ( vrmz * Math.pow( nzs , mez ) ) ;
 
   mat005.wrm = wrm ;
 
   mat005.mrm = mrm ;
 
 
-  gv = ( kunv * ((3.0 * (1.0 - (2.0 * nuurv))) / (2.0 * (1.0 + nuurv))) ) ;
+  kunv = ( mat005.vrm * mat005.pr ) ;
+
+  gv   = ( kunv * ((3.0 * (1.0 - (2.0 * nuurv))) / (2.0 * (1.0 + nuurv))) ) ;
 
 
   for( sz = szn ; sz <= szx ; sz += szss )
