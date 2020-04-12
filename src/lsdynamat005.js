@@ -54,9 +54,9 @@ const vcr   =  8 ;
 const ref   =  9 ;
 const lcid  = 10 ;
 
-const a0v   = 1.500000e8 ;
-const a1v   = 1.784940e-1 ;
-const a2v   = 2.134200e5 ;
+const a0v   = 1.500000e8  ;
+const a1v   = 2.134200e5  ;
+const a2v   = 1.784940e-1 ;
 const pcv   = 0.0 ;
 const vcrv  = 0 ;
 const refv  = 0 ;
@@ -164,7 +164,7 @@ for( nz = nzn ; nz <= nzx ; nz += nzss )
     console.log( 'Writing material key: ' + midv + mfnx ) ;
    
     [ rvs , rvl ]  = mat005.runlsdynamat() ;
-    
+   
     pv = [ midv , (rz * rdtf) , (gv * sdtf) , (kunv * sdtf) , (a0v * a0dtf) , (a1v * a1dtf) , a2v , (pcv * sdtf) , vcrv , refv , lcidv ] ;
 
     for( i = 0 ; i < rvsl ; rdvs[i][0] = rvs[i][0] , rdvs[i][1] = (rvs[i++][1] * sdtf) ) ;

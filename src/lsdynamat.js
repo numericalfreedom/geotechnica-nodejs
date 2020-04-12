@@ -308,10 +308,10 @@ function runlsdynamat()
 
     if( ! jl )
 
-      rvl[jlr] = [ this.eps , (this.pt - this.pz) , this.pe , (this.pn - this.pn) , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rrm , this.rr , this.rs , this.rf , this.rg , this.r , this.reps ] ;
+      rvl[jlr] = [ this.eps , (this.pt - this.pz) , this.pe , (this.pn - this.pz) , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rrm , this.rr , this.rs , this.rf , this.rg , this.r , this.reps ] ;
 
 
-    this.eps += ( this.deps = (- this.ctu * this.dpt) ) ;
+    this.eps   += ( this.deps   = (- this.ctu * this.dpt) ) ;
 
 
     this.epstt += ( this.depstt = (- this.ctu   * this.dpt) ) ;
@@ -403,6 +403,7 @@ function cycliclsdynamat( pfn , pts , ptf , esc , ssc )
 
 
   fs.writeSync( pfd , '         e=        pt=        pe=        pn=         n=         s=         a=         b=        ns=        nf=        ng=          rrs=          rrf=        rrg=         rrm=           rr=        rs=        rf=        rg=         r=      reps=     epstt=     epsel=     epspl=\n' ) ;
+
   fs.writeSync( pfd , '        (1)        (2)        (3)        (4)        (5)        (6)        (7)        (8)        (9)       (10)       (11)          (12)          (13)        (14)         (15)          (16)       (17)       (18)       (19)       (20)       (21)       (22)       (23)       (24)\n' ) ;
 
 
@@ -538,7 +539,6 @@ function cycliclsdynamat( pfn , pts , ptf , esc , ssc )
 
 
  } ; // end function cycliclsdynamat()
-
 
 
 /**
@@ -915,9 +915,9 @@ function lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rv )
 
           ps[i][0] = pv[i].toExponential(4) ;
 
-         else
+        else
 
-  	      ps[i][0] = pv[i].toExponential(3) ;
+          ps[i][0] = pv[i].toExponential(3) ;
 
         break ;
 
@@ -1021,6 +1021,7 @@ function lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rv )
     lfd = fs.openSync( lfn , 'w' ) ;
 
     fs.writeSync( lfd , '           e=          pt=          pe=          pn=           n=           s=           a=           b=          ns=          nf=          ng=         rrs=         rrf=         rrg=         rrm=          rr=          rs=          rf=          rg=           r=        reps= \n' ) ;
+
     fs.writeSync( lfd , '          (1)          (2)          (3)          (4)          (5)          (6)          (7)          (8)          (9)         (10)         (11)         (12)         (13)         (14)         (15)         (16)         (17)         (18)         (19)         (20)         (21) \n' ) ;
 
     if( rv )
