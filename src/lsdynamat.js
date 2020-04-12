@@ -36,16 +36,16 @@ function lsdynamat( pz , px , ps , pr , vem , wem , mem , vrm , wrm , mrm , nzs 
 
   this.nzs   = ( (nzs != undefined) ?  nzs :    0.50   ) ;
   this.rzs   = ( (rzs != undefined) ?  rzs : 2650.00   ) ;
-  this.czs   = ( (czs != undefined) ?  czs : 6319.00   ) ;
-  this.ks    = ( (ks  != undefined) ?  ks  :    7.00   ) ;
+  this.czs   = ( (czs != undefined) ?  czs : 5000.00   ) ;
+  this.ks    = ( (ks  != undefined) ?  ks  :    5.00   ) ;
 
   this.nzf   = ( (nzf != undefined) ?  nzf :    0.30   ) ;
   this.rzf   = ( (rzf != undefined) ?  rzf : 1000.00   ) ;
-  this.czf   = ( (czf != undefined) ?  czf : 1460.00   ) ;
-  this.kf    = ( (kf  != undefined) ?  kf  :    3.00   ) ;
+  this.czf   = ( (czf != undefined) ?  czf : 1500.00   ) ;
+  this.kf    = ( (kf  != undefined) ?  kf  :    7.00   ) ;
 
   this.nzg   = ( (nzg != undefined) ?  nzg :    0.20   ) ;
-  this.rzg   = ( (rzg != undefined) ?  rzg :    1.30   ) ;
+  this.rzg   = ( (rzg != undefined) ?  rzg :    1.20   ) ;
   this.kg    = ( (kg  != undefined) ?  kg  :    1.40   ) ;
 
   this.nvs   = ( (nvs != undefined) ?  nvs :   10      ) ;
