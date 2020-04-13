@@ -49,7 +49,124 @@ const c_sla = 6 ;
 const c_sls = 7 ;
 
 
-module.exports = { Matrix , c_cca , c_ccs , c_cra , c_crs }
+module.exports = { MatrixF , Matrix , c_cca , c_ccs , c_cra , c_crs }
+
+ 
+/** @classdesc  Matrix operation on full matrix
+ *  @class
+ *
+ *  @author     Numericalfreedom Foundation <numericalfreedom@googlemail.com>
+ *  
+ *  @param    { number }    nr               Number of rows
+ *  @param    { number }    nc               Number of columns
+ *  @param    { number }    nv               Number of values
+ *  @param    { Array }     v                Value vector
+ *
+ */
+
+function MatrixF( nr , nc , nv , v )
+ {
+
+  let i  = undefined ;
+  let ix = undefined ;
+
+  if( ! nv )  nv = ( nr * nc ) ;
+  
+  let vv = undefined ;
+
+
+  if( v === undefined )
+
+    for( vv = new Array( nv ) , i = 0;  i < nv;  vv[i++] = 0.0 ) ;
+
+  else
+   {
+  
+    if( v === null )
+  
+      vv = new Array( 0 ) ;
+
+    else
+
+      if( v && (ix = v.length) && (ix = ((ix < nv) ? ix : nv)) )
+
+        for( vv = new Array( nv ) , i = 0;  i < ix;  vv[i] = v[i++] ) ;
+
+   } ; // end else -
+
+  this.nr  = nr ;
+  this.nc  = nc ;
+  this.nv  = nv ;
+  this.v   = vv ;
+
+  this.cmd = cmd ;
+  this.cmm = cmm ;
+  this.crt = crt ;
+  this.csd = csd ;
+  this.csm = csm ;
+  this.cst = cst ;
+  this.dmm = dmm ;
+  this.dvt = dvt ;
+  this.enm = enm ;
+  this.eqt = eqt ;
+  this.evj = evj ;
+  this.evl = evl ;
+  this.gvv = gvv ;
+  this.i21 = i21 ;
+  this.i22 = i22 ;
+  this.i31 = i31 ;
+  this.i32 = i32 ;
+  this.i33 = i33 ;
+
+  this.idx = idx ;
+  this.inv = inv ;
+  this.j32 = j32 ;
+  this.j33 = j33 ;
+  this.mdt = mdt ;
+  this.mma = mma ;
+  this.mms = mms ;
+  this.mmd = mmd ;
+  this.mmt = mmt ;
+  this.msa = msa ;
+  this.msd = msd ;
+  this.mss = mss ;
+  this.mst = mst ;
+  this.pvv = pvv ;
+  this.smd = smd ;
+  this.smm = smm ;
+  this.srt = srt ;
+  this.sum = sum ;
+  this.tfm = tfm ;
+  this.tms = tms ;
+  this.tma = tma ;
+  this.trc = trc ;
+  this.tsp = tsp ;
+  this.unt = unt ;
+  this.val = val ;
+  this.vmd = vmd ;
+  this.vmm = vmm ;
+  this.xmm = xmm ;
+  
+  return ;
+
+ } ; // end function MatrixF
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  
 /** @classdesc  Matrix operations
@@ -119,6 +236,11 @@ module.exports = { Matrix , c_cca , c_ccs , c_cra , c_crs }
  *
  *
  */
+
+
+
+
+
 
 
 
@@ -218,6 +340,16 @@ function Matrix( nr , nc , nv , v )
   return ;
 
  } ; // end function Matrix
+
+
+
+
+
+
+
+
+
+
 
 
 /** Function cev()
