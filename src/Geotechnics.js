@@ -2298,16 +2298,23 @@ function noekkentved( x )
   const r_y0s  = 3 ;
   const r_s    = 4 ;
   const r_m    = 5 ;
+ 
+  const r_tapxp  = 3 ;       
+  const r_xp     = 0 ;
+  const r_tap    = 1 ;
+  const r_xpp    = 2 ;
+  const r_tapp   = 3 ;
+  const r_tppmtp = 4 ;
   
-  const r_cv   = 3 ;
-  const r_ch   = 4 ;
-  const r_cm   = 5 ;
-  const r_qv   = 6 ;
-  const r_qh   = 7 ;
-  const r_q    = 8 ;
+  const r_cv     = 4 ;
+  const r_ch     = 5 ;
+  const r_cm     = 6 ;
+  const r_qv     = 7 ;
+  const r_qh     = 8 ;
+  const r_q      = 9 ;
 
-  const r_nr   = 9 ;
-  const r_nc   = x[0].length ;
+  const r_nr     = 10 ;
+  const r_nc     = x[0].length ;
    
   var   ca     = undefined ;
   var   ta     = undefined ;
@@ -2323,11 +2330,11 @@ function noekkentved( x )
   var   snuee  = undefined ;
   
   var   apr    = undefined ;
-  
-  var   tap    = undefined ;
+
   var   xp     = undefined ;
-  var   tapp   = undefined ;
+  var   tap    = undefined ;
   var   xpp    = undefined ;
+  var   tapp   = undefined ;
   var   tppmtp = undefined ;
   
   var   taps   = undefined ;
@@ -2424,7 +2431,13 @@ function noekkentved( x )
 
   r[r_xy][r_s] = s = Math.sqrt( (h * h) + (v * v) ) ;
   r[r_xy][r_m] = m = ( s * d ) ;
- 
+
+  r[r_tapxp][r_xp]     = xp ;
+  r[r_tapxp][r_tap]    = tap ;
+  r[r_tapxp][r_xpp]    = xpp ;
+  r[r_tapxp][r_tapp]   = tapp ;
+  r[r_tapxp][r_tppmtp] = tppmtp ;
+
   for( j = 0 ; j < r_nc ; ++j )
    {
    
@@ -2446,5 +2459,3 @@ function noekkentved( x )
   return( r ) ;
   
  } ; // end function noekkentved()
-
-
