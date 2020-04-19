@@ -2299,7 +2299,7 @@ function noekkentved( x )
   const r_s    = 4 ;
   const r_m    = 5 ;
  
-  const r_tapxp  = 3 ;       
+  const r_txpap  = 3 ;       
   const r_xp     = 0 ;
   const r_tap    = 1 ;
   const r_xpp    = 2 ;
@@ -2429,14 +2429,14 @@ function noekkentved( x )
    
    } ; // end else
 
-  r[r_xy][r_s] = s = Math.sqrt( (h * h) + (v * v) ) ;
+  r[r_xy][r_s] = s = Math.sqrt( (v * v) + (h * h) ) ;
   r[r_xy][r_m] = m = ( s * d ) ;
 
-  r[r_tapxp][r_xp]     = xp ;
-  r[r_tapxp][r_tap]    = tap ;
-  r[r_tapxp][r_xpp]    = xpp ;
-  r[r_tapxp][r_tapp]   = tapp ;
-  r[r_tapxp][r_tppmtp] = tppmtp ;
+  r[r_txpap][r_xp]     = xp ;
+  r[r_txpap][r_tap]    = tap ;
+  r[r_txpap][r_xpp]    = xpp ;
+  r[r_txpap][r_tapp]   = tapp ;
+  r[r_txpap][r_tppmtp] = tppmtp ;
 
   for( j = 0 ; j < r_nc ; ++j )
    {
