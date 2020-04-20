@@ -49,216 +49,7 @@ const c_sla = 6 ;
 const c_sls = 7 ;
 
 
-module.exports = { MatrixF , Matrix , c_cca , c_ccs , c_cra , c_crs }
-
-
-/** @classdesc  Matrix operation on full matrix
- *  @class
- *
- *  @author     Numericalfreedom Foundation <numericalfreedom@googlemail.com>
- *  
- *  @param    { number }    nr               Number of rows
- *  @param    { number }    nc               Number of columns
- *  @param    { number }    nv               Number of values
- *  @param    { Array }     v                Value vector
- *
- */
-
-function MatrixLS( nr , nc , nv , v )
- {
-
-  let i  = undefined ;
-  let ix = undefined ;
-
-  let ri = new Array( nr ) ;
-
-  let vv = undefined ;
-
-  if( v === undefined )
-   {
-
-    for( i = 0 , nv = 0 ; i < nr ; ri[i++] = nv , nv += (i + 1) ) ;
-
-    for( vv = new Array( nv ) , i = 0 ;  i < nv ;  vv[i++] = 0.0 ) ;
-
-   }
-
-  else
-   {
-
-    if( v === null )
-
-      vv = new Array( 0 ) ;
-
-    else
-
-      if( v && (ix = v.length) && (ix = ((ix < nv) ? ix : nv)) )
-
-        for( vv = new Array( nv ) , i = 0;  i < ix;  vv[i] = v[i++] ) ;
-
-   } ; // end else -
-
-
-  this.nr  = nr ;
-  this.nc  = nc ;
-  this.nv  = nv ;
-  this.v   = vv ;
-
-  this.ri  = ri ;
-
-  this.cdc = cdc ;
-  this.cmd = cmd ;
-  this.cmm = cmm ;
-  this.crt = crt ;
-  this.csd = csd ;
-  this.csm = csm ;
-  this.cst = cst ;
-  this.dmm = dmm ;
-  this.dvt = dvt ;
-  this.enm = enm ;
-  this.eqt = eqt ;
-  this.evj = evj ;
-  this.evl = evl ;
-  this.gvv = gvv ;
-  this.i21 = i21 ;
-  this.i22 = i22 ;
-  this.i31 = i31 ;
-  this.i32 = i32 ;
-  this.i33 = i33 ;
-
-  this.idx = idx ;
-  this.inv = inv ;
-  this.j32 = j32 ;
-  this.j33 = j33 ;
-  this.mdt = mdt ;
-  this.mma = mma ;
-  this.mms = mms ;
-  this.mmd = mmd ;
-  this.mmt = mmt ;
-  this.msa = msa ;
-  this.msd = msd ;
-  this.mss = mss ;
-  this.mst = mst ;
-  this.pvv = pvv ;
-  this.smd = smd ;
-  this.smm = smm ;
-  this.srt = srt ;
-  this.sum = sum ;
-  this.tfm = tfm ;
-  this.tms = tms ;
-  this.tma = tma ;
-  this.trc = trc ;
-  this.tsp = tsp ;
-  this.unt = unt ;
-  this.val = val ;
-  this.vmd = vmd ;
-  this.vmm = vmm ;
-  this.xmm = xmm ;
- 
-  return ;
-
- } ; // end function MatrixLS
-
-
-/** @classdesc  Matrix operation on full matrix
- *  @class
- *
- *  @author     Numericalfreedom Foundation <numericalfreedom@googlemail.com>
- *  
- *  @param    { number }    nr               Number of rows
- *  @param    { number }    nc               Number of columns
- *  @param    { number }    nv               Number of values
- *  @param    { Array }     v                Value vector
- *
- */
-
-function MatrixF( nr , nc , nv , v )
- {
-
-  let i  = undefined ;
-  let ix = undefined ;
-
-  if( ! nv )  nv = ( nr * nc ) ;
-
-  let vv = undefined ;
-
-  if( v === undefined )
-
-    for( vv = new Array( nv ) , i = 0;  i < nv;  vv[i++] = 0.0 ) ;
-
-  else
-   {
-
-    if( v === null )
-
-      vv = new Array( 0 ) ;
-
-    else
-
-      if( v && (ix = v.length) && (ix = ((ix < nv) ? ix : nv)) )
-
-        for( vv = new Array( nv ) , i = 0;  i < ix;  vv[i] = v[i++] ) ;
-
-   } ; // end else -
-
-  this.nr  = nr ;
-  this.nc  = nc ;
-  this.nv  = nv ;
-  this.v   = vv ;
-  this.d   = undefined ;
-
-  this.cdc = cdc ;
-  this.cmd = cmd ;
-  this.cmm = cmm ;
-  this.crt = crt ;
-  this.csd = csd ;
-  this.csm = csm ;
-  this.cst = cst ;
-  this.dmm = dmm ;
-  this.dvt = dvt ;
-  this.enm = enm ;
-  this.eqt = eqt ;
-  this.evj = evj ;
-  this.evl = evl ;
-  this.gvv = gvv ;
-  this.i21 = i21 ;
-  this.i22 = i22 ;
-  this.i31 = i31 ;
-  this.i32 = i32 ;
-  this.i33 = i33 ;
-
-  this.idx = idxRF ;
-  this.inv = inv ;
-  this.j32 = j32 ;
-  this.j33 = j33 ;
-  this.mdt = mdt ;
-  this.mma = mma ;
-  this.mms = mms ;
-  this.mmd = mmd ;
-  this.mmt = mmt ;
-  this.msa = msa ;
-  this.msd = msd ;
-  this.mss = mss ;
-  this.mst = mst ;
-  this.pvv = pvv ;
-  this.smd = smd ;
-  this.smm = smm ;
-  this.srt = srt ;
-  this.sum = sum ;
-  this.tfm = tfm ;
-  this.tms = tms ;
-  this.tma = tma ;
-  this.trc = trc ;
-  this.tsp = tsp ;
-  this.unt = unt ;
-  this.val = val ;
-  this.vmd = vmd ;
-  this.vmm = vmm ;
-  this.xmm = xmm ;
- 
-  return ;
-
- } ; // end function MatrixF
+module.exports = { Matrix , c_cca , c_ccs , c_cra , c_crs }
 
  
 /** @classdesc  Matrix operations
@@ -329,6 +120,8 @@ function MatrixF( nr , nc , nv , v )
  *
  */
 
+
+
 function Matrix( nr , nc , nv , v )
  {
 
@@ -371,6 +164,7 @@ function Matrix( nr , nc , nv , v )
   this.nv  = nv ;
   this.v   = vv ;
   this.d   = d ;
+
 
   this.cmd = cmd ;
   this.cmm = cmm ;
@@ -426,6 +220,54 @@ function Matrix( nr , nc , nv , v )
  } ; // end function Matrix
 
 
+
+
+/** Cholesky decomposition
+ *
+ *
+ *
+ */
+
+function cdc( x )
+ { 
+
+  let s  = undefined ;
+
+  let i  = undefined ;
+  let j  = undefined ;
+
+  let v  = undefined ;
+  let vi = undefined ;
+  
+  for( i = 0 ; i < n ; i++ )
+
+    for( j = 0 ; j <= i ; ++j )
+  
+      if( i == j )
+       {
+
+        // Diagonal element:
+
+        for( s = k = 0 ; k < j ; s += ((v = this.v[ this.idx( j , k++ ) ]) * v) ) ;
+
+        this.v[ vi ] = Math.sqrt( this.v[ vi = this.idx( j , j ) ] - s ) ;
+
+       } // end if +
+              
+      else
+       {
+
+        // Outer diagonal element:
+  
+        for( s = k = 0 ; k < j ; s += (this.idx( i , k ) * this.idx( j , k++ )) ) ;
+
+        this.v[ vi ] = ( (this.v[ vi = this.idx( i , j ) ] - s) / this.v[ this.idx( j , j ) ] ) ;
+
+       } ; // end else 
+
+ } ; // end function cdc()
+
+
 /** Function cev()
  *
  *  Eigenvalue and eigenvector check
@@ -463,58 +305,6 @@ function cev( x )
   return( r ) ;
 
  } ; // end function cev() 
-
-
-
-/** Cholesky decomposition
- *
- *
- *
- */
-
-function cdc()
- {
-
-  let i  = undefined ;
-  let j  = undefined ;
-  let k  = undefined ;
-
-  let s  = undefined ;
-
-  let v  = undefined ;
-  let vi = undefined ;
-
-  for( i = 0 ; i < this.nr ; i++ )
-
-    for( j = 0 ; j <= i ; ++j )
-
-      if( i == j )
-       {
-
-        // Diagonal element:
-
-        for( s = k = 0 ; k < j ; s += ((v = this.v[ this.idx( j , k++ ) ]) * v) ) ;
-
-        vi = this.idx( j , j ) ;
-
-        this.v[ vi ] = Math.sqrt( this.v[ vi ] - s ) ;
-
-       } // end if +
-
-      else
-       {
-
-        // Outer diagonal element:
-
-        for( s = k = 0 ; k < j ; s += (this.idx( i , k ) * this.idx( j , k++ )) ) ;
-
-        vi = this.idx( i , j ) ;
-
-        this.v[ vi ] = ( (this.v[ vi ] - s) / this.v[ this.idx( j , j ) ] ) ;
-
-       } ; // end else 
-
- } ; // end function cdc()
 
 
 
@@ -1559,94 +1349,6 @@ function idx( i /*: number*/ , j /*: number*/ ) /*: number*/
 
  } ; // end function idx()
 
-
-/**
- *  Index function
- *
- *  @description function index
- *
- *  @param    { number }    i      Number of rows
- *  @param    { number }    j      Number of columns
- */
-
-function idxRF( i , j )
- {
-
-  return( (i * this.nc) + j ) ;
-
- } ; // end function idxRF()
-
-
-/**
- *  Index function
- *
- *  @description function index
- *
- *  @param    { number }    i      Number of rows
- *  @param    { number }    j      Number of columns
- */
-
-function idxCF( i , j )
- {
-
-  return( i + (j * this.nr) ) ;
-
- } ; // end function idxCF()
-
-
-/**
- *  Index function
- *
- *  @description function index
- *
- *  @param    { number }    i      Number of rows
- *  @param    { number }    j      Number of columns
- */
-
-function idxRS( i , j )
- {
-
-  return( this.r[i] + j ) ;
-
- } ; // end function idxRS()
-
-
-/**
- *  Index function
- *
- *  @description function index
- *
- *  @param    { number }    i      Number of rows
- *  @param    { number }    j      Number of columns
- */
-
-function idxCS( i , j )
- {
-
-  return( i + this.c[j] ) ;
-
- } ; // end function idxCS()
-
-
-/**
- *  Index function
- *
- *  @description function index
- *
- *  @param    { number }    i      Number of rows
- *  @param    { number }    j      Number of columns
- */
-
-function idxR( i /*: number*/ , j /*: number*/ ) /*: number*/
- {
-
-  let r = undefined ;
-
-  if( i - j )  r = ( i + j + this.d ) ;  else  r = i ;
-
-  return( r ) ;
- 
- } ; // end function idxR()
 
 
 /** Function inv
