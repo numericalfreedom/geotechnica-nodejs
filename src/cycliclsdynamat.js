@@ -31,7 +31,6 @@ var   pfn   = undefined ;
 const pts   = [ 0.00 , 5.00e6 , 0.00 , 1.00e7 , 0.00 , 2.00e7 , 0.00 , 3.00e7 , 0.00 ] ;
 
 const ezz   =    1.0 ;
-// const mez   =    4.9 ;
 const mez   =   10.00 ;
 
 /*********************************************************************/
@@ -45,17 +44,11 @@ ll.nzs      = ( 1.0 - nz ) ;
 ll.nzf      = 0.0 ;
 ll.nzg      = nz ;
 
-// ll.vem   = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
-// ll.vem   = ( vemz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
-// ll.vem   = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vem      = ( vemz * Math.pow( ll.nzs , mez ) ) ;
 
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
-// ll.vrm   = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
-// ll.vrm   = ( vrmz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
-// ll.vrm   = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vrm      = ( vrmz * Math.pow( ll.nzs , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
@@ -84,16 +77,10 @@ ll.nzs      = ( 1.0 - nz ) ;
 ll.nzf      = 0.0 ;
 ll.nzg      = nz ;
 
-// ll.vem   = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
-// ll.vem   = ( vemz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
-// ll.vem   = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vem      = ( vemz * Math.pow( ll.nzs , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
-// ll.vrm   = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
-// ll.vrm   = ( vrmz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
-// ll.vrm   = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vrm      = ( vrmz * Math.pow( ll.nzs , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
@@ -121,16 +108,10 @@ ll.nzs      = ( 1.0 - nz ) ;
 ll.nzf      = 0.0 ;
 ll.nzg      = nz ;
 
-// ll.vem   = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
-// ll.vem   = ( vemz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
-// ll.vem   = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vem      = ( vemz * Math.pow( ll.nzs , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
-// ll.vrm   = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
-// ll.vrm   = ( vrmz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
-// ll.vrm   = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vrm      = ( vrmz * Math.pow( ll.nzs , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
@@ -158,16 +139,10 @@ ll.nzs      = ( 1.0 - nz ) ;
 ll.nzf      = 0.0 ;
 ll.nzg      = nz ;
 
-// ll.vem   = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
-// ll.vem   = ( vemz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
-// ll.vem   = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vem      = ( vemz * Math.pow( ll.nzs , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
-// ll.vrm   = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
-// ll.vrm   = ( vrmz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
-// ll.vrm   = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vrm      = ( vrmz * Math.pow( ll.nzs , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
@@ -195,16 +170,10 @@ ll.nzs      = ( 1.0 - nz ) ;
 ll.nzf      = 0.0 ;
 ll.nzg      = nz ;
 
-// ll.vem   = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
-// ll.vem   = ( vemz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
-// ll.vem   = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vem      = ( vemz * Math.pow( ll.nzs , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
-// ll.vrm   = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
-// ll.vrm   = ( vrmz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
-// ll.vrm   = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vrm      = ( vrmz * Math.pow( ll.nzs , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
@@ -232,16 +201,10 @@ ll.nzs      = ( 1.0 - nz ) ;
 ll.nzf      = 0.0 ;
 ll.nzg      = nz ;
 
-// ll.vem   = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
-// ll.vem   = ( vemz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
-// ll.vem   = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vem      = ( vemz * Math.pow( ll.nzs , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
-// ll.vrm   = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
-// ll.vrm   = ( vrmz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
-// ll.vrm   = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vrm      = ( vrmz * Math.pow( ll.nzs , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
@@ -269,16 +232,10 @@ ll.nzs      = ( 1.0 - nz ) ;
 ll.nzf      = 0.0 ;
 ll.nzg      = nz ;
 
-// ll.vem   = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
-// ll.vem   = ( vemz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
-// ll.vem   = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vem      = ( vemz * Math.pow( ll.nzs , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
-// ll.vrm   = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
-// ll.vrm   = ( vrmz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
-// ll.vrm   = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vrm      = ( vrmz * Math.pow( ll.nzs , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
@@ -306,16 +263,10 @@ ll.nzs      = ( 1.0 - nz ) ;
 ll.nzf      = 0.0 ;
 ll.nzg      = nz ;
 
-// ll.vem   = ( (((fezz - ez) * (fezz - ez))) * vemz ) ;
-// ll.vem   = ( vemz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
-// ll.vem   = ( vemz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vem      = ( vemz * Math.pow( ll.nzs , mez ) ) ;
 ll.wem      = wemz ;
 ll.mem      = memz ;
 
-// ll.vrm   = ( (((fezz - ez) * (fezz - ez))) * vrmz ) ;
-// ll.vrm   = ( vrmz * Math.pow( (ezz / (ezz + ez)) , mez ) ) ;
-// ll.vrm   = ( vrmz * Math.pow( ((ezz - ez) / ezz) , mez ) ) ;
 ll.vrm      = ( vrmz * Math.pow( ll.nzs , mez ) ) ;
 ll.wrm      = wrmz ;
 ll.mrm      = mrmz ;
@@ -334,3 +285,4 @@ console.log() ;
 
 /*********************************************************************/
 /*********************************************************************/
+

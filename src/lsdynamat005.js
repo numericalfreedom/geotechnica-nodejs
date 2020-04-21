@@ -80,8 +80,8 @@ const mrm   =    0.00 ;
 
 const mez   =   10.00 ;
 
-const rvsl  =  11 ;
-const rvll  = 101 ;
+const rvsl  =   11 ;
+const rvll  =  101 ;
 
 const mfnx  = '.key' ;
 const lfnx  = '.dat' ;
