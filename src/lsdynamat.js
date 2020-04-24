@@ -905,7 +905,7 @@ function lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rv )
 
       case lcid:
 
-        ps[lcid][0] = `${pv[lcid]}` ;
+        ps[lcid][0] = `    ${pv[lcid]}` ;
 
         break ;
 
@@ -954,6 +954,9 @@ function lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rv )
   
   mfd = fs.openSync( mfn , 'w' ) ;
 
+  fs.writeSync( mfd , '$...............................................................................  \n' ) ;
+  fs.writeSync( mfd , '$...............................................................................  \n' ) ;
+  fs.writeSync( mfd , '$ \n' ) ;
   fs.writeSync( mfd , '$ *MAT_005 \n' ) ;
   fs.writeSync( mfd , '*MAT_SOIL_AND_FOAM \n' ) ;
   fs.writeSync( mfd , '$ PARAMETER CAN BE PC <> 0.0 IN THIS CASE \n' ) ;
@@ -973,7 +976,7 @@ function lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rv )
   fs.writeSync( mfd , '$...............................................................................  \n' ) ;
   fs.writeSync( mfd , '$ \n' ) ;
   fs.writeSync( mfd , '$      MID        RO         G       KUN        A0        A1        A2        PC  \n' ) ;
-  fs.writeSync( mfd , ` ${ps[mid][0]} ${ps[ro][0]} ${ps[g][0]} ${ps[kun][0]} ${ps[a0][0]} ${ps[a1][0]} ${ps[a2][0]} ${ps[pc][0]} \n` ) ;
+  fs.writeSync( mfd , `  ${ps[mid][0]} ${ps[ro][0]} ${ps[g][0]} ${ps[kun][0]} ${ps[a0][0]} ${ps[a1][0]} ${ps[a2][0]} ${ps[pc][0]} \n` ) ;
   fs.writeSync( mfd , '$ \n' ) ;
   fs.writeSync( mfd , '$      VCR       REF      LCID \n' ) ;
   fs.writeSync( mfd , ` ${ps[vcr][0]} ${ps[ref][0]} ${ps[lcid][0]} \n` ) ;
@@ -1008,6 +1011,7 @@ function lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rv )
     fs.writeSync( mfd , `           ${ps[i][0]}           ${ps[i][1]} \n` ) ;
 
   fs.writeSync( mfd , '$ \n' ) ;
+  fs.writeSync( mfd , '$...............................................................................  \n' ) ;
   fs.writeSync( mfd , '$...............................................................................  \n' ) ;
 
   fs.closeSync( mfd ) ; 
