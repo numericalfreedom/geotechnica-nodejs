@@ -12,17 +12,21 @@ const mr    =    0.001 ;
 const lr    = 1000.000 ;
 const tr    =    1.000 ;
 
+// Dimension transformation for density
+
 const rmx   =    1.0   ;
 const rlx   = (- 3.0 ) ;
 const rtx   = (  0.0 ) ;
 const rdtf  = mat005.dimension( mr , rmx , lr , rlx , tr , rtx ) ;
+
+// Dimension transformation for stress
 
 const smx   =    1.0   ;
 const slx   = (- 1.0 ) ;
 const stx   = (- 2.0 ) ;
 const sdtf  = mat005.dimension( mr , smx , lr , slx , tr , stx ) ;
 
-// fs = J2 - (a0 + a1 * p + a2 * p * p)
+// Dimension transformation for Yield condition parameters: fs = J2 - (a0 + a1 * p + a2 * p * p)
 
 const a0mx  =    2.0   ;
 const a0lx  = (- 2.0 ) ;
@@ -34,6 +38,17 @@ const a1lx  = (- 1.0 ) ;
 const a1tx  = (- 2.0 ) ;
 const a1dtf = mat005.dimension( mr , a1mx , lr , a1lx , tr , a1tx ) ;
 
+
+const kfnn  =    1     ;
+const kfn   =    7.00  ;
+const kfx   =    7.00  ;
+const kfs   =    1.00  ; // ( (kfx - kfn) / kfnn ) ;
+
+const ksnn  =    2     ;
+const ksn   =    3.00  ;
+const ksx   =    5.00  ;
+const kss   = ( (ksx - ksn) / ksnn ) ;
+
 const nznn  =    6     ;
 const nzn   =    0.20  ;
 const nzx   =    0.50  ;
@@ -43,6 +58,7 @@ const sznn  =    10    ;
 const szn   =    0.00  ;
 const szx   =    1.00  ;
 const szss  = ( (szx - szn) / sznn ) ;
+
 
 const mid   =  0 ;
 const ro    =  1 ;
@@ -60,7 +76,7 @@ const a0v   = 1.500000e8  ;
 const a1v   = 2.065000e5  ;
 const a2v   = 1.795844e-1 ;
 
-const pcv   = 0.0 ;
+const pcv   = 1.0e3 ;
 const vcrv  = 0 ;
 const refv  = 0 ;
 
@@ -107,11 +123,17 @@ var   rvl    = undefined ;
 
 var   midv   = undefined ;
 var   midbs  = 'M' ;
+
+var   midkf  = undefined ;
+var   midks  = undefined ;
 var   midnz  = undefined ;
 var   midsz  = undefined ;
 
 var   lcidv  = undefined ;
 var   lcidbs = 'L' ;
+
+var   kf     = undefined ;
+var   ks     = undefined ;
 
 var   nz     = undefined ;
 var   sz     = undefined ;
@@ -123,64 +145,80 @@ var   nzg    = undefined ;
 var   rz     = undefined ;
 
 
-for( nz = nzn ; nz <= nzx ; nz += nzss )
- {
+mat005.ps = 1.00e5 ;
+
+
+for( kf = kfn ; kf <= kfx ; kf += kfs )
+
+  for( ks = ksn ; ks <= ksx ; ks += kss )
+
+    for( nz = nzn ; nz <= nzx ; nz += nzss )
+     {
 	 
 
-  mat005.nzs = ( nzs = (1.0 - nz) ) ;
+      mat005.nzs = ( nzs = (1.0 - nz) ) ;
 
 
-  mat005.vem = ( vemz * Math.pow( nzs , mez ) ) ;
+      mat005.vem = ( vemz * Math.pow( nzs , mez ) ) ;
 
-  mat005.wem = wem ;
+      mat005.wem = wem ;
 
-  mat005.mem = mem ;
-
-
-  mat005.vrm = ( vrmz * Math.pow( nzs , mez ) ) ;
-
-  mat005.wrm = wrm ;
-
-  mat005.mrm = mrm ;
+      mat005.mem = mem ;
 
 
-  kunv = ( mat005.vrm * mat005.pr ) ;
+      mat005.vrm = ( vrmz * Math.pow( nzs , mez ) ) ;
 
-  gv   = ( kunv * ((3.0 * (1.0 - (2.0 * nuurv))) / (2.0 * (1.0 + nuurv))) ) ;
+      mat005.wrm = wrm ;
+
+      mat005.mrm = mrm ;
 
 
-  for( sz = szn ; sz <= szx ; sz += szss )
-   {
+      mat005.kf  = kf  ;
 
-    mat005.nzf = ( nzf = (nz * sz) ) ;
+      mat005.ks  = ks  ;
 
-    mat005.nzg = ( nzg  = (nz * (1.0 - sz)) ) ;
 
-    rz = ( (nzs * rzs) + (nzf * rzf) + (nzg * rzg) ) ;
+      kunv = ( mat005.vrm * mat005.pr ) ;
 
-    midnz = String( Math.round( nz * 100 ) ).padStart( 3 , '0' ) ;
+      gv   = ( kunv * ((3.0 * (1.0 - (2.0 * nuurv))) / (2.0 * (1.0 + nuurv))) ) ;
 
-    midsz = String( Math.round( sz * 100 ) ).padStart( 3 , '0' ) ;
 
-    midv  = ( midbs  + '_' + midnz + '_' + midsz ) ;
+      for( sz = szn ; sz <= szx ; sz += szss )
+       {
 
-    lcidv = ( lcidbs + '_' + midnz + '_' + midsz ) ;
+        mat005.nzf = ( nzf = (nz * sz) ) ;
+
+        mat005.nzg = ( nzg  = (nz * (1.0 - sz)) ) ;
+
+        rz = ( (nzs * rzs) + (nzf * rzf) + (nzg * rzg) ) ;
+
+        midkf = String( Math.round( kf ) ) ;
+
+        midks = String( Math.round( ks ) ) ;
+
+        midnz = String( Math.round( nz * 100 ) ).padStart( 2 , '0' ) ;
+
+        midsz = String( Math.round( sz * 10  ) ).padStart( 2 , '0' ) ;
+
+        midv  = ( midbs + midkf + midks + '_' + midnz + midsz ) ;
+
+        lcidv = Number( midkf + midks + midnz + midsz ) ; 
+
+        console.log( 'Writing material key: ' + midv + mfnx ) ;
    
-    console.log( 'Writing material key: ' + midv + mfnx ) ;
+        [ rvs , rvl ]  = mat005.runlsdynamat() ;
    
-    [ rvs , rvl ]  = mat005.runlsdynamat() ;
-   
-    pv = [ midv , (rz * rdtf) , (gv * sdtf) , (kunv * sdtf) , (a0v * a0dtf) , (a1v * a1dtf) , a2v , (pcv * sdtf) , vcrv , refv , lcidv ] ;
+        pv = [ midv , (rz * rdtf) , (gv * sdtf) , (kunv * sdtf) , (a0v * a0dtf) , (a1v * a1dtf) , a2v , (pcv * sdtf) , vcrv , refv , lcidv ] ;
 
-    for( i = 0 ; i < rvsl ; rdvs[i][0] = rvs[i][0] , rdvs[i][1] = (rvs[i++][1] * sdtf) ) ;
+        for( i = 0 ; i < rvsl ; rdvs[i][0] = rvs[i][0] , rdvs[i][1] = (rvs[i++][1] * sdtf) ) ;
 
-    for( i = 0 ; i < rvll ; rdvl[i][0] = rvl[i][0] , rdvl[i][1] = (rvl[i++][1] * sdtf) ) ;
+        for( i = 0 ; i < rvll ; rdvl[i][0] = rvl[i][0] , rdvl[i][1] = (rvl[i++][1] * sdtf) ) ;
 
-    mat005.lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rvl ) ;
+        mat005.lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rvl ) ;
 
-   } ; // end for()
+       } ; // end for()
 
- } ; // end for()
+     } ; // end for()
 
 
 var i    = undefined ;

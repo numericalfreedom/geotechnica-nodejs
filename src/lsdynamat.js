@@ -23,7 +23,7 @@ function lsdynamat( pz , px , ps , pr , vem , wem , mem , vrm , wrm , mrm , nzs 
 
   this.pz    = ( (pz  != undefined) ?  pz  :    1.00e5 ) ;
   this.px    = ( (px  != undefined) ?  px  :    1.00e9 ) ;
-  this.ps    = ( (ps  != undefined) ?  ps  :    1.00e2 ) ;
+  this.ps    = ( (ps  != undefined) ?  ps  :    1.00e3 ) ;
   this.pr    = ( (pr  != undefined) ?  pr  :    1.00e5 ) ;
 
   this.vem   = ( (vem != undefined) ?  vem :    2.00e2 ) ;
