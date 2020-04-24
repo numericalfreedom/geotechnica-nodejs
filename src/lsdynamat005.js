@@ -44,9 +44,9 @@ const kfn   =    7.00  ;
 const kfx   =    7.00  ;
 const kfs   =    1.00  ; // ( (kfx - kfn) / kfnn ) ;
 
-const ksnn  =    2     ;
+const ksnn  =    3     ;
 const ksn   =    3.00  ;
-const ksx   =    5.00  ;
+const ksx   =    6.00  ;
 const kss   = ( (ksx - ksn) / ksnn ) ;
 
 const nznn  =    6     ;
@@ -84,7 +84,7 @@ const nuurv = 0.35 ;
 
 const rzs   = 2650.00 ;
 const rzf   = 1000.00 ;
-const rzg   =    1.30 ;
+const rzg   =    1.20 ;
 
 const vemz  =    4.25e3 ;
 const wem   =    0.55 ;
@@ -145,7 +145,7 @@ var   nzg    = undefined ;
 var   rz     = undefined ;
 
 
-mat005.ps = 1.00e5 ;
+mat005.ps = 1.00e2 ;
 
 
 for( kf = kfn ; kf <= kfx ; kf += kfs )
