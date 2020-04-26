@@ -303,12 +303,12 @@ function runlsdynamat()
 
     if( ! js )
 
-      rvs[jsr] = [ this.eps , (this.pt - this.pz) , this.pe , (this.pn - this.pz) , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rrm , this.rr , this.rs , this.rf , this.rg , this.r , this.reps ] ;
+      rvs[jsr] = [ this.eps , (this.pt - this.pz) , this.pe , (this.pn - this.pz) , this.ctm , this.cts , this.ctf , this.ctg , this.ctp , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rrm , this.rr , this.rs , this.rf , this.rg , this.r , this.reps ] ;
 
 
     if( ! jl )
 
-      rvl[jlr] = [ this.eps , (this.pt - this.pz) , this.pe , (this.pn - this.pz) , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rrm , this.rr , this.rs , this.rf , this.rg , this.r , this.reps ] ;
+      rvl[jlr] = [ this.eps , (this.pt - this.pz) , this.pe , (this.pn - this.pz) , this.ctm , this.cts , this.ctf , this.ctg , this.ctp , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rrm , this.rr , this.rs , this.rf , this.rg , this.r , this.reps ] ;
 
 
     this.eps   += ( this.deps   = (- this.ctu * this.dpt) ) ;
@@ -402,9 +402,9 @@ function cycliclsdynamat( pfn , pts , ptf , esc , ssc )
   pfd = fs.openSync( pfn , 'w' ) ;
 
 
-  fs.writeSync( pfd , '         e=        pt=        pe=        pn=         n=         s=         a=         b=        ns=        nf=        ng=          rrs=          rrf=        rrg=         rrm=           rr=        rs=        rf=        rg=         r=      reps=     epstt=     epsel=     epspl=\n' ) ;
+  fs.writeSync( pfd , '         e=        pt=        pe=        pn=       ctm=       cts=       ctf=       ctg=       ctp=        n=         s=         a=         b=        ns=        nf=        ng=       rrs=      rrf=       rrg=       rrm=        rr=        rs=        rf=        rg=         r=     reps=     epstt=     epsel=     epspl=\n' ) ;
 
-  fs.writeSync( pfd , '        (1)        (2)        (3)        (4)        (5)        (6)        (7)        (8)        (9)       (10)       (11)          (12)          (13)        (14)         (15)          (16)       (17)       (18)       (19)       (20)       (21)       (22)       (23)       (24)\n' ) ;
+  fs.writeSync( pfd , '        (1)        (2)        (3)        (4)        (5)        (6)        (7)        (8)       (9)       (10)       (11)       (12)       (13)       (14)       (15)       (16)      (17)       (18)       (19)       (20)       (21)       (22)       (23)       (24)      (25)       (26)       (27)       (28)       (29)\n' ) ;
 
 
   for( i = 0 , ii = 1 , this.eps = this.epstt = this.epsel = this.epspl = 0.0 , this.pt = this.pec = this.pe = 0.0 , this.pn = this.pz , this.dpt = this.ps , jf = Math.ceil( ptf / this.ps ) ; (i < (pts.length - 1)) ; ++i , ++ii )
@@ -488,13 +488,13 @@ function cycliclsdynamat( pfn , pts , ptf , esc , ssc )
       this.reps  = Math.log( this.v / this.vz ) ;
 
  
-      // console.log( this.eps , this.pt , this.pe , this.pn , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rrm , this.rr , this.rs , this.rf , this.rg , this.r , this.reps , this.epstt , this.epsel , this.epspl ) ;
+      // console.log( this.eps , this.pt , this.pe , this.pn , this.ctm , this.cts , this.ctf , this.ctg , this.ctp , this.n , this.s , this.a , this.b , this.ns , this.nf , this.ng , this.rrs , this.rrf , this.rrg , this.rrm , this.rr , this.rs , this.rf , this.rg , this.r , this.reps , this.epstt , this.epsel , this.epspl ) ;
 
 
       if( !j )
        {
       
-        s = ( `   ${(this.eps * esc).toFixed( 6 )}` + `   ${(this.pt * ssc).toFixed( 6 )}` + `   ${(this.pe * ssc).toFixed( 6 )}` + `   ${((this.pn - this.pz) * ssc).toFixed( 6 )}` + `   ${this.n.toFixed( 6 )}` + `   ${this.s.toFixed( 6 )}` + `   ${this.a.toFixed( 6 )}` + `   ${this.b.toFixed( 6 )}` + `   ${this.ns.toFixed( 6 )}` + `   ${this.nf.toFixed( 6 )}` + `   ${this.ng.toFixed( 6 )}` + `   ${this.rrs.toFixed( 6 )}` + `   ${this.rrf.toFixed( 6 )}` + `   ${this.rrg.toFixed( 6 )}` + `   ${this.rrm.toFixed( 6 )}` + `   ${this.rr.toFixed( 6 )}` + `   ${this.rs.toFixed( 6 )}` + `   ${this.rf.toFixed( 6 )}` + `   ${this.rg.toFixed( 6 )}` + `   ${this.r.toFixed( 6 )}` + `   ${(this.reps * esc).toFixed( 6 )}` + `   ${(this.epstt * esc).toFixed( 6 )}` + `   ${(this.epsel * esc).toFixed( 6 )}` + `   ${(this.epspl * esc).toFixed( 6 )}` + '\n' ) ;
+        s = ( `   ${(this.eps * esc).toFixed( 6 )}` + `   ${(this.pt * ssc).toFixed( 6 )}` + `   ${(this.pe * ssc).toFixed( 6 )}` + `   ${((this.pn - this.pz) * ssc).toFixed( 6 )}` + `   ${this.ctm.toExponential( 3 )}` + `   ${this.cts.toExponential( 3 )}` + `   ${this.ctf.toExponential( 3 )}` + `   ${this.ctg.toExponential( 3 )}` + `   ${this.ctp.toExponential( 3 )}` + `   ${this.n.toFixed( 6 )}` + `   ${this.s.toFixed( 6 )}` + `   ${this.a.toFixed( 6 )}` + `   ${this.b.toFixed( 6 )}` + `   ${this.ns.toFixed( 6 )}` + `   ${this.nf.toFixed( 6 )}` + `   ${this.ng.toFixed( 6 )}` + `   ${this.rrs.toFixed( 6 )}` + `   ${this.rrf.toFixed( 6 )}` + `   ${this.rrg.toFixed( 6 )}` + `   ${this.rrm.toFixed( 6 )}` + `   ${this.rr.toFixed( 6 )}` + `   ${this.rs.toFixed( 6 )}` + `   ${this.rf.toFixed( 6 )}` + `   ${this.rg.toFixed( 6 )}` + `   ${this.r.toFixed( 6 )}` + `   ${(this.reps * esc).toFixed( 6 )}` + `   ${(this.epstt * esc).toFixed( 6 )}` + `   ${(this.epsel * esc).toFixed( 6 )}` + `   ${(this.epspl * esc).toFixed( 6 )}` + '\n' ) ;
     
         fs.writeSync( pfd , s ) ;
         
@@ -1024,9 +1024,9 @@ function lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rv )
 
     lfd = fs.openSync( lfn , 'w' ) ;
 
-    fs.writeSync( lfd , '           e=          pt=          pe=          pn=           n=           s=           a=           b=          ns=          nf=          ng=         rrs=         rrf=         rrg=         rrm=          rr=          rs=          rf=          rg=           r=        reps= \n' ) ;
+    fs.writeSync( lfd , '           e=          pt=          pe=          pn=         ctm=         cts=         ctf=         ctg=         ctp=           n=           s=           a=           b=          ns=          nf=          ng=         rrs=         rrf=         rrg=         rrm=          rr=          rs=          rf=          rg=           r=        reps= \n' ) ;
 
-    fs.writeSync( lfd , '          (1)          (2)          (3)          (4)          (5)          (6)          (7)          (8)          (9)         (10)         (11)         (12)         (13)         (14)         (15)         (16)         (17)         (18)         (19)         (20)         (21) \n' ) ;
+    fs.writeSync( lfd , '          (1)          (2)          (3)          (4)          (5)          (6)          (7)          (8)          (9)         (10)         (11)         (12)         (13)         (14)         (15)         (16)         (17)         (18)         (19)         (20)         (21)         (22)         (23)         (24)         (25)         (26) \n' ) ;
 
     if( rv )
  
