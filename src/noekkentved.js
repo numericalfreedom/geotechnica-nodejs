@@ -146,7 +146,7 @@ function noekkentved( x )
     apsr = Math.atan( taps ) ;
     
     r[r_xy][r_y0s] = y0s = x[c_xy][c_ys] ;
-    r[r_xy][r_x0s] = x0s = ( x0 - (dys * taps) ) ;
+    r[r_xy][r_x0s] = x0s = ( x0 + (dys * taps) ) ;
     
     d = ( (x[c_xy][c_xs] - x0s) * Math.cos( apsr ) ) ;
     
