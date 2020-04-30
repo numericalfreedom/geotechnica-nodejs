@@ -38,17 +38,6 @@ const a1lx  = (- 1.0 ) ;
 const a1tx  = (- 2.0 ) ;
 const a1dtf = mat005.dimension( mr , a1mx , lr , a1lx , tr , a1tx ) ;
 
-
-const kfnn  =    1     ;
-const kfn   =    7.00  ;
-const kfx   =    7.00  ;
-const kfs   =    1.00  ; // ( (kfx - kfn) / kfnn ) ;
-
-const ksnn  =    3     ;
-const ksn   =    3.00  ;
-const ksx   =    6.00  ;
-const kss   = ( (ksx - ksn) / ksnn ) ;
-
 const nznn  =    6     ;
 const nzn   =    0.20  ;
 const nzx   =    0.50  ;
@@ -58,7 +47,6 @@ const sznn  =    10    ;
 const szn   =    0.00  ;
 const szx   =    1.00  ;
 const szss  = ( (szx - szn) / sznn ) ;
-
 
 const mid   =  0 ;
 const ro    =  1 ;
@@ -76,15 +64,11 @@ const a0v   = 1.500000e8  ;
 const a1v   = 2.065000e5  ;
 const a2v   = 1.795844e-1 ;
 
-const pcv   = 1.0e3 ;
+const pcv   = (- 1.0e3) ;
 const vcrv  = 0 ;
 const refv  = 0 ;
 
 const nuurv = 0.35 ;
-
-const rzs   = 2650.00 ;
-const rzf   = 1000.00 ;
-const rzg   =    1.20 ;
 
 const vemz  =    4.25e3 ;
 const wem   =    0.55 ;
@@ -95,6 +79,17 @@ const wrm   =    0.00 ;
 const mrm   =    0.00 ;
 
 const mez   =   10.00 ;
+
+const rzss  = [ 2650.0 , 2650.0 ] ;
+const czss  = [ 6319.0 , 5000.0 ] ;
+const kss   = [    3.0 ,    5.0 ] ;
+
+const rzfs  = [ 1000.0 , 1000.0 ] ;
+const czfs  = [ 1460.0 , 1500.0 ] ;
+const kfs   = [    7.0 ,    7.0 ] ;
+
+const rzgs  = [    1.2 ,    1.3 ] ;
+const kgs   = [    1.4 ,    1.4 ] ;
 
 const rvsl  =   11 ;
 const rvll  =  101 ;
@@ -112,6 +107,14 @@ const fezz  = 2.97 ;
 
 var   ez    = undefined ;
 var   fezvm = undefined ;
+
+var   j     = undefined ;
+var   jx    = kss.length ;
+var   js    = undefined ;
+
+var   line  = undefined ;
+
+var   i     = undefined ;
 
 for( i = 0 ; i < rvsl ; rdvs[i++] = [ undefined , undefined ] ) ;
 
@@ -132,8 +135,9 @@ var   midsz  = undefined ;
 var   lcidv  = undefined ;
 var   lcidbs = 'L' ;
 
-var   kf     = undefined ;
-var   ks     = undefined ;
+var   rzs    = undefined ;
+var   rzf    = undefined ;
+var   rzg    = undefined ;
 
 var   nz     = undefined ;
 var   sz     = undefined ;
@@ -145,89 +149,101 @@ var   nzg    = undefined ;
 var   rz     = undefined ;
 
 
-mat005.ps = 1.00e2 ;
+mat005.ps = 1.00e3  ;
+mat005.px = 1.00e10 ;
 
 
-for( kf = kfn ; kf <= kfx ; kf += kfs )
+for( j=0 ; j < jx ; ++j )
+ {
 
-  for( ks = ksn ; ks <= ksx ; ks += kss )
 
-    for( nz = nzn ; nz <= nzx ; nz += nzss )
-     {
+  mat005.rzs = rzs = rzss[j] ;
+
+  mat005.czs = czss[j] ;
+
+  mat005.ks  = kss[j]  ;
+
+
+  mat005.rzf = rzf = rzfs[j] ;
+
+  mat005.czf = czfs[j] ;
+
+  mat005.kf  = kfs[j]  ;
+
+	 
+  mat005.rzg = rzg = rzgs[j] ;
+
+  mat005.kg  = kgs[j]  ;
+
+
+  for( nz = nzn ; nz <= nzx ; nz += nzss )
+   {
 	 
 
-      mat005.nzs = ( nzs = (1.0 - nz) ) ;
+    mat005.nzs = ( nzs = (1.0 - nz) ) ;
 
 
-      mat005.vem = ( vemz * Math.pow( nzs , mez ) ) ;
+    mat005.vem = ( vemz * Math.pow( nzs , mez ) ) ;
 
-      mat005.wem = wem ;
+    mat005.wem = wem ;
 
-      mat005.mem = mem ;
-
-
-      mat005.vrm = ( vrmz * Math.pow( nzs , mez ) ) ;
-
-      mat005.wrm = wrm ;
-
-      mat005.mrm = mrm ;
+    mat005.mem = mem ;
 
 
-      mat005.kf  = kf  ;
+    mat005.vrm = ( vrmz * Math.pow( nzs , mez ) ) ;
 
-      mat005.ks  = ks  ;
+    mat005.wrm = wrm ;
 
-
-      kunv = ( mat005.vrm * mat005.pr ) ;
-
-      gv   = ( kunv * ((3.0 * (1.0 - (2.0 * nuurv))) / (2.0 * (1.0 + nuurv))) ) ;
+    mat005.mrm = mrm ;
 
 
-      for( sz = szn ; sz <= szx ; sz += szss )
-       {
+    kunv = ( mat005.vrm * mat005.pr ) ;
 
-        mat005.nzf = ( nzf = (nz * sz) ) ;
+    gv   = ( kunv * ((3.0 * (1.0 - (2.0 * nuurv))) / (2.0 * (1.0 + nuurv))) ) ;
 
-        mat005.nzg = ( nzg  = (nz * (1.0 - sz)) ) ;
 
-        rz = ( (nzs * rzs) + (nzf * rzf) + (nzg * rzg) ) ;
+    for( sz = szn ; sz <= szx ; sz += szss )
+     {
 
-        midkf = String( Math.round( kf ) ) ;
+      mat005.nzf = ( nzf = (nz * sz) ) ;
 
-        midks = String( Math.round( ks ) ) ;
+      mat005.nzg = ( nzg = (nz * (1.0 - sz)) ) ;
 
-        midnz = String( Math.round( nz * 100 ) ).padStart( 2 , '0' ) ;
+      rz = ( (nzs * rzs) + (nzf * rzf) + (nzg * rzg) ) ;
 
-        midsz = String( Math.round( sz * 10  ) ).padStart( 2 , '0' ) ;
+      js    = String( j + 1 ) ;
 
-        midv  = ( midbs + midkf + midks + '_' + midnz + midsz ) ;
+      midnz = String( Math.round( nz * 100 ) ).padStart( 2 , '0' ) ;
 
-        lcidv = Number( midkf + midks + midnz + midsz ) ; 
+      midsz = String( Math.round( sz * 10  ) ).padStart( 2 , '0' ) ;
 
-        console.log( 'Writing material key: ' + midv + mfnx ) ;
+      midv  = ( midbs + js + 'n' + midnz + 's' + midsz ) ;
+
+      lcidv = Number( js + midnz + midsz ) ; 
+
+      console.log( 'Writing material key: ' + midv + mfnx ) ;
    
-        [ rvs , rvl ]  = mat005.runlsdynamat() ;
+      [ rvs , rvl ]  = mat005.runlsdynamat() ;
    
-        pv = [ midv , (rz * rdtf) , (gv * sdtf) , (kunv * sdtf) , (a0v * a0dtf) , (a1v * a1dtf) , a2v , (pcv * sdtf) , vcrv , refv , lcidv ] ;
+      pv = [ midv , (rz * rdtf) , (gv * sdtf) , (kunv * sdtf) , (a0v * a0dtf) , (a1v * a1dtf) , a2v , (pcv * sdtf) , vcrv , refv , lcidv ] ;
 
-        for( i = 0 ; i < rvsl ; rdvs[i][0] = rvs[i][0] , rdvs[i][1] = (rvs[i++][1] * sdtf) ) ;
+      for( i = 0 ; i < rvsl ; rdvs[i][0] = rvs[i][0] , rdvs[i][1] = (rvs[i++][1] * sdtf) ) ;
 
-        for( i = 0 ; i < rvll ; rdvl[i][0] = rvl[i][0] , rdvl[i][1] = (rvl[i++][1] * sdtf) ) ;
+      for( i = 0 ; i < rvll ; rdvl[i][0] = rvl[i][0] , rdvl[i][1] = (rvl[i++][1] * sdtf) ) ;
 
-        mat005.lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rvl ) ;
-
-       } ; // end for()
+      mat005.lsdynamat005( mfnx , pv , rdvs , rdvl , lfnx , rvl ) ;
 
      } ; // end for()
 
+   } ; // end for()
 
-var i    = undefined ;
-var j    = undefined ;
-var line = undefined ;
+ } ; // end for()
 
 
-console.log( '           e=          pt=          pe=          pn=           n=           s=           a=           b=          ns=          nf=          ng=         rrs=         rrf=         rrg=         rrm=          rr=          rs=          rf=          rg=           r=        reps=' ) ;
-console.log( '          (1)          (2)          (3)          (4)          (5)          (6)          (7)          (8)          (9)         (10)         (11)         (12)         (13)         (14)         (15)         (16)         (17)         (18)         (19)         (20)         (21)' ) ;
+
+
+console.log( '           e=          pt=          pe=          pn=         ctm=         cts=         ctf=         ctg=         ctp=           n=           s=           a=           b=          ns=          nf=          ng=         rrs=         rrf=         rrg=         rrm=          rr=          rs=          rf=          rg=           r=        reps=' ) ;
+console.log( '          (1)          (2)          (3)          (4)          (5)          (6)          (7)          (8)          (9)         (10)         (11)         (12)         (13)         (14)         (15)         (16)         (17)         (18)         (19)         (20)         (21)         (22)         (23)         (24)         (25)         (26)' ) ;
 
 
 if( short )
