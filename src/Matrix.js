@@ -49,10 +49,11 @@ const c_sla = 6 ;
 const c_sls = 7 ;
 
 
-module.exports = { MatrixF , Matrix , c_cca , c_ccs , c_cra , c_crs }
+module.exports = { Matrix , MatrixF , MatrixLT , MatrixUT , c_cca , c_ccs , c_cra , c_crs }
 
 
-/** @classdesc  Matrix operation on full matrix
+
+/** @classdesc  Matrix operation on a lower triangular matrix
  *  @class
  *
  *  @author     Numericalfreedom Foundation <numericalfreedom@googlemail.com>
@@ -64,20 +65,126 @@ module.exports = { MatrixF , Matrix , c_cca , c_ccs , c_cra , c_crs }
  *
  */
 
-function MatrixLS( nr , nc , nv , v )
+function MatrixLT( nr , nc , nv , nb , v )
  {
 
   let i  = undefined ;
   let ix = undefined ;
-
-  let ri = new Array( nr ) ;
-
   let vv = undefined ;
+
+  if( ! nv )  nv = ( (nr * (nr + 1)) / 2 ) ;
+
+  if( ! nb )  nb = nc ;
 
   if( v === undefined )
    {
 
-    for( i = 0 , nv = 0 ; i < nr ; ri[i++] = nv , nv += (i + 1) ) ;
+    for( vv = new Array( nv ) , i = 0 ;  i < nv ;  vv[i++] = 0.0 ) ;
+
+   }
+
+  else
+   {
+
+    if( v === null )
+
+      vv = new Array( 0 ) ;
+
+    else
+
+      if( v && (ix = v.length) && (ix = ((ix < nv) ? ix : nv)) )
+
+        for( vv = new Array( nv ) , i = 0;  i < ix;  vv[i] = v[i++] ) ;
+
+   } ; // end else -
+
+
+  this.nr  = nr ;
+  this.nc  = nc ;
+  this.nv  = nv ;
+  this.nb  = nb ;
+  this.nbv = ( (nb * (nb + 1)) / 2 ) ;
+  this.v   = vv ;
+  this.d   = undefined ;
+
+  this.cdc = cdc ;
+  this.cmd = cmd ;
+  this.cmm = cmm ;
+  this.crt = crt ;
+  this.csd = csd ;
+  this.csm = csm ;
+  this.cst = cst ;
+  this.dmm = dmm ;
+  this.dvt = dvt ;
+  this.enm = enm ;
+  this.eqt = eqt ;
+  this.evj = evj ;
+  this.evl = evl ;
+  this.gvv = gvv ;
+  this.i21 = i21 ;
+  this.i22 = i22 ;
+  this.i31 = i31 ;
+  this.i32 = i32 ;
+  this.i33 = i33 ;
+
+  this.idx = idxLT ;
+  this.inv = inv ;
+  this.j32 = j32 ;
+  this.j33 = j33 ;
+  this.mdt = mdt ;
+  this.mma = mma ;
+  this.mms = mms ;
+  this.mmd = mmd ;
+  this.mmt = mmt ;
+  this.msa = msa ;
+  this.msd = msd ;
+  this.mss = mss ;
+  this.mst = mst ;
+  this.pvv = pvv ;
+  this.smd = smd ;
+  this.smm = smm ;
+  this.srt = srt ;
+  this.sum = sum ;
+  this.tfm = tfm ;
+  this.tms = tms ;
+  this.tma = tma ;
+  this.trc = trc ;
+  this.tsp = tsp ;
+  this.unt = unt ;
+  this.val = val ;
+  this.vmd = vmd ;
+  this.vmm = vmm ;
+  this.xmm = xmm ;
+ 
+  return ;
+
+ } ; // end function MatrixLT
+
+
+
+/** @classdesc  Matrix operation on an upper triangular matrix
+ *  @class
+ *
+ *  @author     Numericalfreedom Foundation <numericalfreedom@googlemail.com>
+ *  
+ *  @param    { number }    nr               Number of rows
+ *  @param    { number }    nc               Number of columns
+ *  @param    { number }    nv               Number of values
+ *  @param    { Array }     v                Value vector
+ *
+ */
+
+function MatrixUT( nr , nc , nv , v )
+ {
+
+  let i  = undefined ;
+  let ix = undefined ;
+  let vv = undefined ;
+
+  if( ! nv )  nv = ( (nc * (nc + 1)) / 2 ) ;
+
+  if( v === undefined )
+   {
 
     for( vv = new Array( nv ) , i = 0 ;  i < nv ;  vv[i++] = 0.0 ) ;
 
@@ -106,7 +213,6 @@ function MatrixLS( nr , nc , nv , v )
 
   this.ri  = ri ;
 
-  this.cdc = cdc ;
   this.cmd = cmd ;
   this.cmm = cmm ;
   this.crt = crt ;
@@ -157,7 +263,8 @@ function MatrixLS( nr , nc , nv , v )
  
   return ;
 
- } ; // end function MatrixLS
+ } ; // end function MatrixUT
+
 
 
 /** @classdesc  Matrix operation on full matrix
@@ -172,13 +279,15 @@ function MatrixLS( nr , nc , nv , v )
  *
  */
 
-function MatrixF( nr , nc , nv , v )
+function MatrixF( nr , nc , nv , v , nb )
  {
 
   let i  = undefined ;
   let ix = undefined ;
 
   if( ! nv )  nv = ( nr * nc ) ;
+
+  if( ! nb )  nb = nc ;
 
   let vv = undefined ;
 
@@ -205,9 +314,9 @@ function MatrixF( nr , nc , nv , v )
   this.nc  = nc ;
   this.nv  = nv ;
   this.v   = vv ;
+  this.nb  = nb ;
   this.d   = undefined ;
 
-  this.cdc = cdc ;
   this.cmd = cmd ;
   this.cmm = cmm ;
   this.crt = crt ;
@@ -392,7 +501,7 @@ function Matrix( nr , nc , nv , v )
   this.i33 = i33 ;
 
 
-  this.idx = idx ;
+  this.idx = idxLT ;
   this.inv = inv ;
   this.j32 = j32 ;
   this.j33 = j33 ;
@@ -478,24 +587,22 @@ function cdc()
   let i  = undefined ;
   let j  = undefined ;
   let k  = undefined ;
-
   let s  = undefined ;
-
-  let v  = undefined ;
   let vi = undefined ;
 
   for( i = 0 ; i < this.nr ; i++ )
 
     for( j = 0 ; j <= i ; ++j )
+     {
+
+      for( s = k = 0 ; k < j ; s += (this.v[ this.idx( i , k ) ] * this.v[ this.idx( j , k++ ) ]) ) ;
 
       if( i == j )
        {
 
         // Diagonal element:
 
-        for( s = k = 0 ; k < j ; s += ((v = this.v[ this.idx( j , k++ ) ]) * v) ) ;
-
-        vi = this.idx( j , j ) ;
+        vi = this.idx( i , i ) ;
 
         this.v[ vi ] = Math.sqrt( this.v[ vi ] - s ) ;
 
@@ -506,13 +613,13 @@ function cdc()
 
         // Outer diagonal element:
 
-        for( s = k = 0 ; k < j ; s += (this.idx( i , k ) * this.idx( j , k++ )) ) ;
-
         vi = this.idx( i , j ) ;
 
         this.v[ vi ] = ( (this.v[ vi ] - s) / this.v[ this.idx( j , j ) ] ) ;
 
        } ; // end else 
+
+     } ; // end for()
 
  } ; // end function cdc()
 
@@ -1558,6 +1665,37 @@ function idx( i /*: number*/ , j /*: number*/ ) /*: number*/
   return( r ) ;
 
  } ; // end function idx()
+
+
+
+/**
+ *  Index function
+ *
+ *  @description function index
+ *
+ *  @param    { number }    i      Number of rows
+ *  @param    { number }    j      Number of columns
+ */
+
+function idxLT( i /*: number*/ , j /*: number*/ ) /*: number*/
+ {
+
+  let r = undefined ;
+
+  if( i >= j )
+
+    if( i < this.nb )
+    
+      r = ( (i * (i+1)) / 2 + j ) ;
+
+    else 
+
+      r = ( this.nbv + ((i * this.nb) + j) ) ;
+
+  return( r ) ;
+
+ } ; // end function idxLT()
+
 
 
 /**
@@ -2959,3 +3097,13 @@ console.log( xpr( -0.18464536242324758 , -0.6598984478540825 , 0.728313207799611
 let m = new Matrix( 3 , 4 , null , [] ) ;
 
 console.log( 'm=' , m ) ;
+
+
+
+let mlt = new MatrixLT( 5 , 5 , null , null , [ 3.49 , -0.92 , 4.86 , 1.23 , 0.48 , 5.05 , 1.58 , -1.05 , 1.04 , 1.48 , 0.46 , 2.48 , 1.39 , -0.22 , 3.03 ] ) ;
+
+mlt.cdc() ;
+
+console.log( 'mlt=' ,  mlt ) ;
+
+
