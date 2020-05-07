@@ -18,7 +18,7 @@
 "use strict" ;
 
 
-module.exports = { Matrix , MatrixF , MatrixLT , MatrixUT , c_cca , c_ccs , c_cra , c_crs }
+module.exports = { Matrix , MatrixF , MatrixLT , MatrixUT , idxLT }
 
 
 
@@ -451,9 +451,9 @@ function Matrix( nr , nc , nv , v )
 
   let nd = 0 ;
 
-  if(  (nr == 2) && (nc == 2)  && (nv == 3) )  d = 1 ;
+  if(  (nr == 2) && (nc == 2)  && (nv == 3) )  nd = 1 ;
 
-  if( ((nr == 3) && (nc == 3)) && ((nv == 4) || (nv == 6)) )  d = 2 ;
+  if( ((nr == 3) && (nc == 3)) && ((nv == 4) || (nv == 6)) )  nd = 2 ;
 
 
   this.nr  = nr ;
@@ -1661,17 +1661,28 @@ function idx( i /*: number*/ , j /*: number*/ ) /*: number*/
 function idxLT( i /*: number*/ , j /*: number*/ ) /*: number*/
  {
 
-  let r = undefined ;
+  let ij = undefined ;
+  let r  = undefined ;
 
   if( i >= j )
 
-    if( i < this.nb )
+    if( (ij = (i - j)) < this.nb ) 
+
+      if( i < this.nb )
     
-      r = ( (i * (i+1)) / 2 + j ) ;
+        r = ( (i * (i+1)) / 2 + j ) ;
 
-    else 
+      else 
 
-      r = ( this.nbv + ((i * this.nb) + j) ) ;
+        r = ( this.nbv + (i * this.nb) - ij ) ;
+
+    else
+
+      r = undefined ;
+
+  else
+
+    r = this.idx( j , i ) ;
 
   return( r ) ;
 
