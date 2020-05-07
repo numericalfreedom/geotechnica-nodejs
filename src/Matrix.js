@@ -18,37 +18,6 @@
 "use strict" ;
 
 
-/** @const  {number}  c_asm  Asymmetric full matrix storage */
-
-const c_asm = 0 ;
-
-/** @const  {number}  c_smt  Symmetric full matrix storage */
-
-const c_smt = 1 ;
-
-/** @const  {number}  c_cca  Compressed column asymmetric matrix storage */
-
-const c_cca = 2 ;
-
-/** @const  {number}  c_ccs  Compressed column symmetric matrix storage */
-
-const c_ccs = 3 ;
-
-/** @const  {number}  c_cra  Compressed row asymmetric matrix storage */
-
-const c_cra = 4 ;
-
-/** @const  {number}  c_crs  Compressed row asymmetric matrix storage */
-
-const c_crs = 5 ;
-
-
-const c_sla = 6 ;
-
-
-const c_sls = 7 ;
-
-
 module.exports = { Matrix , MatrixF , MatrixLT , MatrixUT , c_cca , c_ccs , c_cra , c_crs }
 
 
@@ -60,17 +29,19 @@ module.exports = { Matrix , MatrixF , MatrixLT , MatrixUT , c_cca , c_ccs , c_cr
  *  
  *  @param    { number }    nr               Number of rows
  *  @param    { number }    nc               Number of columns
+ *  @param    { number }    nb               Matrix half bandwith
  *  @param    { number }    nv               Number of values
  *  @param    { Array }     v                Value vector
  *
  */
 
-function MatrixLT( nr , nc , nv , nb , v )
+function MatrixLT( nr , nc , nb , nv , v )
  {
 
   let i  = undefined ;
   let ix = undefined ;
   let vv = undefined ;
+  let nd = 0 ;
 
   if( ! nv )  nv = ( (nr * (nr + 1)) / 2 ) ;
 
@@ -102,10 +73,11 @@ function MatrixLT( nr , nc , nv , nb , v )
   this.nr  = nr ;
   this.nc  = nc ;
   this.nv  = nv ;
+  this.nd  = nd ;
   this.nb  = nb ;
   this.nbv = ( (nb * (nb + 1)) / 2 ) ;
+
   this.v   = vv ;
-  this.d   = undefined ;
 
   this.cdc = cdc ;
   this.cmd = cmd ;
@@ -208,7 +180,10 @@ function MatrixUT( nr , nc , nv , v )
 
   this.nr  = nr ;
   this.nc  = nc ;
+  this.nd  = nd ;
   this.nv  = nv ;
+  this.nb  = nb ;
+  this.nbv = ( (nb * (nb + 1)) / 2 ) ;
   this.v   = vv ;
 
   this.ri  = ri ;
@@ -279,7 +254,7 @@ function MatrixUT( nr , nc , nv , v )
  *
  */
 
-function MatrixF( nr , nc , nv , v , nb )
+function MatrixF( nr , nc , nb , nv , v )
  {
 
   let i  = undefined ;
@@ -310,12 +285,18 @@ function MatrixF( nr , nc , nv , v , nb )
 
    } ; // end else -
 
+  let nd = 0 ;
+
+  if(  (nr == 2) && (nc == 2)  && (nv == 3) )  d = 1 ;
+
+  if( ((nr == 3) && (nc == 3)) && ((nv == 4) || (nv == 6)) )  d = 2 ;
+
   this.nr  = nr ;
   this.nc  = nc ;
   this.nv  = nv ;
   this.v   = vv ;
   this.nb  = nb ;
-  this.d   = undefined ;
+  this.nd  = nd ;
 
   this.cmd = cmd ;
   this.cmm = cmm ;
@@ -468,7 +449,7 @@ function Matrix( nr , nc , nv , v )
    } ; // end else -
 
 
-  let d = 0 ;
+  let nd = 0 ;
 
   if(  (nr == 2) && (nc == 2)  && (nv == 3) )  d = 1 ;
 
@@ -479,7 +460,7 @@ function Matrix( nr , nc , nv , v )
   this.nc  = nc ;
   this.nv  = nv ;
   this.v   = vv ;
-  this.d   = d ;
+  this.nd  = nd ;
 
   this.cmd = cmd ;
   this.cmm = cmm ;
@@ -882,7 +863,7 @@ function dvt()
   let i = undefined ;
   let t = undefined ;
 
-  if( this.d )
+  if( this.nd )
    {
 	   
     for( t = 0 , i = 0;  i < this.nc;  t += this.v[ i++ ] ) ;
@@ -1002,7 +983,7 @@ function evj( x , ne , en )
   for( i = 0;  i < x.nv;  evv[ i ] = x.v[ i++ ] ) ;
 
 
-  if( ! this.d )
+  if( ! this.nd )
 
     for( i = 0;  i < this.nr;  this.v[ this.idx( i , i++ ) ] = 1 )
   
@@ -1096,7 +1077,7 @@ function evj( x , ne , en )
            } ; // end if{} -
 
 
-          if( ! this.d )
+          if( ! this.nd )
 
             for( k = 0;  k < this.nr;  ++k )
              {             
@@ -1648,10 +1629,10 @@ function idx( i /*: number*/ , j /*: number*/ ) /*: number*/
 
   let r = i ;
 
-  if( this.d )
+  if( this.nd )
    {
 
-    if( i - j )  r = ( i + j + this.d ) ;
+    if( i - j )  r = ( i + j + this.nd ) ;
 
    } // end if
 
@@ -1780,7 +1761,7 @@ function idxR( i /*: number*/ , j /*: number*/ ) /*: number*/
 
   let r = undefined ;
 
-  if( i - j )  r = ( i + j + this.d ) ;  else  r = i ;
+  if( i - j )  r = ( i + j + this.nd ) ;  else  r = i ;
 
   return( r ) ;
  
@@ -1972,7 +1953,7 @@ function mmd( x , y )
   let ik = undefined ;
   let kj = undefined ;
 
-  if( this.d )
+  if( this.nd )
    {
 
     for( i = 0; i < this.nr; ++i )
@@ -2042,7 +2023,7 @@ function mmt( x , y , z )
   let mn = undefined ;
   let nj = undefined ;
 
-  if( this.d )
+  if( this.nd )
    {
 
     for( i = 0; i < this.nr; ++i )
@@ -2114,7 +2095,7 @@ function msd( x )
   let ik = undefined ;
   let kj = undefined ;
   
-  if( this.d )
+  if( this.nd )
    {
 
     for( i = 0; i < this.nr; ++i )
@@ -2184,7 +2165,7 @@ function mst( x )
   let mn = undefined ;
   let nj = undefined ;
 
-  if( this.d )
+  if( this.nd )
    {
 
     for( i = 0; i < this.nr; ++i )
@@ -2416,7 +2397,7 @@ function tma()
   let aij = undefined ;
   let aji = undefined ;
 
-  if( ! this.d )
+  if( ! this.nd )
 
     for( i = 0;  i < this.nr;  ++i )
 
@@ -2452,7 +2433,7 @@ function tms()
   let aij = undefined ;
   let aji = undefined ;
 
-  if( ! this.d )
+  if( ! this.nd )
 
     for( i = 0;  i < this.nr;  ++i )
 
@@ -2484,7 +2465,7 @@ function trc()
   let i = undefined ;
   let r = undefined ;
 
-  if( this.d )
+  if( this.nd )
 
     for( r = 0 , i = 0; i < this.nc; r += this.v[ i++ ] ) ;
 
@@ -2509,7 +2490,7 @@ function tsp( x )
   let i = undefined ;
   let j = undefined ;
   
-  if( ! this.d )
+  if( ! this.nd )
   
     for( i = 0;  i < this.nr;  ++i )
     
@@ -2533,7 +2514,7 @@ function unt( s )
   
   let i = undefined ;
 
-  if( this.d )
+  if( this.nd )
 
     for( i = 0; i < this.nc; this.v[ i++ ] = s ) ;
 
