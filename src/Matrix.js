@@ -38,14 +38,18 @@ module.exports = { Matrix , MatrixF , MatrixLT , MatrixUT , idxLT }
 function MatrixLT( nr , nc , nb , nv , v )
  {
 
-  let i  = undefined ;
-  let ix = undefined ;
-  let vv = undefined ;
-  let nd = 0 ;
+  let i   = undefined ;
+  let ix  = undefined ;
+  let vv  = undefined ;
+  let nd  = 0 ;
+  let nrb = 0 ;
 
-  if( ! nv )  nv = ( (nr * (nr + 1)) / 2 ) ;
+  if( ! nb )  nb = ( nr - 1 ) ;
 
-  if( ! nb )  nb = nc ;
+  nrb = ( nr - nb ) ;
+
+  if( ! nv )  nv = ( ((nr * (nr + 1)) / 2) - ((nrb * (nrb - 1)) / 2) ) ;
+
 
   if( v === undefined )
    {
@@ -146,14 +150,21 @@ function MatrixLT( nr , nc , nb , nv , v )
  *
  */
 
-function MatrixUT( nr , nc , nv , v )
+function MatrixUT( nr , nc , nb , nv , v )
  {
 
   let i  = undefined ;
   let ix = undefined ;
   let vv = undefined ;
+  let nd  = 0 ;
+  let nrb = 0 ;
 
-  if( ! nv )  nv = ( (nc * (nc + 1)) / 2 ) ;
+  if( ! nb )  nb = ( nr - 1 ) ;
+
+  nrb = ( nr - nb ) ;
+
+  if( ! nv )  nv = ( ((nr * (nr + 1)) / 2) - ((nrb * (nrb - 1)) / 2) ) ;
+
 
   if( v === undefined )
    {
@@ -180,13 +191,12 @@ function MatrixUT( nr , nc , nv , v )
 
   this.nr  = nr ;
   this.nc  = nc ;
-  this.nd  = nd ;
   this.nv  = nv ;
+  this.nd  = nd ;
   this.nb  = nb ;
   this.nbv = ( (nb * (nb + 1)) / 2 ) ;
-  this.v   = vv ;
 
-  this.ri  = ri ;
+  this.v   = vv ;
 
   this.cmd = cmd ;
   this.cmm = cmm ;
@@ -254,15 +264,16 @@ function MatrixUT( nr , nc , nv , v )
  *
  */
 
-function MatrixF( nr , nc , nb , nv , v )
+function MatrixF( nr , nc , nl , nu , nv , v )
  {
 
   let i  = undefined ;
   let ix = undefined ;
 
-  if( ! nv )  nv = ( nr * nc ) ;
+  if( ! nl )  nl = nr ;
+  if( ! nu )  nu = nc ;
 
-  if( ! nb )  nb = nc ;
+  if( ! nv )  nv = ( nr * nc ) ;
 
   let vv = undefined ;
 
@@ -295,6 +306,8 @@ function MatrixF( nr , nc , nb , nv , v )
   this.nc  = nc ;
   this.nv  = nv ;
   this.v   = vv ;
+  this.nl  = nl ;
+  this.nu  = nu ;
   this.nb  = nb ;
   this.nd  = nd ;
 
