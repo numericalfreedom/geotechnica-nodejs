@@ -48,6 +48,7 @@ function MatrixLT( nr , nc , nb , nv , v )
 
   nrb = ( nr - nb ) ;
 
+
   if( ! nv )  nv = ( ((nr * (nr + 1)) / 2) - ((nrb * (nrb - 1)) / 2) ) ;
 
 
@@ -163,6 +164,7 @@ function MatrixUT( nr , nc , nb , nv , v )
 
   nrb = ( nr - nb ) ;
 
+
   if( ! nv )  nv = ( ((nr * (nr + 1)) / 2) - ((nrb * (nrb - 1)) / 2) ) ;
 
 
@@ -252,6 +254,29 @@ function MatrixUT( nr , nc , nb , nv , v )
 
 
 
+function tpd( i )
+ {
+
+  return( (i * (i + 1)) / 2 ) ;
+
+ } ; // end function tpd()
+
+
+/** Function tmd()
+ *
+ *
+ */
+
+
+function tmd( i )
+ {
+
+  return( (i * (i - 1)) / 2 ) ;
+
+ } ; // end function tmd()
+
+
+
 /** @classdesc  Matrix operation on full matrix
  *  @class
  *
@@ -267,13 +292,48 @@ function MatrixUT( nr , nc , nb , nv , v )
 function MatrixF( nr , nc , nl , nu , nv , v )
  {
 
-  let i  = undefined ;
-  let ix = undefined ;
+  let i   = undefined ;
+  let ix  = undefined ;
+  let nrl = undefined ;
+  let ncu = undefined ;
+  let nlu = undefined ;
+  let nlv = undefined ;
+  let nuv = undefined ;
+  let nt  = undefined ;
+  let nb  = undefined ; 
+  let ntv = undefined ;
+  let nbv = undefined ;
+  let nlt = undefined ;
+  let nub = undefined ;
 
-  if( ! nl )  nl = nr ;
-  if( ! nu )  nu = nc ;
 
-  if( ! nv )  nv = ( nr * nc ) ;
+  if( ! nl )  nl = ( nr - 1 ) ;
+  if( ! nu )  nu = ( nc - 1 ) ;
+
+  nlu = ( nl + 1 + nu ) ;
+
+  nrl = ( nr - nl ) ;
+  ncu = ( nc - nu ) ;
+
+  nlt = nt = nl ;
+
+  if( nb = (nr - nc + nu) < 0 )   nb = 0 ;
+
+  nub = ( nr - nb ) ;
+
+
+  ntv = tmd( nt ) ;
+
+  nbv = tmd( nb ) ;
+
+
+  nlv = ( (nt * nlu) - ntv ) ;
+
+  nuv = ( ntv + (nr * nlu) + tmd( nr - nb ) ) ;
+
+
+  if( ! nv )  nv = ( (nr * (nlu + 1)) - ntv - nbv ) ;
+
 
   let vv = undefined ;
 
@@ -296,20 +356,23 @@ function MatrixF( nr , nc , nl , nu , nv , v )
 
    } ; // end else -
 
+
   let nd = 0 ;
 
   if(  (nr == 2) && (nc == 2)  && (nv == 3) )  d = 1 ;
 
   if( ((nr == 3) && (nc == 3)) && ((nv == 4) || (nv == 6)) )  d = 2 ;
 
-  this.nr  = nr ;
-  this.nc  = nc ;
-  this.nv  = nv ;
-  this.v   = vv ;
-  this.nl  = nl ;
-  this.nu  = nu ;
-  this.nb  = nb ;
-  this.nd  = nd ;
+
+  this.nr  = nr  ;
+  this.nc  = nc  ;
+  this.nv  = nv  ;
+  this.v   = vv  ;
+  this.nl  = nl  ;
+  this.nu  = nu  ;
+  this.nlv = nlv ;
+  this.nuv = nuv ;
+  this.nd  = nd  ;
 
   this.cmd = cmd ;
   this.cmm = cmm ;
