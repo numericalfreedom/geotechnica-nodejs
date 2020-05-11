@@ -310,29 +310,10 @@ function MatrixF( nr , nc , nl , nu , nv , v )
   if( ! nl )  nl = ( nr - 1 ) ;
   if( ! nu )  nu = ( nc - 1 ) ;
 
-  nlu = ( nl + 1 + nu ) ;
 
-  nrl = ( nr - nl ) ;
-  ncu = ( nc - nu ) ;
+  if( ! nv )  nv = ( nr * nc ) ;
 
-  nlt = nt = nl ;
-
-  if( nb = (nr - nc + nu) < 0 )   nb = 0 ;
-
-  nub = ( nr - nb ) ;
-
-
-  ntv = tmd( nt ) ;
-
-  nbv = tmd( nb ) ;
-
-
-  nlv = ( (nt * nlu) - ntv ) ;
-
-  nuv = ( ntv + (nr * nlu) + tmd( nr - nb ) ) ;
-
-
-  if( ! nv )  nv = ( (nr * (nlu + 1)) - ntv - nbv ) ;
+  if( nr == nc )  nv -= ( tmd( ml = (nr - nl) ) + tmd( mu = (nr - nu) ) ) ;
 
 
   let vv = undefined ;
