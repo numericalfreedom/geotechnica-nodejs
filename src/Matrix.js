@@ -65,26 +65,60 @@ function MatrixF( nr , nc , nl , nu , nv , v )
 
   let i   = undefined ;
   let ix  = undefined ;
+  let il  = undefined ;
+  let iu  = undefined ;
   let nrl = undefined ;
   let ncu = undefined ;
   let nlu = undefined ;
   let nlv = undefined ;
   let nuv = undefined ;
-  let nt  = undefined ;
   let nb  = undefined ; 
+  let nt  = undefined ;
   let ntv = undefined ;
   let nbv = undefined ;
   let nlt = undefined ;
   let nub = undefined ;
+  let nd  = undefined ;
 
+  if(  (nr == 2) && (nc == 2) && (nv == 3) )
 
-  if( ! nl )  nl = ( nr - 1 ) ;
-  if( ! nu )  nu = ( nc - 1 ) ;
+    d = 1 ;
 
+  else if( ((nr == 3) && (nc == 3)) && ((nv == 4) || (nv == 6)) )
 
-  if( ! nv )  nv = ( nr * nc ) ;
+    d = 2 ;
 
-  if( nr == nc )  nv -= ( tmd( ml = (nr - nl) ) + tmd( mu = (nr - nu) ) ) ;
+  else
+   {
+
+    if( ! nl )  nl = ( nr - 1 ) ;
+    if( ! nu )  nu = ( nc - 1 ) ;
+  
+    nd = ( (nr < (nc + nl + 1)) ? nr : (nc + nl + 1) ) ;
+
+    vd = new Array( nd ) ;
+
+    nb = ( nd - nl ) ;
+    nt = ( nc - nu ) ;
+
+    for( i = 0 , il = 0 , iu = nu , ni = 0 ; i < nd ; ++i )
+     {
+
+//    console.log( "i= " , i , " il= " , il , " iu= " , iu , " ni= " , ni ) ;
+
+      if( i < nl ) ++il ;
+
+      else if( (il > 0) && (i >= nc) ) --il ;
+
+      if( (iu > 0) && (i >= nt) ) --iu ;
+
+      vd[i] = ( ni += (il + 1 + iu) ) ;
+
+     } ; // end for()
+
+    if( ! nv )  nv = ( (nd * nc) - (tmd( nb ) + tmd( nt )) ) ;
+
+   } ; // end else
 
 
   let vv = undefined ;
@@ -109,16 +143,11 @@ function MatrixF( nr , nc , nl , nu , nv , v )
    } ; // end else -
 
 
-  let nd = 0 ;
-
-  if(  (nr == 2) && (nc == 2)  && (nv == 3) )  d = 1 ;
-
-  if( ((nr == 3) && (nc == 3)) && ((nv == 4) || (nv == 6)) )  d = 2 ;
-
-
   this.nr  = nr  ;
   this.nc  = nc  ;
   this.nv  = nv  ;
+  this.nd  = nd  ;
+  this.vd  = vd  ;
   this.v   = vv  ;
   this.nl  = nl  ;
   this.nu  = nu  ;
