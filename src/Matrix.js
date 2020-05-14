@@ -18,7 +18,7 @@
 "use strict" ;
 
 
-module.exports = { Matrix , MatrixF , MatrixLT , MatrixUT , idxLT }
+module.exports = { Matrix , MatrixF , idxLT }
 
 
 /** Function tpd()
@@ -74,11 +74,14 @@ function MatrixF( nr , nc , nl , nu , nv , v )
   let nuv = undefined ;
   let nb  = undefined ; 
   let nt  = undefined ;
+  let ni  = undefined ;
   let ntv = undefined ;
   let nbv = undefined ;
   let nlt = undefined ;
   let nub = undefined ;
   let nd  = undefined ;
+  let vd  = undefined ;
+  let vv  = undefined ;
 
   if(  (nr == 2) && (nc == 2) && (nv == 3) )
 
@@ -91,8 +94,8 @@ function MatrixF( nr , nc , nl , nu , nv , v )
   else
    {
 
-    if( ! nl )  nl = ( nr - 1 ) ;
-    if( ! nu )  nu = ( nc - 1 ) ;
+    if( nl == undefined )  nl = ( nr - 1 ) ;
+    if( nu == undefined )  nu = ( nc - 1 ) ;
   
     nd = ( (nr < (nc + nl + 1)) ? nr : (nc + nl + 1) ) ;
 
@@ -106,13 +109,15 @@ function MatrixF( nr , nc , nl , nu , nv , v )
 
 //    console.log( "i= " , i , " il= " , il , " iu= " , iu , " ni= " , ni ) ;
 
+      vd[i] = ni ;
+
       if( i < nl ) ++il ;
 
       else if( (il > 0) && (i >= nc) ) --il ;
 
       if( (iu > 0) && (i >= nt) ) --iu ;
 
-      vd[i] = ( ni += (il + 1 + iu) ) ;
+      ni += ( il + 1 + iu ) ;
 
      } ; // end for()
 
@@ -120,8 +125,6 @@ function MatrixF( nr , nc , nl , nu , nv , v )
 
    } ; // end else
 
-
-  let vv = undefined ;
 
   if( v === undefined )
 
@@ -155,6 +158,7 @@ function MatrixF( nr , nc , nl , nu , nv , v )
   this.nuv = nuv ;
   this.nd  = nd  ;
 
+  this.cdc = cdc ;
   this.cmd = cmd ;
   this.cmm = cmm ;
   this.crt = crt ;
@@ -2949,7 +2953,7 @@ console.log( 'm=' , m ) ;
 
 
 
-let mlt = new MatrixLT( 5 , 5 , null , null , [ 3.49 , -0.92 , 4.86 , 1.23 , 0.48 , 5.05 , 1.58 , -1.05 , 1.04 , 1.48 , 0.46 , 2.48 , 1.39 , -0.22 , 3.03 ] ) ;
+let mlt = new MatrixF( 5 , 5 , 4 , 0 , [ 3.49 , -0.92 , 4.86 , 1.23 , 0.48 , 5.05 , 1.58 , -1.05 , 1.04 , 1.48 , 0.46 , 2.48 , 1.39 , -0.22 , 3.03 ] ) ;
 
 mlt.cdc() ;
 
