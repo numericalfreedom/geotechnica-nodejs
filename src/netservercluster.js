@@ -7,8 +7,11 @@ var PIPE_NAME = "mypipe";
 // var PIPE_PATH = "\\\\.\\pipe\\" + PIPE_NAME;
 var PIPE_PATH = "." + PIPE_NAME;
 
-
 var L = console.log;
+
+
+var client = new Array( 4 ) ;
+
 
 // == Server part == //
 
@@ -21,13 +24,13 @@ if( cluster.isMaster )
    worker3 = cluster.fork() ;
    worker4 = cluster.fork() ;
 
-  var server = net.createServer(function(stream) {
+  var server = net.createServer( function( stream ) {
 
     L('Server: on connection')
 
-    stream.on('data', function(data) {
+    stream.on( 'data' , function( data ) {
 
-      L('Server: on data:', data.toString());
+      L( 'Server: on data:' , data.toString() );
 
       switch( data.toString() )
        {
@@ -110,7 +113,7 @@ if( cluster.isMaster )
    }) ;
 
 
-  cluster.on( 'disconnect' , function( worker ){ console.log( `Worker #${worker.id} disconnected` ) } ) ;
+  cluster.on( 'disconnect' , function( worker ){ console.log( `Worker #${worker.id} disconnected.` ) } ) ;
  
  }
 
@@ -119,13 +122,13 @@ else if( cluster.isWorker )
 
   // == Client part == //
 
-  var client = net.connect(PIPE_PATH, function() {
+  client[ cluster.worker.id - 1 ] = net.connect(PIPE_PATH, function() {
     L('Client: on connection');
    })
 
-  client.write( `Operation from Client #${cluster.worker.id}!` ) ;
+  client[ cluster.worker.id - 1 ].write( `Operation from Client #${cluster.worker.id}!` ) ;
 
-  client.on('data', function(data) {
+  client[ cluster.worker.id - 1 ].on('data', function(data) {
     L('Client: on data:', data.toString()) ;
     if( data.toString() == 'Operation client #' + String( cluster.worker.id ) + '!' ) ;
      {
@@ -133,15 +136,15 @@ else if( cluster.isWorker )
       let jx = Math.ceil( 1e9 + Math.random() * 1e9 ) ;
       let result = undefined ;
       for (let j = 0 ; j < jx ; ++j)  result = (Math.sin(j) + Math.cos(j)) ;
-      client.write( `Byebye from Client #${cluster.worker.id}!` ) ;
+      client[ cluster.worker.id - 1 ].write( `Byebye from Client #${cluster.worker.id}!` ) ;
      }
-    if( data.toString() == 'Take it easy client #' + String( cluster.worker.id ) + 
-'!' ) ;
-      client.end( `Thanks from client #${cluster.worker.id}!` ) ;
+    if( data.toString() == 'Take it easy client #' + String( cluster.worker.id ) + '!' )
+      client[ cluster.worker.id - 1 ].end( `Thanks from client #${cluster.worker.id}!` ) ;
    }) ;
 
-  client.on('end', function() {
-    L('Client: on end');
-   }) ;
+//  client[ cluster.worker.id - 1 ].on('end', function() {
+//    L('Client: on end');
+//   }) ;
 
  } ; // end else
+
