@@ -16,26 +16,75 @@ var L = console.log;
 if( cluster.isMaster )
  {
 
-  cluster.fork() ;
+   worker1 = cluster.fork() ;
+   worker2 = cluster.fork() ;
+   worker3 = cluster.fork() ;
+   worker4 = cluster.fork() ;
 
   var server = net.createServer(function(stream) {
 
     L('Server: on connection')
 
     stream.on('data', function(data) {
+
       L('Server: on data:', data.toString());
+
       switch( data.toString() )
        {
 
-        case( 'Operation from Client!' ):
+        case( 'Operation from Client #1!' ):
 
           stream.write('Operation client!') ;
 
           break ;
 
-        case( 'Byebye from Client!' ):
+        case( 'Operation from Client #2!' ):
+
+          stream.write('Operation client!') ;
+
+          break ;
+
+        case( 'Operation from Client #3!' ):
+
+          stream.write('Operation client!') ;
+
+          break ;
+
+        case( 'Operation from Client #4!' ):
+
+          stream.write('Operation client!') ;
+
+          break ;
+
+        case( 'Byebye from Client #1!' ):
 
           stream.write('Take it easy client!') ;
+
+          worker1.disconnect() ;
+
+          break ;
+
+        case( 'Byebye from Client #2!' ):
+
+          stream.write('Take it easy client!') ;
+
+          worker2.disconnect() ;
+
+          break ;
+
+        case( 'Byebye from Client #3!' ):
+
+          stream.write('Take it easy client!') ;
+
+          worker3.disconnect() ;
+
+          break ;
+
+        case( 'Byebye from Client #4!' ):
+
+          stream.write('Take it easy client!') ;
+
+          worker4.disconnect() ;
 
           break ;
 
@@ -46,7 +95,6 @@ if( cluster.isMaster )
     stream.on('end', function() {
       L('Server: on end')
       server.close();
-      cluster.disconnect() ;
      }) ;
 
    }) ;
@@ -62,9 +110,8 @@ if( cluster.isMaster )
    }) ;
 
 
-  cluster.on( 'disconnect' , function( worker ){ console.log( 'Worker #${worker.id} disconnected' ) } ) ;
-
-
+  cluster.on( 'disconnect' , function( worker ){ console.log( `Worker #${worker.id} disconnected` ) } ) ;
+ 
  }
 
 else if( cluster.isWorker )
@@ -76,20 +123,20 @@ else if( cluster.isWorker )
     L('Client: on connection');
    })
 
-  client.write( 'Operation from Client!' ) ;
+  client.write( `Operation from Client #${cluster.worker.id}!` ) ;
 
   client.on('data', function(data) {
     L('Client: on data:', data.toString()) ;
     if( data.toString() == 'Operation client!' )
      {
-      L( 'Operation client!' ) ;
+      L( `Operation client #${cluster.worker.id}!` ) ;
       let jx = Math.ceil( 1e9 + Math.random() * 1e9 ) ;
       let result = undefined ;
       for (let j = 0 ; j < jx ; ++j)  result = (Math.sin(j) + Math.cos(j)) ;
-      client.write( 'Byebye from Client!' ) ;
+      client.write( `Byebye from Client #${cluster.worker.id}!` ) ;
      }
     if( data.toString() == 'Take it easy client!' )
-      client.end('Thanks!') ;
+      client.end( `Thanks from client #${cluster.worker.id}!` ) ;
    }) ;
 
   client.on('end', function() {
