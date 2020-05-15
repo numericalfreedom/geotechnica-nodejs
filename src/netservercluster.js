@@ -34,31 +34,31 @@ if( cluster.isMaster )
 
         case( 'Operation from Client #1!' ):
 
-          stream.write('Operation client!') ;
+          stream.write('Operation client #1!') ;
 
           break ;
 
         case( 'Operation from Client #2!' ):
 
-          stream.write('Operation client!') ;
+          stream.write('Operation client #2!') ;
 
           break ;
 
         case( 'Operation from Client #3!' ):
 
-          stream.write('Operation client!') ;
+          stream.write('Operation client #3!') ;
 
           break ;
 
         case( 'Operation from Client #4!' ):
 
-          stream.write('Operation client!') ;
+          stream.write('Operation client #4!') ;
 
           break ;
 
         case( 'Byebye from Client #1!' ):
 
-          stream.write('Take it easy client!') ;
+          stream.write('Take it easy client #1!') ;
 
           worker1.disconnect() ;
 
@@ -66,7 +66,7 @@ if( cluster.isMaster )
 
         case( 'Byebye from Client #2!' ):
 
-          stream.write('Take it easy client!') ;
+          stream.write('Take it easy client #2!') ;
 
           worker2.disconnect() ;
 
@@ -74,7 +74,7 @@ if( cluster.isMaster )
 
         case( 'Byebye from Client #3!' ):
 
-          stream.write('Take it easy client!') ;
+          stream.write('Take it easy client #3!') ;
 
           worker3.disconnect() ;
 
@@ -82,7 +82,7 @@ if( cluster.isMaster )
 
         case( 'Byebye from Client #4!' ):
 
-          stream.write('Take it easy client!') ;
+          stream.write('Take it easy client #4!') ;
 
           worker4.disconnect() ;
 
@@ -127,7 +127,7 @@ else if( cluster.isWorker )
 
   client.on('data', function(data) {
     L('Client: on data:', data.toString()) ;
-    if( data.toString() == 'Operation client!' )
+    if( data.toString() == 'Operation client #' + String( cluster.worker.id ) + '!' ) ;
      {
       L( `Operation client #${cluster.worker.id}!` ) ;
       let jx = Math.ceil( 1e9 + Math.random() * 1e9 ) ;
@@ -135,7 +135,8 @@ else if( cluster.isWorker )
       for (let j = 0 ; j < jx ; ++j)  result = (Math.sin(j) + Math.cos(j)) ;
       client.write( `Byebye from Client #${cluster.worker.id}!` ) ;
      }
-    if( data.toString() == 'Take it easy client!' )
+    if( data.toString() == 'Take it easy client #' + String( cluster.worker.id ) + 
+'!' ) ;
       client.end( `Thanks from client #${cluster.worker.id}!` ) ;
    }) ;
 
