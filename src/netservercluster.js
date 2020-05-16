@@ -37,59 +37,79 @@ if( cluster.isMaster )
 
         case( 'Operation from Client #1!' ):
 
-          stream.write('Operation client #1!') ;
+          stream.write('Operation Client #1!') ;
 
           break ;
 
         case( 'Operation from Client #2!' ):
 
-          stream.write('Operation client #2!') ;
+          stream.write('Operation Client #2!') ;
 
           break ;
 
         case( 'Operation from Client #3!' ):
 
-          stream.write('Operation client #3!') ;
+          stream.write('Operation Client #3!') ;
 
           break ;
 
         case( 'Operation from Client #4!' ):
 
-          stream.write('Operation client #4!') ;
+          stream.write('Operation Client #4!') ;
 
           break ;
 
         case( 'Byebye from Client #1!' ):
 
-          stream.write('Take it easy client #1!') ;
-
-          worker1.disconnect() ;
+          stream.write('Take it easy Client #1!') ;
 
           break ;
 
         case( 'Byebye from Client #2!' ):
 
-          stream.write('Take it easy client #2!') ;
-
-          worker2.disconnect() ;
+          stream.write('Take it easy Client #2!') ;
 
           break ;
 
         case( 'Byebye from Client #3!' ):
 
-          stream.write('Take it easy client #3!') ;
-
-          worker3.disconnect() ;
+          stream.write('Take it easy Client #3!') ;
 
           break ;
 
         case( 'Byebye from Client #4!' ):
 
-          stream.write('Take it easy client #4!') ;
+          stream.write('Take it easy Client #4!') ;
+
+          break ;
+
+        case( 'Thanks from Client #1!' ):
+
+          worker1.disconnect() ;
+
+          break ;
+
+        case( 'Thanks from Client #2!' ):
+
+          worker2.disconnect() ;
+
+          break ;
+
+        case( 'Thanks from Client #3!' ):
+
+          worker3.disconnect() ;
+
+          break ;
+
+        case( 'Thanks from Client #4!' ):
 
           worker4.disconnect() ;
 
           break ;
+
+	default:
+
+	  break ;
 
        }
 
@@ -130,7 +150,7 @@ else if( cluster.isWorker )
 
   client[ cluster.worker.id - 1 ].on('data', function(data) {
     L('Client: on data:', data.toString()) ;
-    if( data.toString() == 'Operation client #' + String( cluster.worker.id ) + '!' ) ;
+    if( data.toString() == 'Operation Client #' + String( cluster.worker.id ) + '!' ) 
      {
       L( `Operation client #${cluster.worker.id}!` ) ;
       let jx = Math.ceil( 1e9 + Math.random() * 1e9 ) ;
@@ -138,13 +158,13 @@ else if( cluster.isWorker )
       for (let j = 0 ; j < jx ; ++j)  result = (Math.sin(j) + Math.cos(j)) ;
       client[ cluster.worker.id - 1 ].write( `Byebye from Client #${cluster.worker.id}!` ) ;
      }
-    if( data.toString() == 'Take it easy client #' + String( cluster.worker.id ) + '!' )
-      client[ cluster.worker.id - 1 ].end( `Thanks from client #${cluster.worker.id}!` ) ;
+    if( data.toString() == 'Take it easy Client #' + String( cluster.worker.id ) + '!' )
+      client[ cluster.worker.id - 1 ].end( `Thanks from Client #${cluster.worker.id}!` ) ;
    }) ;
 
-//  client[ cluster.worker.id - 1 ].on('end', function() {
-//    L('Client: on end');
-//   }) ;
+  client[ cluster.worker.id - 1 ].on('end', function() {
+    L('Client: on end');
+   }) ;
 
  } ; // end else
 
