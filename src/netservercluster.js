@@ -9,12 +9,12 @@ var PIPE_PATH = "." + PIPE_NAME;
 
 var L = console.log;
 
+var i = 0 ;
+var nworker = 4 ;
 
-var client = new Array( 4 ) ;
-
+var message = undefined ;
 
 // == Server part == //
-
 
 if( cluster.isMaster )
  {
@@ -32,54 +32,56 @@ if( cluster.isMaster )
 
       L( 'Server: on data:' , data.toString() );
 
+      message = {} ;
+
       switch( data.toString() )
        {
 
-        case( 'Operation from Client #1!' ):
+        case( 'Ready from Client #1!' ):
 
-          stream.write('Operation Client #1!') ;
-
-          break ;
-
-        case( 'Operation from Client #2!' ):
-
-          stream.write('Operation Client #2!') ;
+          message = { 'command' : 'Operation' , 'worker' : 1 , 'number' : 1e9 } ;
 
           break ;
 
-        case( 'Operation from Client #3!' ):
+        case( 'Ready from Client #2!' ):
 
-          stream.write('Operation Client #3!') ;
+          message = { 'command' : 'Operation' , 'worker' : 2 , 'number' : 1e9 } ;
 
           break ;
 
-        case( 'Operation from Client #4!' ):
+        case( 'Ready from Client #3!' ):
 
-          stream.write('Operation Client #4!') ;
+          message = { 'command' : 'Operation' , 'worker' : 3 , 'number' : 1e9 } ;
+
+          break ;
+
+        case( 'Ready from Client #4!' ):
+
+          message = { 'command' : 'Operation' , 'worker' : 4 , 'number' : 1e9 } ;
 
           break ;
 
         case( 'Byebye from Client #1!' ):
 
-          stream.write('Take it easy Client #1!') ;
+          message = { 'command' : 'Goodbye' , 'worker' : 1 } ;
 
           break ;
 
         case( 'Byebye from Client #2!' ):
 
-          stream.write('Take it easy Client #2!') ;
+          message = { 'command' : 'Goodbye' , 'worker' : 2 } ;
 
           break ;
 
         case( 'Byebye from Client #3!' ):
 
-          stream.write('Take it easy Client #3!') ;
+          message = { 'command' : 'Goodbye' , 'worker' : 3 } ;
 
           break ;
 
         case( 'Byebye from Client #4!' ):
 
-          stream.write('Take it easy Client #4!') ;
+          message = { 'command' : 'Goodbye' , 'worker' : 4 } ;
 
           break ;
 
@@ -111,25 +113,36 @@ if( cluster.isMaster )
 
 	  break ;
 
-       }
+       } ; // end switch ;
+
+      stream.write( Buffer.from( JSON.stringify( message ) ) ) ;
 
      });
 
-    stream.on('end', function() {
-      L('Server: on end')
-      server.close();
+
+    stream.on( 'end' , function() {
+
+      L( 'Server: on end' ) ;
+
+      if( (++i % nworker) == 0 )  server.close();
+
      }) ;
 
+
    }) ;
 
 
-  server.on('close',function(){
+  server.on( 'close' , function() {
+
     L('Server: on close');
+
    }) ;
 
 
-  server.listen(PIPE_PATH,function(){
+  server.listen( PIPE_PATH , function() {
+
     L('Server: on listening');
+
    }) ;
 
 
@@ -142,29 +155,64 @@ else if( cluster.isWorker )
 
   // == Client part == //
 
-  client[ cluster.worker.id - 1 ] = net.connect(PIPE_PATH, function() {
-    L('Client: on connection');
-   })
+  var client  = undefined ;
+  var message = undefined ;
 
-  client[ cluster.worker.id - 1 ].write( `Operation from Client #${cluster.worker.id}!` ) ;
+  client = net.connect( PIPE_PATH , function() {
 
-  client[ cluster.worker.id - 1 ].on('data', function(data) {
-    L('Client: on data:', data.toString()) ;
-    if( data.toString() == 'Operation Client #' + String( cluster.worker.id ) + '!' ) 
+    L( 'Client: on connection' );
+
+   }) ;
+
+  client.write( `Ready from Client #${cluster.worker.id}!` ) ;
+
+  client.on( 'data' , function( data ) {
+
+    message = JSON.parse( data.toString() );
+
+    L( 'Client: on data:' , data.toString() ) ;
+
+    switch( message.command )
      {
-      L( `Operation client #${cluster.worker.id}!` ) ;
-      let jx = Math.ceil( 1e9 + Math.random() * 1e9 ) ;
-      let result = undefined ;
-      for (let j = 0 ; j < jx ; ++j)  result = (Math.sin(j) + Math.cos(j)) ;
-      client[ cluster.worker.id - 1 ].write( `Byebye from Client #${cluster.worker.id}!` ) ;
-     }
-    if( data.toString() == 'Take it easy Client #' + String( cluster.worker.id ) + '!' )
-      client[ cluster.worker.id - 1 ].end( `Thanks from Client #${cluster.worker.id}!` ) ;
+
+      case( 'Operation' ):
+
+        if( message.worker == cluster.worker.id )
+         {
+
+          L( `Server write: Operation Client #${cluster.worker.id}!` ) ;
+    
+          let jx = Math.ceil( message.number + (Math.random() * message.number) ) ;
+  
+          let result = undefined ;
+
+          for( let j = 0 ; j < jx ; ++j )  result = ( Math.sin(j) + Math.cos(j) ) ;
+
+          client.write( `Byebye from Client #${cluster.worker.id}!` ) ;
+
+         }
+
+        break ;
+
+      case( 'Goodbye' ):
+
+        if( message.worker == cluster.worker.id )
+
+          client.end( `Thanks from Client #${cluster.worker.id}!` ) ;
+
+        break ;
+
+      } ;  // end switch()
+
    }) ;
 
-  client[ cluster.worker.id - 1 ].on('end', function() {
+
+  client.on('end', function() {
+
     L('Client: on end');
+
    }) ;
+
 
  } ; // end else
 
