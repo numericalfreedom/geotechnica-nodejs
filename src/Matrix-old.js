@@ -18,38 +18,413 @@
 "use strict" ;
 
 
-/** @const  {number}  c_asm  Asymmetric full matrix storage */
-
-const c_asm = 0 ;
-
-/** @const  {number}  c_smt  Symmetric full matrix storage */
-
-const c_smt = 1 ;
-
-/** @const  {number}  c_cca  Compressed column asymmetric matrix storage */
-
-const c_cca = 2 ;
-
-/** @const  {number}  c_ccs  Compressed column symmetric matrix storage */
-
-const c_ccs = 3 ;
-
-/** @const  {number}  c_cra  Compressed row asymmetric matrix storage */
-
-const c_cra = 4 ;
-
-/** @const  {number}  c_crs  Compressed row asymmetric matrix storage */
-
-const c_crs = 5 ;
+module.exports = { Matrix , MatrixF , MatrixLT , MatrixUT , idxLT }
 
 
-const c_sla = 6 ;
+
+/** @classdesc  Matrix operation on a lower triangular matrix
+ *  @class
+ *
+ *  @author     Numericalfreedom Foundation <numericalfreedom@googlemail.com>
+ *  
+ *  @param    { number }    nr               Number of rows
+ *  @param    { number }    nc               Number of columns
+ *  @param    { number }    nb               Matrix half bandwith
+ *  @param    { number }    nv               Number of values
+ *  @param    { Array }     v                Value vector
+ *
+ */
+
+function MatrixLT( nr , nc , nb , nv , v )
+ {
+
+  let i   = undefined ;
+  let ix  = undefined ;
+  let vv  = undefined ;
+  let nd  = 0 ;
+  let nrb = 0 ;
+
+  if( ! nb )  nb = ( nr - 1 ) ;
+
+  nrb = ( nr - nb ) ;
 
 
-const c_sls = 7 ;
+  if( ! nv )  nv = ( ((nr * (nr + 1)) / 2) - ((nrb * (nrb - 1)) / 2) ) ;
 
 
-module.exports = { Matrix , c_cca , c_ccs , c_cra , c_crs }
+  if( v === undefined )
+   {
+
+    for( vv = new Array( nv ) , i = 0 ;  i < nv ;  vv[i++] = 0.0 ) ;
+
+   }
+
+  else
+   {
+
+    if( v === null )
+
+      vv = new Array( 0 ) ;
+
+    else
+
+      if( v && (ix = v.length) && (ix = ((ix < nv) ? ix : nv)) )
+
+        for( vv = new Array( nv ) , i = 0;  i < ix;  vv[i] = v[i++] ) ;
+
+   } ; // end else -
+
+
+  this.nr  = nr ;
+  this.nc  = nc ;
+  this.nv  = nv ;
+  this.nd  = nd ;
+  this.nb  = nb ;
+  this.nbv = ( (nb * (nb + 1)) / 2 ) ;
+
+  this.v   = vv ;
+
+  this.cdc = cdc ;
+  this.cmd = cmd ;
+  this.cmm = cmm ;
+  this.crt = crt ;
+  this.csd = csd ;
+  this.csm = csm ;
+  this.cst = cst ;
+  this.dmm = dmm ;
+  this.dvt = dvt ;
+  this.enm = enm ;
+  this.eqt = eqt ;
+  this.evj = evj ;
+  this.evl = evl ;
+  this.gvv = gvv ;
+  this.i21 = i21 ;
+  this.i22 = i22 ;
+  this.i31 = i31 ;
+  this.i32 = i32 ;
+  this.i33 = i33 ;
+
+  this.idx = idxLT ;
+  this.inv = inv ;
+  this.j32 = j32 ;
+  this.j33 = j33 ;
+  this.mdt = mdt ;
+  this.mma = mma ;
+  this.mms = mms ;
+  this.mmd = mmd ;
+  this.mmt = mmt ;
+  this.msa = msa ;
+  this.msd = msd ;
+  this.mss = mss ;
+  this.mst = mst ;
+  this.pvv = pvv ;
+  this.smd = smd ;
+  this.smm = smm ;
+  this.srt = srt ;
+  this.sum = sum ;
+  this.tfm = tfm ;
+  this.tms = tms ;
+  this.tma = tma ;
+  this.trc = trc ;
+  this.tsp = tsp ;
+  this.unt = unt ;
+  this.val = val ;
+  this.vmd = vmd ;
+  this.vmm = vmm ;
+  this.xmm = xmm ;
+ 
+  return ;
+
+ } ; // end function MatrixLT
+
+
+
+/** @classdesc  Matrix operation on an upper triangular matrix
+ *  @class
+ *
+ *  @author     Numericalfreedom Foundation <numericalfreedom@googlemail.com>
+ *  
+ *  @param    { number }    nr               Number of rows
+ *  @param    { number }    nc               Number of columns
+ *  @param    { number }    nv               Number of values
+ *  @param    { Array }     v                Value vector
+ *
+ */
+
+function MatrixUT( nr , nc , nb , nv , v )
+ {
+
+  let i  = undefined ;
+  let ix = undefined ;
+  let vv = undefined ;
+  let nd  = 0 ;
+  let nrb = 0 ;
+
+  if( ! nb )  nb = ( nr - 1 ) ;
+
+  nrb = ( nr - nb ) ;
+
+
+  if( ! nv )  nv = ( ((nr * (nr + 1)) / 2) - ((nrb * (nrb - 1)) / 2) ) ;
+
+
+  if( v === undefined )
+   {
+
+    for( vv = new Array( nv ) , i = 0 ;  i < nv ;  vv[i++] = 0.0 ) ;
+
+   }
+
+  else
+   {
+
+    if( v === null )
+
+      vv = new Array( 0 ) ;
+
+    else
+
+      if( v && (ix = v.length) && (ix = ((ix < nv) ? ix : nv)) )
+
+        for( vv = new Array( nv ) , i = 0;  i < ix;  vv[i] = v[i++] ) ;
+
+   } ; // end else -
+
+
+  this.nr  = nr ;
+  this.nc  = nc ;
+  this.nv  = nv ;
+  this.nd  = nd ;
+  this.nb  = nb ;
+  this.nbv = ( (nb * (nb + 1)) / 2 ) ;
+
+  this.v   = vv ;
+
+  this.cmd = cmd ;
+  this.cmm = cmm ;
+  this.crt = crt ;
+  this.csd = csd ;
+  this.csm = csm ;
+  this.cst = cst ;
+  this.dmm = dmm ;
+  this.dvt = dvt ;
+  this.enm = enm ;
+  this.eqt = eqt ;
+  this.evj = evj ;
+  this.evl = evl ;
+  this.gvv = gvv ;
+  this.i21 = i21 ;
+  this.i22 = i22 ;
+  this.i31 = i31 ;
+  this.i32 = i32 ;
+  this.i33 = i33 ;
+
+  this.idx = idx ;
+  this.inv = inv ;
+  this.j32 = j32 ;
+  this.j33 = j33 ;
+  this.mdt = mdt ;
+  this.mma = mma ;
+  this.mms = mms ;
+  this.mmd = mmd ;
+  this.mmt = mmt ;
+  this.msa = msa ;
+  this.msd = msd ;
+  this.mss = mss ;
+  this.mst = mst ;
+  this.pvv = pvv ;
+  this.smd = smd ;
+  this.smm = smm ;
+  this.srt = srt ;
+  this.sum = sum ;
+  this.tfm = tfm ;
+  this.tms = tms ;
+  this.tma = tma ;
+  this.trc = trc ;
+  this.tsp = tsp ;
+  this.unt = unt ;
+  this.val = val ;
+  this.vmd = vmd ;
+  this.vmm = vmm ;
+  this.xmm = xmm ;
+ 
+  return ;
+
+ } ; // end function MatrixUT
+
+
+
+function tpd( i )
+ {
+
+  return( (i * (i + 1)) / 2 ) ;
+
+ } ; // end function tpd()
+
+
+/** Function tmd()
+ *
+ *
+ */
+
+
+function tmd( i )
+ {
+
+  return( (i * (i - 1)) / 2 ) ;
+
+ } ; // end function tmd()
+
+
+
+/** @classdesc  Matrix operation on full matrix
+ *  @class
+ *
+ *  @author     Numericalfreedom Foundation <numericalfreedom@googlemail.com>
+ *  
+ *  @param    { number }    nr               Number of rows
+ *  @param    { number }    nc               Number of columns
+ *  @param    { number }    nv               Number of values
+ *  @param    { Array }     v                Value vector
+ *
+ */
+
+function MatrixF( nr , nc , nl , nu , nv , v )
+ {
+
+  let i   = undefined ;
+  let ix  = undefined ;
+  let nrl = undefined ;
+  let ncu = undefined ;
+  let nlu = undefined ;
+  let nlv = undefined ;
+  let nuv = undefined ;
+  let nt  = undefined ;
+  let nb  = undefined ; 
+  let ntv = undefined ;
+  let nbv = undefined ;
+  let nlt = undefined ;
+  let nub = undefined ;
+
+
+  if( ! nl )  nl = ( nr - 1 ) ;
+  if( ! nu )  nu = ( nc - 1 ) ;
+
+  nlu = ( nl + 1 + nu ) ;
+
+  nrl = ( nr - nl ) ;
+  ncu = ( nc - nu ) ;
+
+  nlt = nt = nl ;
+
+  if( nb = (nr - nc + nu) < 0 )   nb = 0 ;
+
+  nub = ( nr - nb ) ;
+
+
+  ntv = tmd( nt ) ;
+
+  nbv = tmd( nb ) ;
+
+
+  nlv = ( (nt * nlu) - ntv ) ;
+
+  nuv = ( ntv + (nr * nlu) + tmd( nr - nb ) ) ;
+
+
+  if( ! nv )  nv = ( (nr * (nlu + 1)) - ntv - nbv ) ;
+
+
+  let vv = undefined ;
+
+  if( v === undefined )
+
+    for( vv = new Array( nv ) , i = 0;  i < nv;  vv[i++] = 0.0 ) ;
+
+  else
+   {
+
+    if( v === null )
+
+      vv = new Array( 0 ) ;
+
+    else
+
+      if( v && (ix = v.length) && (ix = ((ix < nv) ? ix : nv)) )
+
+        for( vv = new Array( nv ) , i = 0;  i < ix;  vv[i] = v[i++] ) ;
+
+   } ; // end else -
+
+
+  let nd = 0 ;
+
+  if(  (nr == 2) && (nc == 2)  && (nv == 3) )  d = 1 ;
+
+  if( ((nr == 3) && (nc == 3)) && ((nv == 4) || (nv == 6)) )  d = 2 ;
+
+
+  this.nr  = nr  ;
+  this.nc  = nc  ;
+  this.nv  = nv  ;
+  this.v   = vv  ;
+  this.nl  = nl  ;
+  this.nu  = nu  ;
+  this.nlv = nlv ;
+  this.nuv = nuv ;
+  this.nd  = nd  ;
+
+  this.cmd = cmd ;
+  this.cmm = cmm ;
+  this.crt = crt ;
+  this.csd = csd ;
+  this.csm = csm ;
+  this.cst = cst ;
+  this.dmm = dmm ;
+  this.dvt = dvt ;
+  this.enm = enm ;
+  this.eqt = eqt ;
+  this.evj = evj ;
+  this.evl = evl ;
+  this.gvv = gvv ;
+  this.i21 = i21 ;
+  this.i22 = i22 ;
+  this.i31 = i31 ;
+  this.i32 = i32 ;
+  this.i33 = i33 ;
+
+  this.idx = idxRF ;
+  this.inv = inv ;
+  this.j32 = j32 ;
+  this.j33 = j33 ;
+  this.mdt = mdt ;
+  this.mma = mma ;
+  this.mms = mms ;
+  this.mmd = mmd ;
+  this.mmt = mmt ;
+  this.msa = msa ;
+  this.msd = msd ;
+  this.mss = mss ;
+  this.mst = mst ;
+  this.pvv = pvv ;
+  this.smd = smd ;
+  this.smm = smm ;
+  this.srt = srt ;
+  this.sum = sum ;
+  this.tfm = tfm ;
+  this.tms = tms ;
+  this.tma = tma ;
+  this.trc = trc ;
+  this.tsp = tsp ;
+  this.unt = unt ;
+  this.val = val ;
+  this.vmd = vmd ;
+  this.vmm = vmm ;
+  this.xmm = xmm ;
+ 
+  return ;
+
+ } ; // end function MatrixF
 
  
 /** @classdesc  Matrix operations
@@ -120,8 +495,6 @@ module.exports = { Matrix , c_cca , c_ccs , c_cra , c_crs }
  *
  */
 
-
-
 function Matrix( nr , nc , nv , v )
  {
 
@@ -152,19 +525,18 @@ function Matrix( nr , nc , nv , v )
    } ; // end else -
 
 
-  let d = 0 ;
+  let nd = 0 ;
 
-  if(  (nr == 2) && (nc == 2)  && (nv == 3) )  d = 1 ;
+  if(  (nr == 2) && (nc == 2)  && (nv == 3) )  nd = 1 ;
 
-  if( ((nr == 3) && (nc == 3)) && ((nv == 4) || (nv == 6)) )  d = 2 ;
+  if( ((nr == 3) && (nc == 3)) && ((nv == 4) || (nv == 6)) )  nd = 2 ;
 
 
   this.nr  = nr ;
   this.nc  = nc ;
   this.nv  = nv ;
   this.v   = vv ;
-  this.d   = d ;
-
+  this.nd  = nd ;
 
   this.cmd = cmd ;
   this.cmm = cmm ;
@@ -186,7 +558,7 @@ function Matrix( nr , nc , nv , v )
   this.i33 = i33 ;
 
 
-  this.idx = idx ;
+  this.idx = idxLT ;
   this.inv = inv ;
   this.j32 = j32 ;
   this.j33 = j33 ;
@@ -218,54 +590,6 @@ function Matrix( nr , nc , nv , v )
   return ;
 
  } ; // end function Matrix
-
-
-
-
-/** Cholesky decomposition
- *
- *
- *
- */
-
-function cdc( x )
- { 
-
-  let s  = undefined ;
-
-  let i  = undefined ;
-  let j  = undefined ;
-
-  let v  = undefined ;
-  let vi = undefined ;
-  
-  for( i = 0 ; i < n ; i++ )
-
-    for( j = 0 ; j <= i ; ++j )
-  
-      if( i == j )
-       {
-
-        // Diagonal element:
-
-        for( s = k = 0 ; k < j ; s += ((v = this.v[ this.idx( j , k++ ) ]) * v) ) ;
-
-        this.v[ vi ] = Math.sqrt( this.v[ vi = this.idx( j , j ) ] - s ) ;
-
-       } // end if +
-              
-      else
-       {
-
-        // Outer diagonal element:
-  
-        for( s = k = 0 ; k < j ; s += (this.idx( i , k ) * this.idx( j , k++ )) ) ;
-
-        this.v[ vi ] = ( (this.v[ vi = this.idx( i , j ) ] - s) / this.v[ this.idx( j , j ) ] ) ;
-
-       } ; // end else 
-
- } ; // end function cdc()
 
 
 /** Function cev()
@@ -305,6 +629,56 @@ function cev( x )
   return( r ) ;
 
  } ; // end function cev() 
+
+
+
+/** Cholesky decomposition
+ *
+ *
+ *
+ */
+
+function cdc()
+ {
+
+  let i  = undefined ;
+  let j  = undefined ;
+  let k  = undefined ;
+  let s  = undefined ;
+  let vi = undefined ;
+
+  for( i = 0 ; i < this.nr ; i++ )
+
+    for( j = 0 ; j <= i ; ++j )
+     {
+
+      for( s = k = 0 ; k < j ; s += (this.v[ this.idx( i , k ) ] * this.v[ this.idx( j , k++ ) ]) ) ;
+
+      if( i == j )
+       {
+
+        // Diagonal element:
+
+        vi = this.idx( i , i ) ;
+
+        this.v[ vi ] = Math.sqrt( this.v[ vi ] - s ) ;
+
+       } // end if +
+
+      else
+       {
+
+        // Outer diagonal element:
+
+        vi = this.idx( i , j ) ;
+
+        this.v[ vi ] = ( (this.v[ vi ] - s) / this.v[ this.idx( j , j ) ] ) ;
+
+       } ; // end else 
+
+     } ; // end for()
+
+ } ; // end function cdc()
 
 
 
@@ -565,7 +939,7 @@ function dvt()
   let i = undefined ;
   let t = undefined ;
 
-  if( this.d )
+  if( this.nd )
    {
 	   
     for( t = 0 , i = 0;  i < this.nc;  t += this.v[ i++ ] ) ;
@@ -685,7 +1059,7 @@ function evj( x , ne , en )
   for( i = 0;  i < x.nv;  evv[ i ] = x.v[ i++ ] ) ;
 
 
-  if( ! this.d )
+  if( ! this.nd )
 
     for( i = 0;  i < this.nr;  this.v[ this.idx( i , i++ ) ] = 1 )
   
@@ -779,7 +1153,7 @@ function evj( x , ne , en )
            } ; // end if{} -
 
 
-          if( ! this.d )
+          if( ! this.nd )
 
             for( k = 0;  k < this.nr;  ++k )
              {             
@@ -1331,10 +1705,10 @@ function idx( i /*: number*/ , j /*: number*/ ) /*: number*/
 
   let r = i ;
 
-  if( this.d )
+  if( this.nd )
    {
 
-    if( i - j )  r = ( i + j + this.d ) ;
+    if( i - j )  r = ( i + j + this.nd ) ;
 
    } // end if
 
@@ -1349,6 +1723,136 @@ function idx( i /*: number*/ , j /*: number*/ ) /*: number*/
 
  } ; // end function idx()
 
+
+
+/**
+ *  Index function
+ *
+ *  @description function index
+ *
+ *  @param    { number }    i      Number of rows
+ *  @param    { number }    j      Number of columns
+ */
+
+function idxLT( i /*: number*/ , j /*: number*/ ) /*: number*/
+ {
+
+  let ij = undefined ;
+  let r  = undefined ;
+
+  if( i >= j )
+
+    if( (ij = (i - j)) < this.nb ) 
+
+      if( i < this.nb )
+    
+        r = ( (i * (i+1)) / 2 + j ) ;
+
+      else 
+
+        r = ( this.nbv + (i * this.nb) - ij ) ;
+
+    else
+
+      r = undefined ;
+
+  else
+
+    r = this.idx( j , i ) ;
+
+  return( r ) ;
+
+ } ; // end function idxLT()
+
+
+
+/**
+ *  Index function
+ *
+ *  @description function index
+ *
+ *  @param    { number }    i      Number of rows
+ *  @param    { number }    j      Number of columns
+ */
+
+function idxRF( i , j )
+ {
+
+  return( (i * this.nc) + j ) ;
+
+ } ; // end function idxRF()
+
+
+/**
+ *  Index function
+ *
+ *  @description function index
+ *
+ *  @param    { number }    i      Number of rows
+ *  @param    { number }    j      Number of columns
+ */
+
+function idxCF( i , j )
+ {
+
+  return( i + (j * this.nr) ) ;
+
+ } ; // end function idxCF()
+
+
+/**
+ *  Index function
+ *
+ *  @description function index
+ *
+ *  @param    { number }    i      Number of rows
+ *  @param    { number }    j      Number of columns
+ */
+
+function idxRS( i , j )
+ {
+
+  return( this.r[i] + j ) ;
+
+ } ; // end function idxRS()
+
+
+/**
+ *  Index function
+ *
+ *  @description function index
+ *
+ *  @param    { number }    i      Number of rows
+ *  @param    { number }    j      Number of columns
+ */
+
+function idxCS( i , j )
+ {
+
+  return( i + this.c[j] ) ;
+
+ } ; // end function idxCS()
+
+
+/**
+ *  Index function
+ *
+ *  @description function index
+ *
+ *  @param    { number }    i      Number of rows
+ *  @param    { number }    j      Number of columns
+ */
+
+function idxR( i /*: number*/ , j /*: number*/ ) /*: number*/
+ {
+
+  let r = undefined ;
+
+  if( i - j )  r = ( i + j + this.nd ) ;  else  r = i ;
+
+  return( r ) ;
+ 
+ } ; // end function idxR()
 
 
 /** Function inv
@@ -1536,7 +2040,7 @@ function mmd( x , y )
   let ik = undefined ;
   let kj = undefined ;
 
-  if( this.d )
+  if( this.nd )
    {
 
     for( i = 0; i < this.nr; ++i )
@@ -1606,7 +2110,7 @@ function mmt( x , y , z )
   let mn = undefined ;
   let nj = undefined ;
 
-  if( this.d )
+  if( this.nd )
    {
 
     for( i = 0; i < this.nr; ++i )
@@ -1678,7 +2182,7 @@ function msd( x )
   let ik = undefined ;
   let kj = undefined ;
   
-  if( this.d )
+  if( this.nd )
    {
 
     for( i = 0; i < this.nr; ++i )
@@ -1748,7 +2252,7 @@ function mst( x )
   let mn = undefined ;
   let nj = undefined ;
 
-  if( this.d )
+  if( this.nd )
    {
 
     for( i = 0; i < this.nr; ++i )
@@ -1980,7 +2484,7 @@ function tma()
   let aij = undefined ;
   let aji = undefined ;
 
-  if( ! this.d )
+  if( ! this.nd )
 
     for( i = 0;  i < this.nr;  ++i )
 
@@ -2016,7 +2520,7 @@ function tms()
   let aij = undefined ;
   let aji = undefined ;
 
-  if( ! this.d )
+  if( ! this.nd )
 
     for( i = 0;  i < this.nr;  ++i )
 
@@ -2048,7 +2552,7 @@ function trc()
   let i = undefined ;
   let r = undefined ;
 
-  if( this.d )
+  if( this.nd )
 
     for( r = 0 , i = 0; i < this.nc; r += this.v[ i++ ] ) ;
 
@@ -2073,7 +2577,7 @@ function tsp( x )
   let i = undefined ;
   let j = undefined ;
   
-  if( ! this.d )
+  if( ! this.nd )
   
     for( i = 0;  i < this.nr;  ++i )
     
@@ -2097,7 +2601,7 @@ function unt( s )
   
   let i = undefined ;
 
-  if( this.d )
+  if( this.nd )
 
     for( i = 0; i < this.nc; this.v[ i++ ] = s ) ;
 
@@ -2661,3 +3165,13 @@ console.log( xpr( -0.18464536242324758 , -0.6598984478540825 , 0.728313207799611
 let m = new Matrix( 3 , 4 , null , [] ) ;
 
 console.log( 'm=' , m ) ;
+
+
+
+let mlt = new MatrixLT( 5 , 5 , null , null , [ 3.49 , -0.92 , 4.86 , 1.23 , 0.48 , 5.05 , 1.58 , -1.05 , 1.04 , 1.48 , 0.46 , 2.48 , 1.39 , -0.22 , 3.03 ] ) ;
+
+mlt.cdc() ;
+
+console.log( 'mlt=' ,  mlt ) ;
+
+
