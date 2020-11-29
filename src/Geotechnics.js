@@ -1,10 +1,11 @@
 'use strict' ;
 
 
-const g = 10.0 ;
+const g    =   10.0 ;
+const rhow = 1000.0 ;
 
 
-module.exports = { g , random , radians , degrees , karp , wedgeslope , groundfailure , punchfailure , izzFz , izzqzAQ , noekkentved } ;
+module.exports = { g , rhow , random , radians , degrees , karp , wedgeslope , groundfailure , punchfailure , izzFz , izzqzAQ , noekkentved } ;
 
 
 /**
