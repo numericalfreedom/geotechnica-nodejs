@@ -1,10 +1,40 @@
 'use strict' ;
 
 
-const g = 10.0 ;
+const g    =   10.0 ;
+const rhow = 1000.0 ;
 
 
-module.exports = { g , radians , degrees , karp , wedgeslope , groundfailure , punchfailure , izzFz , izzqzAQ , noekkentved } ;
+module.exports = { g , rhow , random , radians , degrees , karp , wedgeslope , groundfailure , punchfailure , izzFz , izzqzAQ , noekkentved } ;
+
+
+/**
+ *  Seeded random number generator for JavaScript
+ *
+ *  From StackOverflow
+ *
+ *  @param  {Number} seed - random number seed
+ *  @return {Number} New random number and new seed
+ *  @customfunction
+ */
+
+function random( seed )
+ {
+
+  if( ! seed )
+   {
+    seed = Math.random() ;
+   }
+
+  else
+   {
+    seed = ( 10000 * Math.sin( ++seed ) ) ;
+    seed = ( seed - Math.floor( seed ) ) ;
+   }
+
+  return( seed ) ;
+
+ } // end function random() ;
 
 
 /**
@@ -735,8 +765,8 @@ function groundfailure( x )
   var mb     = 0 ;
   var m      = 0 ;
 
-  var af    = 0 ;
-
+  var af     = 0 ;
+	 
   if( phrad > 0.0 )  phvrad = phrad ;  else  phvrad = c_0_0 ;
 
   kp = Math.tan( (Math.PI / 4.0) + (phvrad / 2.0) ) ;
@@ -769,7 +799,7 @@ function groundfailure( x )
 
      r[r_v][r_d] = vd = ( 1.0 + ((b / a) * Math.sin( phrad )) ) ;
      
-     if( frad )  r[r_v][r_c] = ( ((vd * nd) - 1) / (nd - 1) ) ;  else  r[r_v][r_c] = ( 1.0 + (0.2 * (b / a)) ) ;
+     if( phrad )  r[r_v][r_c] = ( ((vd * nd) - 1) / (nd - 1) ) ;  else  r[r_v][r_c] = ( 1.0 + (0.2 * (b / a)) ) ;
     
      break ;
     
@@ -779,7 +809,7 @@ function groundfailure( x )
      
      r[r_v][r_d] = vd = ( 1.0 + Math.sin( phrad ) ) ;
      
-     if( frad )  r[r_v][r_c] = ( ((vd * nd) - 1) / (nd - 1) ) ;  else  r[r_v][r_c] = 1.2 ;
+     if( phrad )  r[r_v][r_c] = ( ((vd * nd) - 1) / (nd - 1) ) ;  else  r[r_v][r_c] = 1.2 ;
    
      break ;
    
